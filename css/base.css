@@ -1,0 +1,111 @@
+/***************************************************
+ * Common
+ */
+body {
+    background-color: #f4decb;
+}
+
+/***************************************************
+ * Navigation Bar
+ */
+#navbar {
+    background-color: #d27a2d;
+}
+
+/* Title */
+#titleDisplay > h1 {
+    color: #f4decb;
+    margin: .8rem 1.5rem;
+    font-size: 2.3em;
+}
+
+#menuDisplay {
+
+    text-align: right;
+}
+#menuDisplay button {
+    margin-top: .6rem;
+    margin-right: .3rem;
+    background-color: transparent;
+    border: 0;
+}
+/* Override Bootstrap's Button Outline */
+button:focus, button:active {
+    outline: none;
+}
+#menuDisplay img {
+    height: 2.5rem;
+}
+#menu {
+}
+
+/***************************************************
+ * Game Info Display - # of moves, timer, mute button
+ */
+#movesDisplay, #timerDisplay, #muteDisplay {
+    color: #d27a2d;
+    padding-top: .6rem;
+    padding-bottom: .6rem;
+    text-align: center;
+}
+
+/* # of Moves */
+#movesDisplay > p {
+    text-transform: uppercase;
+}
+#movesDisplay > h3 {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+/* Timer */
+#timerDisplay {
+    font-size: 2.8em;
+}
+
+/* Mute Button */
+#muteDisplay > img {
+    height: 2.5rem;
+}
+
+/***************************************************
+ * Game Area
+ */
+#gameArea {
+    background-color: #d27a2d;
+}
+
+/***************************************************
+ * Bottom Area - Levels & Reset Buttons
+ */
+#levelDisplay, #resetDisplay {
+    margin-top: 1rem;
+}
+#levelDisplay > span, #resetDisplay > span {
+    display: inline-block;
+    color: #f4decb;
+    background-color: #1b7b34;
+    padding: .3rem .8rem;
+    text-transform: uppercase;
+    font-size: 1.5em;
+}
+
+/*  */
+#levelDisplay > span > span {
+    font-size: .7em;
+    padding-left: 1rem;
+}
+
+#resetDisplay > span {
+    float: right;
+}
+
+/***************************************************
+ * Miscellaneous
+ */
+
+/* Override Bootstrap Padding for containers */
+.container {
+    padding: 0;
+    overflow: hidden;
+}
