@@ -43,10 +43,8 @@ gameGrid.prototype = {
     
     // Cell exist in array?
     cellExists: function(row, col) {
-        return  row >= 0 &&
-                col >= 0 &&
-                row < this.cells.length &&
-                col < this.cells[+row].length;
+        return  0 <= row && row < this.cells.length &&
+                0 <= col && col < this.cells[row].length;
     }
 
 };
