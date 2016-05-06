@@ -1,19 +1,13 @@
-window.onload = function() {
+// window.onload = function() {
 
-    var grid = new gameGrid(6, 6);
+    var grid = new gameGrid('6', 6);
 
-    var tiger = new animal(4, 4, 1, 2, grid);
+    var tiger = new animal(2, 2, 1, 2, grid);
 
-    grid.fillCell(5, 4);
+    grid.fillCell(4, 2);
 
-    console.log(tiger.canMoveTo(1, 0));
-
-    if (grid.cellEmpty(4,4)) {
-        console.log('empty')
-    } else {
-        console.log('not empty');
-    }
+    console.log(tiger.move('1'));
 
     console.log(grid);
     
-};
+// };

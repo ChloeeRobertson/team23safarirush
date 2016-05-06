@@ -1,4 +1,5 @@
 // Initializes empty cells with boolean "false"
+// (Can think of it as: row = y, col = x)
 var gameGrid = function(numRows, numCols) {
 
     if (!+numRows || !+numCols || numRows <= 0 || numCols <= 0) {

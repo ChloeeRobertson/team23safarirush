@@ -1,55 +1,64 @@
-var animal = function(row, col, rowSpan, colSpan, grid) {
+// Initializes animal and fills grid cells
+var animal = function(row, col, w, h, grid) {
+
+    this.x  = +col;  // col #
+    this.y  = +row;  // row #
+    this.w  = +w;    // width span (1, 2, 3)
+    this.h  = +h;    // height span (1, 2, 3)
     
-    this.row        = row;
-    this.col        = col;
-    this.rowSpan    = rowSpan;
-    this.colSpan    = colSpan;
+    this.grid = grid;
 
-    this.grid       = grid;
+    this.xMovable = (w > 1);
+    this.yMovable = (h > 1);
 
-    this.rowMovable = (rowSpan > 1);
-    this.colMovable = (colSpan > 1);
-
-    for (var rowCount = 0; rowCount < this.rowSpan; rowCount++) {
-        if (this.grid.cellEmpty(row + rowCount, col)) {
-            this.grid.fillCell(row + rowCount, col);
-        }
+    if ((this.xMovable && this.yMovable) || (!this.xMovable && !this.yMovable)) {
+        console.log("ERROR: Incorrect animal sizing. " + w + "x" + h);
     }
 
-    for (var colCount = 0; colCount < this.colSpan; colCount++) {
-        if (this.grid.cellEmpty(row, col + colCount)) {
-            this.grid.fillCell(row, col + colCount);
-        }
-    }
-    
+    this.fillGrid();
 };
 
 animal.prototype = {
 
-    canMoveRow: function(increment) {
-        if (!this.rowMovable || !+increment) {
+    // Move animal
+    // (movement = 1, -1)
+    move: function(movement) {
+        if (!this.canMove(movement)) {
+            console.log("ERROR: Can't make invalid move.");
+            return;
+        }
+
+        this.fillGrid(true);
+
+        if (this.xMovable) {
+            this.x += +movement;
+        } else {
+            this.y += +movement;
+        }
+
+        this.fillGrid();
+    },
+
+    // Can animal make this move?
+    // (movement = 1, -1)
+    canMove: function(movement) {
+        if (movement != 1 && movement != -1) {
+            console.log("ERROR: Invalid animal movement. " + movement);
             return false;
         }
 
-        return this.canMoveTo(increment, 0);
+        var max = (this.yMovable) ? this.h : this.w;
+        var row = (this.yMovable) ? this.y + movement : this.y;
+        var col = (this.xMovable) ? this.x + movement : this.x;
 
-    },
-
-    // Animal can move ...
-    canMoveTo: function(rowIncrement, colIncrement) {
-        var row = this.row + rowIncrement;
-        var col = this.col + colIncrement;
-
-        for (var rowCount = 0; rowCount < this.rowSpan; rowCount++) {
-            if (!this.grid.cellEmpty(row + rowCount, col)) {
-                
-                return false;
+        for (var count = 0; count < max; count++) {
+            if (this.yMovable) {
+                row = this.y + +movement + count;
+            } else {
+                col = this.x + +movement + count;
             }
-        }
 
-        for (var colCount = 0; colCount < this.colSpan; colCount++) {
-            if (!this.grid.cellEmpty(row, col + colCount)) {
-                
+            if (!this.grid.cellEmpty(row, col) && !this.occupyingCell(row, col)) {
                 return false;
             }
         }
@@ -58,9 +67,32 @@ animal.prototype = {
     },
 
     // Animal currently occupying this cell?
-    isOnCell: function(row, col) {
-        return  this.row <= row && row <= this.row + this.rowSpan &&
-                this.col <= col && col <= this.col + this.colSpan;
+    occupyingCell: function(row, col) {
+        return  this.y <= row && row <= (this.y + this.h - 1) &&
+                this.x <= col && col <= (this.x + this.w - 1);
+    },
+
+    // Fill initial positions on grid
+    fillGrid: function(unfill) {
+        var max = (this.yMovable) ? this.h : this.w;
+        var row = this.y;
+        var col = this.x;
+
+        for (var count = 0; count < max; count++) {
+            if (this.yMovable) {
+                row = this.y + count;
+            } else {
+                col = this.x + count;
+            }
+
+            if (unfill) {
+                this.grid.unfillCell(row, col);
+            } else if (this.grid.cellEmpty(row, col)) {
+                this.grid.fillCell(row, col);
+            } else {
+                console.log("ERROR: Animal occupying non-empty or out-of-bound cell. " + row + ", " + col);
+            }
+        }
     }
     
 };
