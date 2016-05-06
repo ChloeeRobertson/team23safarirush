@@ -28,14 +28,17 @@ animal.prototype = {
             return;
         }
 
+        // unfill cells occupied by current animal position
         this.fillGrid(true);
 
+        // set new animal position
         if (this.xMovable) {
             this.x += +movement;
         } else {
             this.y += +movement;
         }
 
+        // fill cells with new position
         this.fillGrid();
     },
 
