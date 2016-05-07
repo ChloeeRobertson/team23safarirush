@@ -1,20 +1,18 @@
+ describe('Game Grid (tests only square grids)', function() {
 
-/************************************************************
- * gameGrid.js
- */
+	it('CONSTRUCTOR: Fails for sizes 0 to -2. Initiates for sizes 1 to 3, cells defaults to boolean "false".', function() {
 
- describe('Test Game Grid', function() {
-	it('Initiate different sized square grids: (-1, -1) to (2, 2)', function() {
-
-		// Test negative and zero grid sizes
-		var grid1 = newGameGrid(-1, -1);
-		var grid2 = newGameGrid(0, 0);
+		// Test size 0 to -2
+		var grid1 = newGameGrid( 0,  0);
+		var grid2 = newGameGrid(-1, -1);
+		var grid3 = newGameGrid(-2, -2);
 		unitjs
 			.bool(grid1).isFalse()
-			.bool(grid2).isFalse();
+			.bool(grid2).isFalse()
+			.bool(grid3).isFalse();
 
-		// Test grid sizes 1 to 2
-		for (var size = 1; size <= 2; size++) {
+		// Test size 1 to 3
+		for (var size = 1; size <= 3; size++) {
 			var grid = newGameGrid(size, size);
 
 			unitjs.array(grid.cells).matchEach(function(it) {
@@ -30,7 +28,7 @@
 
 	});
 
-	it('Initialize constructor parameters with diff types (string, int, double)', function() {
+	it('CONSTRUCTOR: 2 (int), 2.0 (float), "2" (string) works. || 2.5 (float), "3x" (string) does not.', function() {
 
 		var size = 2;
 
@@ -59,11 +57,16 @@
 
 	});
 
-	it('Test grid functions (fillCell, unfillCell, cellEmpty, cellExists)', function() {
+	it('METHODS: Works as expected even when out-of-bound cells are used as parameters.', function() {
 
 		var size = 3;
 		var grid = newGameGrid(size, size);
 
+		// Col & Row #s
+		unitjs.number(grid.numRows()).is(size);
+		unitjs.number(grid.numCols()).is(size);
+
+		// Col 1 will all be filled
 		grid.fillCell(0, 1);
 		grid.fillCell(1, 1);
 		grid.fillCell(2, 1);
@@ -87,12 +90,14 @@
 		unitjs.bool(grid.cellExists(size, size - 1)).isFalse()
 			  .bool(grid.cellExists(size - 1, size)).isFalse()
 			  .bool(grid.cellExists(-1, 0))			.isFalse()
-			  .bool(grid.cellExists(0, -1))			.isFalse();
+			  .bool(grid.cellExists(0, -1))			.isFalse()
 
-		// Test zeroes
-		unitjs.bool(grid.cellExists(0, 0)).isTrue();
+		// Edge scenarios
+		unitjs
+			  .bool(grid.cellExists(0, 0)).isTrue()
+			  .bool(grid.cellExists(size - 1, size - 1)).isTrue();
 
-		// Unfill cell and test if empty
+		// Unfill col 1 and test if empty
 		grid.unfillCell(0, 1);
 		grid.unfillCell(1, 1);
 		grid.unfillCell(2, 1);
@@ -102,7 +107,7 @@
 
 	});
 
-	it('Reset grid (unfill all cells) and numRows(), numCols()', function() {
+	it('METHODS: unfillAll resets each cell to boolean "false".', function() {
 
 		var size = 3;
 		var grid = newGameGrid(3, 3);
