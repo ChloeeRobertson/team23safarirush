@@ -32,7 +32,9 @@
 
 	it('Initialize constructor parameters with diff types (string, int, double)', function() {
 
-		var grid1 = newGameGrid(2, 2);
+		var size = 2;
+
+		var grid1 = newGameGrid(size, size);
 		var grid2 = newGameGrid('2', '2');
 		var grid3 = newGameGrid(2.0, 2.0);
 		var grid4 = newGameGrid('x', 2.0);
@@ -40,9 +42,17 @@
 		var grid6 = newGameGrid(2.5, 2);
 
 		unitjs
-			.array(grid1.cells).hasLength(2)
-			.array(grid2.cells).hasLength(2)
-			.array(grid3.cells).hasLength(2)
+			.array(grid1.cells).hasLength(size)
+			.array(grid2.cells).hasLength(size)
+			.array(grid3.cells).hasLength(size)
+
+			.number(grid1.numRows()).is(size)
+			.number(grid2.numRows()).is(size)
+			.number(grid3.numRows()).is(size)
+			.number(grid1.numCols()).is(size)
+			.number(grid2.numCols()).is(size)
+			.number(grid3.numCols()).is(size)
+
 			.bool(grid4).isFalse()
 			.bool(grid5).isFalse()
 			.bool(grid6).isFalse();
@@ -89,6 +99,29 @@
 		unitjs.bool(grid.cellEmpty(0, 1)).isTrue();
 		unitjs.bool(grid.cellEmpty(1, 1)).isTrue();
 		unitjs.bool(grid.cellEmpty(2, 1)).isTrue();
+
+	});
+
+	it('Reset grid (unfill all cells) and numRows(), numCols()', function() {
+
+		var size = 3;
+		var grid = newGameGrid(3, 3);
+
+		// Fill cells and check if empty
+		for (var row = 0; row < size; row++) {
+			for (var col = 0; col < size; col++) {
+				grid.fillCell(row, col);
+				unitjs.bool(grid.cellEmpty(row, col)).isFalse();
+			}
+		}
+
+		// Unfill all cells and check if empty
+		grid.unfillAll();
+		for (var row = 0; row < size; row++) {
+			for (var col = 0; col < size; col++) {
+				unitjs.bool(grid.cellEmpty(row, col)).isTrue();
+			}
+		}
 
 	});
 });

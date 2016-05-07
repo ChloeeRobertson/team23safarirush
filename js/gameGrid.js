@@ -23,15 +23,7 @@ var newGameGrid = function(numRows, numCols) {
 // (Can think of it as: row = y, col = x)
 var gameGrid = function(numRows, numCols) {
 
-    this.cells = [];
-
-    for (var row = 0; row < numRows; row++) {
-        this.cells[row] = [];
-
-        for (var col = 0; col < numCols; col++) {
-            this.cells[row][col] = false;
-        }
-    }
+    this.initGrid(numRows, numCols);
 
 };
 
@@ -57,6 +49,10 @@ gameGrid.prototype = {
         return true;
     },
 
+    unfillAll: function() {
+        this.initGrid(this.numRows(), this.numCols());
+    },
+
     // Is cell empty?
     // Also returns false if non-existent.
     cellEmpty: function(row, col) {
@@ -71,6 +67,29 @@ gameGrid.prototype = {
     cellExists: function(row, col) {
         return  0 <= row && row < this.cells.length &&
                 0 <= col && col < this.cells[row].length;
+    },
+
+    // Number of rows
+    numRows: function() {
+        return this.cells.length;
+    },
+
+    // Number of columns
+    numCols: function() {
+        return this.cells[0].length;
+    },
+
+    // Initialize grid
+    initGrid: function(numRows, numCols) {
+        this.cells = [];
+
+        for (var row = 0; row < numRows; row++) {
+            this.cells[row] = [];
+
+            for (var col = 0; col < numCols; col++) {
+                this.cells[row][col] = false;
+            }
+        }
     }
 
 };
