@@ -1,10 +1,13 @@
 // Creates and returns a new animal object
 var newAnimal = function(row, col, w, h, grid) {
 
-    var xMovable = (w > 1);
-    var yMovable = (h > 1);
-
-    if ((this.xMovable && this.yMovable) || (!this.xMovable && !this.yMovable)) {
+    if (!+row || !+col || !+w || !+h || !grid) {
+        console.log("ERROR: Invalid animal parameters.");
+        return false;
+    } else if (!grid.cellExists(row, col)) {
+        console.log("ERROR: Animal position out of bounds. " + row + ", " + col);
+        return false;
+    } else if (w == h || w < 1 || h < 1 || (w != 1 && h != 1)) {
         console.log("ERROR: Incorrect animal sizing. " + w + "x" + h);
         return false;
     }
