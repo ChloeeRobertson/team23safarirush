@@ -1,3 +1,18 @@
+// Creates and returns a new animal object
+var newAnimal = function(row, col, w, h, grid) {
+
+    var xMovable = (w > 1);
+    var yMovable = (h > 1);
+
+    if ((this.xMovable && this.yMovable) || (!this.xMovable && !this.yMovable)) {
+        console.log("ERROR: Incorrect animal sizing. " + w + "x" + h);
+        return false;
+    }
+
+    return new animal(row, col, w, h, grid);
+
+};
+
 // Initializes animal and fills grid cells
 var animal = function(row, col, w, h, grid) {
 
@@ -11,11 +26,8 @@ var animal = function(row, col, w, h, grid) {
     this.xMovable = (w > 1);
     this.yMovable = (h > 1);
 
-    if ((this.xMovable && this.yMovable) || (!this.xMovable && !this.yMovable)) {
-        console.log("ERROR: Incorrect animal sizing. " + w + "x" + h);
-    }
-
     this.fillGrid();
+    
 };
 
 animal.prototype = {
