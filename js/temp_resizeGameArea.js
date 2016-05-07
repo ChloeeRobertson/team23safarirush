@@ -4,6 +4,6 @@ window.onresize = resizeGameArea;
 function resizeGameArea() {
     var ele = document.getElementById('gameArea');
 
-    ele.style.width = window.innerWidth + "px";
+    ele.style.width = "100%";
     ele.style.height = window.innerWidth + "px";
 }
