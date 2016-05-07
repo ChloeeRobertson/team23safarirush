@@ -12,17 +12,17 @@ var newAnimal = function(row, col, w, h, grid) {
         return false;
     }
 
-    return new animal(row, col, w, h, grid);
+    return new animal(+row, +col, +w, +h, grid);
 
 };
 
 // Initializes animal and fills grid cells
 var animal = function(row, col, w, h, grid) {
 
-    this.x  = +col;  // col #
-    this.y  = +row;  // row #
-    this.w  = +w;    // width span (1, 2, 3)
-    this.h  = +h;    // height span (1, 2, 3)
+    this.x  = col;  // col #
+    this.y  = row;  // row #
+    this.w  = w;    // width span (1, 2, 3)
+    this.h  = h;    // height span (1, 2, 3)
     
     this.grid = grid;
 

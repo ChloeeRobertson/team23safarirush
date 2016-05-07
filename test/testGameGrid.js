@@ -39,6 +39,7 @@
 		var grid3 = newGameGrid(2.0, 2.0);
 		var grid4 = newGameGrid('x', 2.0);
 		var grid5 = newGameGrid('2x', 2);
+		var grid6 = newGameGrid(2.5, 2);
 
 		unitjs
 			.array(grid1.cells)
@@ -47,8 +48,9 @@
 				.hasLength(2)
 			.array(grid3.cells)
 				.hasLength(2)
-			.undefined(grid4.cells)
-			.undefined(grid5.cells);
+			.bool(grid4).isFalse()
+			.bool(grid5).isFalse()
+			.bool(grid6).isFalse();
 
 	});
 
@@ -61,6 +63,7 @@
 		grid.fillCell(1, 1);
 		grid.fillCell(2, 1);
 
+		// Test all cells if empty
 		for (var row = 0; row < size; row++) {
 			for (var col = 0; col < size; col++) {
 				// Tests if cell exists
@@ -75,11 +78,13 @@
 			}
 		}
 
-		// Out of bounds scenarios
+		// Out of bound scenarios
 		unitjs.bool(grid.cellExists(size, size - 1)).isFalse();
 		unitjs.bool(grid.cellExists(size - 1, size)).isFalse();
 		unitjs.bool(grid.cellExists(-1, 0)).isFalse();
 		unitjs.bool(grid.cellExists(0, -1)).isFalse();
+
+		// Test zeroes
 		unitjs.bool(grid.cellExists(0, 0)).isTrue();
 
 		// Unfill cell and test if empty

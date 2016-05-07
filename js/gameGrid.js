@@ -2,8 +2,15 @@
 // Returns false if invalid # of rows or cols
 var newGameGrid = function(numRows, numCols) {
 
-    if (!+numRows || !+numCols || numRows <= 0 || numCols <= 0) {
-        console.log('Can not initialize grid. Invalid rows or cols. ' + numRows + ", " + numCols);
+    if (!Number.isInteger(+numRows) ||
+        !Number.isInteger(+numCols) ||
+        numRows <= 0 || numCols <= 0) {
+
+        console.log(
+            'Can not initialize grid. Invalid rows or cols. ' +
+            numRows + ", " + numCols
+        );
+
         return false;
     }
 
