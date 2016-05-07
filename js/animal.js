@@ -1,7 +1,13 @@
-// Creates and returns a new animal object
+// Creates and returns a new animal object if parameters are valid
+// and animal position cells exists in grid and is empty
 var newAnimal = function(row, col, w, h, grid) {
 
-    if (!+row || !+col || !+w || !+h || !grid) {
+    if (!Number.isInteger(+row) ||
+        !Number.isInteger(+col) ||
+        !Number.isInteger(+w) ||
+        !Number.isInteger(+h) ||
+        !grid) {
+
         console.log("ERROR: Invalid animal parameters.");
         return false;
     } else if (!grid.cellExists(row, col)) {
@@ -10,6 +16,25 @@ var newAnimal = function(row, col, w, h, grid) {
     } else if (w == h || w < 1 || h < 1 || (w != 1 && h != 1)) {
         console.log("ERROR: Incorrect animal sizing. " + w + "x" + h);
         return false;
+    }
+
+    // Determine if animal position cells exist and is empty
+    var yMovable = (h > 1);
+    var max = (yMovable) ? +h : +w;
+    var r = row;
+    var c = col;
+    for (var count = 0; count < max; count++) {
+        // Determine movement axis (x or y)
+        if (yMovable) {
+            r = row + count;
+        } else {
+            c = col + count;
+        }
+
+        if (!grid.cellExists(r, c) || !grid.cellEmpty(r, c)) {
+            console.log("ERROR: Invalid animal position cell. " + r + ", " + c);
+            return false;
+        }
     }
 
     return new animal(+row, +col, +w, +h, grid);
@@ -40,11 +65,13 @@ animal.prototype = {
     move: function(movement) {
         if (!this.canMove(movement)) {
             console.log("ERROR: Can't make invalid move.");
-            return;
+            return false;
         }
 
         // unfill cells occupied by current animal position
-        this.fillGrid(true);
+        if (!this.unfillGrid()) {
+            return false;
+        }
 
         // set new animal position
         if (this.xMovable) {
@@ -70,12 +97,14 @@ animal.prototype = {
         var col = (this.xMovable) ? this.x + movement : this.x;
 
         for (var count = 0; count < max; count++) {
+            // Determine movement axis (x or y)
             if (this.yMovable) {
                 row = this.y + +movement + count;
             } else {
                 col = this.x + +movement + count;
             }
 
+            // Cell not empty and not occupied by this animal
             if (!this.grid.cellEmpty(row, col) && !this.occupyingCell(row, col)) {
                 return false;
             }
@@ -90,13 +119,14 @@ animal.prototype = {
                 this.x <= col && col <= (this.x + this.w - 1);
     },
 
-    // Fill initial positions on grid
+    // Fill current positions on grid
     fillGrid: function(unfill) {
         var max = (this.yMovable) ? this.h : this.w;
         var row = this.y;
         var col = this.x;
 
         for (var count = 0; count < max; count++) {
+            // Determine movement axis (x or y)
             if (this.yMovable) {
                 row = this.y + count;
             } else {
@@ -104,13 +134,28 @@ animal.prototype = {
             }
 
             if (unfill) {
-                this.grid.unfillCell(row, col);
+                // Unfill cell
+                if (!this.grid.unfillCell(row, col)) {
+                    return false;
+                }
             } else if (this.grid.cellEmpty(row, col)) {
-                this.grid.fillCell(row, col);
+                // Fill cell
+                if (!this.grid.fillCell(row, col)) {
+                    return false;
+                }
             } else {
+                // Cell is out of bounds
                 console.log("ERROR: Animal occupying non-empty or out-of-bound cell. " + row + ", " + col);
+                return false;
             }
         }
+
+        return true;
+    },
+
+    // Unfill current positions on grid
+    unfillGrid: function() {
+        return this.fillGrid(true);
     }
     
 };
