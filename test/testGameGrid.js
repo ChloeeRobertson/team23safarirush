@@ -17,17 +17,15 @@
 		for (var size = 1; size <= 2; size++) {
 			var grid = newGameGrid(size, size);
 
-			unitjs
-				.array(grid.cells)
-					.matchEach(function(it) {
-						for (var i = 0; i < size; i++) {
-							if (it[i] != false) {
-								return false;
-							}
-						}
+			unitjs.array(grid.cells).matchEach(function(it) {
+				for (var i = 0; i < size; i++) {
+					if (it[i] != false) {
+						return false;
+					}
+				}
 
-						return true;
-					});
+				return true;
+			});
 		}
 
 	});
@@ -42,12 +40,9 @@
 		var grid6 = newGameGrid(2.5, 2);
 
 		unitjs
-			.array(grid1.cells)
-				.hasLength(2)
-			.array(grid2.cells)
-				.hasLength(2)
-			.array(grid3.cells)
-				.hasLength(2)
+			.array(grid1.cells).hasLength(2)
+			.array(grid2.cells).hasLength(2)
+			.array(grid3.cells).hasLength(2)
 			.bool(grid4).isFalse()
 			.bool(grid5).isFalse()
 			.bool(grid6).isFalse();
@@ -79,10 +74,10 @@
 		}
 
 		// Out of bound scenarios
-		unitjs.bool(grid.cellExists(size, size - 1)).isFalse();
-		unitjs.bool(grid.cellExists(size - 1, size)).isFalse();
-		unitjs.bool(grid.cellExists(-1, 0)).isFalse();
-		unitjs.bool(grid.cellExists(0, -1)).isFalse();
+		unitjs.bool(grid.cellExists(size, size - 1)).isFalse()
+			  .bool(grid.cellExists(size - 1, size)).isFalse()
+			  .bool(grid.cellExists(-1, 0))			.isFalse()
+			  .bool(grid.cellExists(0, -1))			.isFalse();
 
 		// Test zeroes
 		unitjs.bool(grid.cellExists(0, 0)).isTrue();
