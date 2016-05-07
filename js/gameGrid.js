@@ -1,5 +1,6 @@
 // Creates and returns a new gameGrid object
 // Returns false if invalid # of rows or cols
+// (Can think of it as: row = y, col = x)
 var newGameGrid = function(numRows, numCols) {
 
     if (!Number.isInteger(+numRows) ||
