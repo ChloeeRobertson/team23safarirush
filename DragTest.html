@@ -8,8 +8,14 @@
     <script src="jquery.pep.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('.draggable').pep({
+            $('.draggableX').pep({
                 axis: 'x'
+            });
+            $('.draggableY').pep({
+                axis: 'y'
+            });
+            $('.constrainedToBoard').pep({
+                constrainTo: 'window'
             });
         });
     </script>
@@ -17,8 +23,8 @@
 </head>
 <body>
 
-<img src="images/jeep.jpg" class="draggable">
-
+<img src="images/jeep.jpg" class="draggableX" class="constrainedToBoard">
+<img src="images/animals/elephant.jpg" class="draggableY" class="constrainedToBoard">
 
 </body>
 </html>
