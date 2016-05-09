@@ -14,45 +14,35 @@
         for (var size = 1; size <= 3; size++) {
             var grid = newGameGrid(size, size);
 
-            unitjs.array(grid.cells).matchEach(function(it) {
-                for (var i = 0; i < size; i++) {
-                    if (it[i] != false) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
+            for (var r = 0; r < size; r++) {
+            	for (var c = 0; c < size; c++) {
+            		unitjs.bool(grid.cellEmpty(r, c)).isTrue();
+            	}
+            }
         }
-
     });
 
-    it('CONSTRUCTOR: 2 (int), 2.0 (float), "2" (string) works. || 2.5 (float), "3x" (string) does not.', function() {
+    it('CONSTRUCTOR: 2 (int), 2.0 (float) || 2.5 (float), "2" (string) does not.', function() {
 
         var size = 2;
 
         var grid1 = newGameGrid(size, size),
-            grid2 = newGameGrid('2', '2'),
-            grid3 = newGameGrid(2.0, 2.0),
+            grid2 = newGameGrid(2.0, 2.0),
+            grid3 = newGameGrid('2', '2'),
             grid4 = newGameGrid('x', 2.0),
             grid5 = newGameGrid('2x', 2),
             grid6 = newGameGrid(2.5, 2);
 
-        unitjs.array(grid1.cells).hasLength(size)
-              .array(grid2.cells).hasLength(size)
-              .array(grid3.cells).hasLength(size)
-
-              .number(grid1.numRows()).is(size)
-              .number(grid2.numRows()).is(size)
-              .number(grid3.numRows()).is(size)
+        unitjs.number(grid1.numRows()).is(size)
               .number(grid1.numCols()).is(size)
-              .number(grid2.numCols()).is(size)
-              .number(grid3.numCols()).is(size)
 
+              .number(grid2.numRows()).is(size)
+              .number(grid2.numCols()).is(size)
+
+              .bool(grid3).isFalse()
               .bool(grid4).isFalse()
               .bool(grid5).isFalse()
               .bool(grid6).isFalse();
-
     });
 
     it('METHODS: Works as expected even when out-of-bound cells are used as parameters.', function() {
@@ -101,7 +91,6 @@
         unitjs.bool(grid.cellEmpty(0, 1)).isTrue()
               .bool(grid.cellEmpty(1, 1)).isTrue()
               .bool(grid.cellEmpty(2, 1)).isTrue();
-
     });
 
     it('METHODS: unfillAll resets each cell to boolean "false".', function() {
@@ -125,5 +114,55 @@
             }
         }
 
+        // Correct # of rows & cols
+        unitjs.number(grid.numCols()).is(size)
+        	  .number(grid.numRows()).is(size);
+    });
+
+    it('METHODS: Multiple cells using row-col pair arrays', function() {
+
+    	var size = 3,
+    		grid = newGameGrid(size, size),
+
+    		// 2 cells in grid
+    		cells1 = [[0,0], [0,1]],
+
+    		// other cells in grid - minus cells1
+    		cells2 = [[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]];
+
+    	// cells1 & cells2 (entire grid) empty
+    	unitjs.bool(grid.cellsEmpty(cells1)).isTrue()
+    		  .bool(grid.cellsEmpty(cells2)).isTrue();
+
+    	// fill cells1 then check individual cells & cells array
+    	grid.fillCells(cells1);
+    	unitjs.bool(grid.cellEmpty(0,0)).isFalse()
+    		  .bool(grid.cellEmpty(0,1)).isFalse()
+    		  .bool(grid.cellsEmpty(cells1)).isFalse()
+    		  .bool(grid.cellsEmpty(cells2)).isTrue()
+    		  .bool(grid.cellsOccupied(cells1)).isTrue();
+
+    	// unfill cells1 then check individual cells & cells array
+    	grid.unfillCells(cells1);
+    	unitjs.bool(grid.cellEmpty(0,0)).isTrue()
+    		  .bool(grid.cellEmpty(0,1)).isTrue()
+    		  .bool(grid.cellsEmpty(cells1)).isTrue()
+    		  .bool(grid.cellsEmpty(cells2)).isTrue();
+    });
+
+    it('Test multiple different-sized grids at once', function() {
+
+    	var grid1 = newGameGrid(2, 2);
+    	var grid2 = newGameGrid(3, 3);
+
+    	unitjs.number(grid1.numRows()).is(2)
+    		  .number(grid2.numRows()).is(3);
+
+		grid1.unfillAll();
+		grid2.unfillAll();
+
+		unitjs.number(grid1.numCols()).is(2)
+			  .number(grid2.numCols()).is(3);
     });
 });
+

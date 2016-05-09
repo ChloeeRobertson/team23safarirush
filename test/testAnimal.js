@@ -1,29 +1,28 @@
 
 describe('Test Animal', function() {
 
-	it('Load grid with more than one animal', function() {
+	it('CONSTRUCTOR: 2 (int), 2.0 (float), "2" (string) works. || 1.2 (float), "3x" (string) does not.', function() {
 
 		var grid = newGameGrid(3, 3);
 		var animalParameters = [
 			// row, col, w, h
 			// should work
-			[0, 0, 1, 2],
-			[0, 1, 2, 1],
-			[1, 1, 2, 1],
-			[2, 0, 3, 1],
+			[1.0, 0.0, 1.0, 2.0],
+			[2, 1, 2, 1],
 
-			// should not work, since all cells are filled up
-			[0, 0, 1, 2],
-			[0, 0, 2, 1],
-			[1, 1, 1, 2]
+			// should not work
+			['0', '0', '1', '2'],
+			['1x', '2y', '1w', '2h'],
+			[0.1, 1.2, 1, 2]
 		];
 
 		for (var i in animalParameters) {
 			var arg = animalParameters[i];
 			var animal = newAnimal(arg[0], arg[1], arg[2], arg[3], grid);
 
-			if (i < 4) {
+			if (i < 2) {
 				unitjs.object(animal);
+				animal.unfillGrid();
 			} else {
 				unitjs.bool(animal).isFalse();
 			}
@@ -31,7 +30,7 @@ describe('Test Animal', function() {
 
 	});
 
-	it('Test different sized animals and starting positions on grid', function() {
+	it('CONSTRUCTOR: Different sized animals and starting positions on empty grid.', function() {
 
 		var grid = newGameGrid(3, 3);
 		var animalParameters = [
@@ -65,6 +64,40 @@ describe('Test Animal', function() {
 			if (i < 4) {
 				unitjs.object(animal);
 				animal.unfillGrid();
+			} else {
+				unitjs.bool(animal).isFalse();
+			}
+		}
+
+	});
+
+	it('CONSTRUCTOR: Load one grid with more than one animal. Fails on invalid grid.', function() {
+
+		var grid = newGameGrid(3, 3);
+		var animalParameters = [
+			// row, col, w, h
+			// should work
+			[0, 0, 1, 2],
+			[0, 1, 2, 1],
+			[1, 1, 2, 1],
+			[2, 0, 3, 1],
+
+			// should not work, since all cells are filled up
+			[0, 0, 1, 2],
+			[0, 0, 2, 1],
+			[1, 1, 1, 2]
+		];
+
+		// Invalid grid
+		var animal1 = newAnimal(0, 0, 1, 2, 'x');
+		unitjs.bool(animal1).isFalse();
+
+		for (var i in animalParameters) {
+			var arg = animalParameters[i];
+			var animal = newAnimal(arg[0], arg[1], arg[2], arg[3], grid);
+
+			if (i < 4) {
+				unitjs.object(animal);
 			} else {
 				unitjs.bool(animal).isFalse();
 			}
