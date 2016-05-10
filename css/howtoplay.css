@@ -1,0 +1,28 @@
+.wrapper {
+    text-align: center;
+    padding: 3em 0;
+}
+
+h2 {
+    border-bottom: 2px solid #d27a2d;
+    color: #d27a2d;
+    font-size: 2em;
+}
+
+.row {
+    padding: 2em 0;
+}
+
+.instruction {
+    padding-bottom: 2em;
+}
+
+.instruction img {
+    height: 200px;
+    width: 200px;
+}
+
+.instruction-text {
+    margin: auto;
+    width: 200px;
+}
