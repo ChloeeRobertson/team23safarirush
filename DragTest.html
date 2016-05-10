@@ -4,27 +4,53 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <style>
+        #draggableX{
+            width: 80px; height: 80px;
+            position: absolute;
+            top: 20px;
+            left: 20px }
+        #draggableY{
+            width: 80px; height: 80px;
+            position: absolute;
+            top: 400px;
+            left: 20px }
+
+
+    </style>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="jquery.pep.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('.draggableX').pep({
+            $('#draggableX').pep({
                 axis: 'x'
             });
-            $('.draggableY').pep({
+            $('#draggableY').pep({
                 axis: 'y'
             });
-            $('.constrainedToBoard').pep({
-                constrainTo: 'window'
+            $('.creature').pep({
+                cssEaseDuration: 0,
+                constrained: window,
+                grid:       [600,600],
+                shouldEase: false
             });
+
+
         });
+        $('.creature').drag=function() {
+            if(pep.isOverlapping($('#draggableX'),$('#draggableY'))){
+                alert("Overlapping images");
+            }
+        };
+
     </script>
 
 </head>
 <body>
 
-<img src="images/jeep.jpg" class="draggableX" class="constrainedToBoard">
-<img src="images/animals/elephant.jpg" class="draggableY" class="constrainedToBoard">
+<img src="images/jeep.jpg" id="draggableX" class="creature">
+<img src="images/animals/elephant.jpg" id="draggableY" class="creature">
 
 </body>
 </html>
