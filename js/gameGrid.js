@@ -4,44 +4,32 @@
  *
  */
 
+// Runs in self-invoking anonymous function to
+// hide variables from global space
 (function(_window) {
 
-var
+var newGameGrid = function(rows, cols) {
 
-    // Returns new game grid or false if invalid rows or columns
-    newGameGrid = function(rows, cols) {
-        if (!isInt(rows) || !isInt(cols) || rows <= 0 || cols <= 0) {
-            return error(
-                'Failed grid initiation. Invalid rows/cols. '
-                + 'row: ' + rows + ', col: ' + cols
-            );
-        }
-        return new gameGrid(rows, cols);
-    },
+    // ----------------------------------------------
+    // Parameter error checking
+    
+    // Ensure rows & cols are integers > 0
+    if (!isInt(rows) || !isInt(cols) || rows <= 0 || cols <= 0) {
+        return error(
+            'Failed grid initiation. Invalid rows/cols. '
+            + 'row: ' + rows + ', col: ' + cols
+        );
+    }
 
-    // Determines whether an array containing row-col pairs are valid
-    validCellArr = function(arr) {
-        return isArr(arr) &&
-            arr.every(function(elem) {
-                return  isArr(elem) && elem.length === 2 &&
-                        isInt(elem[0]) && isInt(elem[1]);
-            });
-    },
-
-    // Reference to error function
-    error = _window.sr.error,
-
-    // Reference to other useful functions
-    isArr = Array.isArray,
-    isInt = Number.isInteger;
-
-var gameGrid = function(rows, cols) {
+    // ----------------------------------------------
+    // Private data
 
     var
 
         // Number of rows and columns
-        rows = rows,
-        cols = cols,
+        // Commented out as it var already exist
+        // rows = rows,
+        // cols = cols,
 
         // 2D array storing grid cells
         cells = [],
@@ -56,46 +44,54 @@ var gameGrid = function(rows, cols) {
             }
         };
 
-    var
+    // ----------------------------------------------
+    // Initiate grid
+
+    init();
+
+    // ----------------------------------------------
+    // Public data
+
+    return {
 
         // Cell exists?
-        cellExists = this.cellExists = function(row, col) {
+        cellExists: function (row, col) {
             return (row in cells) && (col in cells[row]);
         },
 
         // Cell empty?
         // Returns false if non-existent
-        cellEmpty = this.cellEmpty = function(row, col) {
-            return cellExists(row, col) ? !cells[row][col] : false;
-        },
-        
-        // Cell occupied?
-        // Returns false if non-existent
-        cellOccupied = this.cellOccupied = function(row, col) {
-            return cellExists(row, col) ? cells[row][col] : false;
+        cellEmpty: function (row, col) {
+            return this.cellExists(row, col) ? !cells[row][col] : false;
         },
 
         // Multiple cells empty?
         // Returns false if invalid array or 1+ cell non-existent
-        cellsEmpty = this.cellsEmpty = function(arr) {
+        cellsEmpty: function (arr) {
             return validCellArr(arr) ?
-                arr.every(function(elem) {
-                    return cellEmpty(elem[0], elem[1]);
-                }) : false;
+                arr.every(function (elem) {
+                    return this.cellEmpty(elem[0], elem[1]);
+                }, this) : false;
+        },
+
+        // Cell occupied?
+        // Returns false if non-existent
+        cellOccupied: function (row, col) {
+            return this.cellExists(row, col) ? cells[row][col] : false;
         },
 
         // Multiple cells occupied?
         // Returns false if invalid array or 1+ cell non-existent
-        cellsOccupied = this.cellsOccupied = function(arr) {
+        cellsOccupied: function (arr) {
             return validCellArr(arr) ?
-                arr.every(function(elem) {
-                    return cellOccupied(elem[0], elem[1]);
-                }) : false;
+                arr.every(function (elem) {
+                    return this.cellOccupied(elem[0], elem[1]);
+                }, this) : false;
         },
 
         // Fill a cell
-        fillCell = this.fillCell = function(row, col, unfill) {
-            if (cellExists(row, col) && cellEmpty(row, col)) {
+        fillCell: function (row, col, unfill) {
+            if (this.cellExists(row, col) && this.cellEmpty(row, col)) {
                 cells[row][col] = true;
                 return true;
             }
@@ -103,16 +99,16 @@ var gameGrid = function(rows, cols) {
         },
 
         // Fill some cells
-        fillCells = this.fillCells = function(arr) {
-            return cellsEmpty(arr) ?
-                arr.every(function(elem) {
-                    return (fillCell(elem[0], elem[1]));
-                }) : false;
+        fillCells: function (arr) {
+            return this.cellsEmpty(arr) ?
+                arr.every(function (elem) {
+                    return (this.fillCell(elem[0], elem[1]));
+                }, this) : false;
         },
-    
+
         // Unfill a cell
-        unfillCell = this.unfillCell = function(row, col) {
-            if (cellExists(row, col) && cellOccupied(row, col)) {
+        unfillCell: function (row, col) {
+            if (this.cellExists(row, col) && this.cellOccupied(row, col)) {
                 cells[row][col] = false;
                 return true;
             }
@@ -120,31 +116,52 @@ var gameGrid = function(rows, cols) {
         },
 
         // Unfill some cells
-        unfillCells = this.unfillCells = function(arr) {
-            return cellsOccupied(arr) ?
-                arr.every(function(elem) {
-                    return (unfillCell(elem[0], elem[1]));
-                }) : false;
+        unfillCells: function (arr) {
+            return this.cellsOccupied(arr) ?
+                arr.every(function (elem) {
+                    return (this.unfillCell(elem[0], elem[1]));
+                }, this) : false;
         },
 
         // Unfill every cell in grid
-        unfillAll = this.unfillAll = function() {
+        unfillAll: function () {
             init();
         },
 
         // Number of rows
-        numRows = this.numRows = function() {
+        numRows: function () {
             return rows;
         },
 
         // Number of columns
-        numCols = this.numCols = function() {
+        numCols: function () {
             return cols;
-        };
-
-    // Initiate grid
-    init();
+        }
+    }
 };
+
+// ----------------------------------------------
+// Shared across all grids (think static)
+
+var
+
+    // Determines whether an array containing row-col pairs are valid
+    validCellArr = function(arr) {
+        return isArr(arr) &&
+            arr.every(function(elem) {
+                return  isArr(elem) && elem.length === 2 &&
+                    isInt(elem[0]) && isInt(elem[1]);
+            });
+    },
+
+    // Reference to error function
+    error = _window.sr.error,
+
+    // Reference to other useful functions
+    isArr = Array.isArray,
+    isInt = Number.isInteger;
+
+// ----------------------------------------------
 
 // Register global variable
 _window.newGameGrid = newGameGrid;
