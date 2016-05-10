@@ -90,7 +90,7 @@ var newGameGrid = function(rows, cols) {
         },
 
         // Fill a cell
-        fillCell: function (row, col, unfill) {
+        fillCell: function (row, col) {
             if (this.cellExists(row, col) && this.cellEmpty(row, col)) {
                 cells[row][col] = true;
                 return true;
