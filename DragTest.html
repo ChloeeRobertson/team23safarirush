@@ -55,7 +55,7 @@
     <script src="jquery.pep.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('.orange').pep({
+            $('.dragX').pep({
                 axis: 'x',
                 cssEaseDuration: 0,
                 grid: [60, 60],
@@ -63,23 +63,7 @@
                 constrainTo: 'parent'
             });
 
-            $('.green').pep({
-                axis: 'x',
-                cssEaseDuration: 0,
-                grid: [60, 60],
-                shouldEase: false,
-                constrainTo: 'parent'
-            });
-
-            $('.blue').pep({
-                axis: 'y',
-                cssEaseDuration: 0,
-                constrainTo: 'parent',
-                grid: [60, 60],
-                shouldEase: false
-            });
-
-            $('.pink').pep({
+            $('.dragY').pep({
                 axis: 'y',
                 cssEaseDuration: 0,
                 constrainTo: 'parent',
@@ -96,10 +80,10 @@
 
 
 <div class='board'>
-    <div class='orange'></div>
-    <div class='blue'></div>
-    <div class='pink'></div>
-    <div class='green'></div>
+    <div class='orange dragX'></div>
+    <div class='blue dragY'></div>
+    <div class='pink dragY'></div>
+    <div class='green dragX'></div>
 </div>
 
 </body>
