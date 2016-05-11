@@ -8,35 +8,27 @@ body {
 /***************************************************
  * Navigation Bar
  */
-#navbar {
+.navbar {
     background-color: #d27a2d;
+    border-width: 0;
 }
 
-/* Title */
-#titleDisplay > h1 {
-    color: #f4decb;
-    margin: .8rem 1.5rem;
-    font-size: 2.3em;
+.navbar a {
+    color: #f4decb !important;
 }
 
-#menuDisplay {
+.navbar a:hover,
+.navbar a:focus {
+    color: #d27a2d !important;
+    background-color: #f4decb !important;
+}
+span.icon-bar {
+    background-color: #f4decb !important;
+}
 
-    text-align: right;
-}
-#menuDisplay button {
-    margin-top: .6rem;
-    margin-right: .3rem;
-    background-color: transparent;
-    border: 0;
-}
-/* Override Bootstrap's Button Outline */
-button:focus, button:active {
-    outline: none;
-}
-#menuDisplay img {
-    height: 2.5rem;
-}
-#menu {
+button.navbar-toggle:hover,
+button.navbar-toggle:focus {
+    background-color: #f4decb !important;
 }
 
 /***************************************************
