@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Load Board From String</title>
+<style>
+    .tile {
+        /*width: 120px;*/
+        /*height: 60px;*/
+        /*top: 120px;*/
+        /*left: 60px;*/
+		position: absolute;
+		/*background: #009933;*/
+    }
+
+    #board {
+        width: 360px;
+        height: 360px;
+        position: relative;
+        background: #999966;
+    }
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+/**
+ * Level string. Contains info of all pieces and board size.
+ * 		- Could use AJAX to retrieve level from MySQL db.
+ *
+ * 6		Number of tiles - assumed square
+ *
+ * 5, 2		Goal X & Y Coordinate (Where the Jeep is suppose to go)
+ *          [x, y] : [5, 2]
+ *
+ * 0013		Top left tile of piece [x, y] : [0, 0]
+ *  .		Width and height of piece [w, h] : [1, 3]
+ *  .
+ *  .
+ * 1221j	The 'j' stands for Jeep. Every level must have 1 Jeep.
+ */
+var lvlStr = '6,5,2,0013,0531,1221j,1312,2012,2421,3031,3113,4213,5112,5312';
+
+/**
+ * Makes a level object and returns it.
+ *
+ * @param levelString	A formatted string containing level info:
+ * 						- Board size
+ * 						- Goal XY Coordinate (Where the Jeep is suppose to go)
+ * 						- Pieces information (Jeep, animal size and position)
+ *
+ * @returns {{boardW: *, boardH: *, goalX: *, goalY: *, pieces: Array}}
+ */
+function makeLevelObject( levelString ) {
+
+	// Splits the levelString into an array
+	var parts = levelString.split( "," );
+
+	// Create all level pieces
+	// Pieces starts at index 3, previous elements store other info
+	var pieces = [];
+	for ( var i = 3; i < parts.length; i++ ) {
+		pieces.push( makePieceObject( parts[i] ) );
+	}
+
+	// Create and return a level object
+	return {
+
+		// Board size - assumed square board
+		boardSize: parts[0],
+
+		// Level ends when Jeep gets to goal
+		goalX: parts[1],
+		goalY: parts[2],
+
+		// Array of individual piece objects
+		pieces: pieces
+	};
+}
+
+/**
+ * Makes a piece object and returns it.
+ *
+ * @param pieceString		A formatted string containing piece info:
+ * 							- X & Y Position (Column #, Row #)
+ * 							- Width & Height (Measured in # of tiles)
+ * 							- Jeep or Animal (extra character for Jeep in string)
+ *
+ * @returns {{x: Number, y: Number, w: Number, h: Number, isJeep: boolean}}
+ */
+function makePieceObject( pieceString ) {
+
+	// Create & return a piece object
+	// string[1] is equivalent to string.charAt(1)
+	return {
+		x: parseInt( pieceString[0] ),
+		y: parseInt( pieceString[1] ),
+		w: parseInt( pieceString[2] ),
+		h: parseInt( pieceString[3] ),
+		isJeep: pieceString[4] ? true : false
+	};
+}
+
+/**
+ * Makes a DOM object for one piece and returns it.
+ *
+ * @param piece			Piece object.
+ * @param tileSize		Tile size - assumed square.
+ * @returns {*|jQuery}
+ */
+function makePieceDom( piece, tileSize ) {
+
+	// Differentiate between the Jeep and animals
+	var bgColor = piece.isJeep ? 'black' : randomColor();
+
+	// Create and return a DOM element
+	return $( '<div></div>' )
+			.addClass( 'tile' )
+			.css( {
+				width: piece.w * tileSize,
+				height: piece.h * tileSize,
+				left: piece.x * tileSize,
+				top: piece.y * tileSize,
+				'background-color': bgColor
+			} );
+}
+
+/**
+ * Loads the level onto the browser.
+ *
+ * @param level			Level object.
+ * @param boardId		ID of board element in DOM.
+ * @param callback		Callback function invoked when level loaded.
+ */
+function loadLevel( level, boardId, callback ) {
+
+	// jQuery wrapped board - assumed valid boardId
+	var board = $( '#' + boardId );
+
+	// Tile size in pixels - assumed square board
+	var tileSize = board.width() / level.boardSize;
+
+	// Make DOM objects for all pieces and append to the board
+	for ( var i = 0; i < level.pieces.length; i++ ) {
+		board.append(
+			makePieceDom( level.pieces[i], tileSize )
+		);
+	}
+
+	// Level loaded, call callback()
+	// Need to add code to check images loaded?
+	callback();
+}
+
+// Generates a random color with hash-tag (#) in front
+function randomColor() {
+	var colors = [
+		'cc0099',
+		'0066ff',
+		'009933',
+		'ff6600'
+	];
+
+	var randomIndex = Math.floor( Math.random() * colors.length );
+
+	return '#' + colors[randomIndex];
+}
+
+// Level object
+var lvl = makeLevelObject( lvlStr );
+
+// After board loads, load the level
+$( '#board' ).ready( function() {
+	loadBoard();
+} );
+
+// Load the board
+function loadBoard() {
+	loadLevel( lvl, 'board', loadPep );
+}
+
+// Clear the board
+function clearBoard() {
+	$( '#board' ).empty();
+}
+
+// Callback function after level loads
+function loadPep() {
+	console.log('Level finished loading.');
+	alert('Level finished loading.');
+}
+</script>
+</head>
+<body>
+
+<div id="board" class="board"></div>
+
+<br><br>
+Can be used for loading levels with AJAX:<br>
+<a href="#" onclick="clearBoard()">Clear board</a> || <a href="#" onclick="loadBoard()">Reload board</a>
+
+</body>
+</html>
