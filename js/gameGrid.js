@@ -2,57 +2,91 @@
  * gameGrid.js for Safari Rush
  * http://team23.site88.net
  *
+ * To Do:
+ *    - fillCell() & fillCells() needs to check for valid Id
  */
 
 // Runs in self-invoking anonymous function to
 // hide variables from global space
 (function(_window) {
 
-var newGameGrid = function(rows, cols) {
+var newGameGrid = function(rows, cols, canvas) {
 
     // ----------------------------------------------
-    // Parameter error checking
+    // PARAMETER ERROR CHECKING
+    // ----------------------------------------------
     
     // Ensure rows & cols are integers > 0
     if (!isInt(rows) || !isInt(cols) || rows <= 0 || cols <= 0) {
-        return error(
+        return sr.error(
             'Failed grid initiation. Invalid rows/cols. '
             + 'row: ' + rows + ', col: ' + cols
         );
     }
 
+    // // Ensure canvas is a real canvas
+    // if (!canvas || canvas.tagName !== 'canvas') {
+    //     return sr.error('Canvas non-existent or of wrong type.');
+    // }
+
     // ----------------------------------------------
-    // Private data
+    // PRIVATE DATA
+    // ----------------------------------------------
 
     var
-
-        // Number of rows and columns
-        // Commented out as it var already exist
-        // rows = rows,
-        // cols = cols,
+        // Canvas 2D Context
+        ctx = canvas.getContext('2d'),
 
         // 2D array storing grid cells
         cells = [],
 
-        // Initiate/reset grid
-        init = function() {
-            for (var row = 0; row < rows; row++) {
-                cells[row] = [];
-                for (var col = 0; col < cols; col++) {
-                    cells[row][col] = false;
-                }
-            }
-        };
+        // Cell width and height in pixels
+        cellW = 0,
+        cellH = 0;
 
     // ----------------------------------------------
-    // Initiate grid
+    // INITIALIZATION
+    // ----------------------------------------------
 
-    init();
+    // Create cells
+    for (var row = 0; row < rows; row++) {
+        cells[row] = [];
+        for (var col = 0; col < cols; col++) {
+            cells[row][col] = sr.NAY;
+        }
+    }
+
+    // Set canvas dimensions
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientWidth;
+
+    // Set cell width & height in pixels
+    cellW = canvas.width / cols;
+    cellH = canvas.height / rows;
 
     // ----------------------------------------------
-    // Public data
+    // PUBLIC DATA
+    // ----------------------------------------------
 
     return {
+
+        drawPiece: function(img, x, y, w, h) {
+            w *= cellW;
+            h *= cellH;
+            coord = sr.xyToCoord(x, y, cellW, cellH);
+            ctx.drawImage(img, coord[0], coord[1], w, h);
+        },
+
+        undrawPiece: function(x, y, w, h) {
+            var xy = sr.xyToCoord(x, y, cellW, cellH);
+            w *= cellW;
+            h *= cellH;
+            ctx.clearRect(xy[0], xy[1], w, h);
+        },
+
+        getCell: function(row, col) {
+            return this.cellExists(row, col) ? cells[row][col] : sr.NAY;
+        },
 
         // Cell exists?
         cellExists: function (row, col) {
@@ -62,7 +96,7 @@ var newGameGrid = function(rows, cols) {
         // Cell empty?
         // Returns false if non-existent
         cellEmpty: function (row, col) {
-            return this.cellExists(row, col) ? !cells[row][col] : false;
+            return this.cellExists(row, col) ? cells[row][col] == sr.NAY : false;
         },
 
         // Multiple cells empty?
@@ -77,7 +111,7 @@ var newGameGrid = function(rows, cols) {
         // Cell occupied?
         // Returns false if non-existent
         cellOccupied: function (row, col) {
-            return this.cellExists(row, col) ? cells[row][col] : false;
+            return this.cellExists(row, col) ? cells[row][col] > sr.NAY : false;
         },
 
         // Multiple cells occupied?
@@ -90,26 +124,27 @@ var newGameGrid = function(rows, cols) {
         },
 
         // Fill a cell
-        fillCell: function (row, col) {
+        fillCell: function (row, col, id) {
+            // Still need to check for valid ID
             if (this.cellExists(row, col) && this.cellEmpty(row, col)) {
-                cells[row][col] = true;
+                cells[row][col] = typeof id !== 'undefined' ? id : sr.YAY;
                 return true;
             }
             return false;
         },
 
         // Fill some cells
-        fillCells: function (arr) {
+        fillCells: function (arr, id) {
             return this.cellsEmpty(arr) ?
                 arr.every(function (elem) {
-                    return (this.fillCell(elem[0], elem[1]));
+                    return (this.fillCell(elem[0], elem[1], id));
                 }, this) : false;
         },
 
         // Unfill a cell
         unfillCell: function (row, col) {
             if (this.cellExists(row, col) && this.cellOccupied(row, col)) {
-                cells[row][col] = false;
+                cells[row][col] = sr.NAY;
                 return true;
             }
             return false;
@@ -141,10 +176,10 @@ var newGameGrid = function(rows, cols) {
 };
 
 // ----------------------------------------------
-// Shared across all grids (think static)
+// SHARED DATA
+// ----------------------------------------------
 
 var
-
     // Determines whether an array containing row-col pairs are valid
     validCellArr = function(arr) {
         return isArr(arr) &&
@@ -154,13 +189,12 @@ var
             });
     },
 
-    // Reference to error function
-    error = _window.sr.error,
-
     // Reference to other useful functions
     isArr = Array.isArray,
     isInt = Number.isInteger;
 
+// ----------------------------------------------
+// MISCELLANEOUS
 // ----------------------------------------------
 
 // Register global variable

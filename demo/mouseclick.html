@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+    #demo {
+        border: 2px solid black;
+        width: 500px;
+        height: 500px;
+    }
+</style>
+
+</head>
+<body>
+
+<p>This example uses the addEventListener() method to attach a "mousedown" and "mouseup" event to a p element.</p>
+
+<p id="demo">Click me.</p>
+
+<script>
+    var
+
+        // mouse held down
+        mousedown   = false;
+
+    document.getElementById("demo").addEventListener("mousedown", mouseDown);
+    document.getElementById("demo").addEventListener("mousemove", mouseMove);
+    document.getElementById("demo").addEventListener("mouseup", mouseUp);
+
+    function mouseDown() {
+        mousedown = true;
+
+        document.getElementById("demo").innerHTML = "The mouse button is held down.";
+    }
+
+    function mouseMove(e) {
+        if (mousedown) {
+            var x = e.clientX;
+            var y = e.clientY;
+
+            var coor = "Coordinates: (" + x + "," + y + ")";
+            document.getElementById("demo").innerHTML = coor;
+        }
+    }
+
+    function mouseUp() {
+        mousedown = false;
+        document.getElementById("demo").innerHTML = "You released the mouse button.";
+    }
+</script>
+
+</body>
+</html>

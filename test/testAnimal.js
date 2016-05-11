@@ -1,4 +1,6 @@
 
+var id = 1;
+
 describe('Test Animal', function() {
 
 	it('CONSTRUCTOR: 2 (int), 2.0 (float), "2" (string) works. || 1.2 (float), "3x" (string) does not.', function() {
@@ -18,7 +20,7 @@ describe('Test Animal', function() {
 
 		for (var i in animalParameters) {
 			var arg = animalParameters[i];
-			var animal = newAnimal(arg[0], arg[1], arg[2], arg[3], grid);
+			var animal = newPiece(arg[1], arg[0], arg[2], arg[3], grid, id);
 
 			if (i < 2) {
 				unitjs.object(animal);
@@ -59,7 +61,7 @@ describe('Test Animal', function() {
 
 		for (var i in animalParameters) {
 			var arg = animalParameters[i];
-			var animal = newAnimal(arg[0], arg[1], arg[2], arg[3], grid);
+			var animal = newPiece(arg[1], arg[0], arg[2], arg[3], grid, id);
 
 			if (i < 4) {
 				unitjs.object(animal);
@@ -89,12 +91,12 @@ describe('Test Animal', function() {
 		];
 
 		// Invalid grid
-		var animal1 = newAnimal(0, 0, 1, 2, 'x');
+		var animal1 = newPiece(0, 0, 1, 2, 'x', id);
 		unitjs.bool(animal1).isFalse();
 
 		for (var i in animalParameters) {
 			var arg = animalParameters[i];
-			var animal = newAnimal(arg[0], arg[1], arg[2], arg[3], grid);
+			var animal = newPiece(arg[1], arg[0], arg[2], arg[3], grid, id);
 
 			if (i < 4) {
 				unitjs.object(animal);
