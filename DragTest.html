@@ -4,27 +4,103 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <style>
+        .orange {
+            width: 120px;
+            height: 60px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: #ff6600;
+        }
+
+        .green {
+            width: 120px;
+            height: 60px;
+            position: absolute;
+            top: 120px;
+            left: 60px;
+            background: #009933;
+        }
+
+        .blue {
+            width: 60px;
+            height: 180px;
+            position: absolute;
+            top: 60px;
+            left: 0px;
+            background: #0066ff;
+        }
+
+        .pink {
+            width: 60px;
+            height: 180px;
+            position: absolute;
+            top: 60px;
+            left: 180px;
+            background: #cc0099;
+        }
+
+        .board {
+            width: 360px;
+            height: 360px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: #999966;
+        }
+    </style>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="jquery.pep.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('.draggableX').pep({
-                axis: 'x'
+        $(document).ready(function() {
+            $('.orange').pep({
+                axis: 'x',
+                cssEaseDuration: 0,
+                grid: [60, 60],
+                shouldEase: false,
+                constrainTo: 'parent'
             });
-            $('.draggableY').pep({
-                axis: 'y'
+
+            $('.green').pep({
+                axis: 'x',
+                cssEaseDuration: 0,
+                grid: [60, 60],
+                shouldEase: false,
+                constrainTo: 'parent'
             });
-            $('.constrainedToBoard').pep({
-                constrainTo: 'window'
+
+            $('.blue').pep({
+                axis: 'y',
+                cssEaseDuration: 0,
+                constrainTo: 'parent',
+                grid: [60, 60],
+                shouldEase: false
+            });
+
+            $('.pink').pep({
+                axis: 'y',
+                cssEaseDuration: 0,
+                constrainTo: 'parent',
+                grid: [60, 60],
+                shouldEase: false
             });
         });
+
+
     </script>
 
 </head>
 <body>
 
-<img src="images/jeep.jpg" class="draggableX" class="constrainedToBoard">
-<img src="images/animals/elephant.jpg" class="draggableY" class="constrainedToBoard">
+
+<div class='board'>
+    <div class='orange'></div>
+    <div class='blue'></div>
+    <div class='pink'></div>
+    <div class='green'></div>
+</div>
 
 </body>
 </html>
