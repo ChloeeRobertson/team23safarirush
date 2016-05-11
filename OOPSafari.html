@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Safari Test</title>
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	#wrapper {
+		margin: 0 auto;
+		width: 80%;
+		background-color: blue;
+	}
+	#gameArea {
+	    background-color: green;
+	}
+</style>
+
+<script src="js/common.js"></script>
+<script src="js/safarirush.js"></script>
+<script src="js/gameGrid.js"></script>
+<script src="js/piece.js"></script>
+
+</head>
+<body>
+
+<div id="wrapper">
+	<canvas id="gameArea"></canvas>
+</div>
+
+<script type="text/javascript">
+	newSafariRush('gameArea');
+</script>
+
+</body>
+</html>
