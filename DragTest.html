@@ -54,11 +54,15 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="jquery.pep.js"></script>
     <script type="text/javascript">
+
+        // Size of each tile in the grid - assumed square board
+        var TILE_SIZE = parseInt($(".board").width) / 6;
+
         $(document).ready(function() {
             $('.dragX').pep({
                 axis: 'x',
                 cssEaseDuration: 0,
-                grid: [60, 60],
+                grid: [TILE_SIZE, TILE_SIZE],
                 shouldEase: false,
                 constrainTo: 'parent'
             });
@@ -67,7 +71,7 @@
                 axis: 'y',
                 cssEaseDuration: 0,
                 constrainTo: 'parent',
-                grid: [60, 60],
+                grid: [TILE_SIZE, TILE_SIZE],
                 shouldEase: false
             });
         });
