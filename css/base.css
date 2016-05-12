@@ -56,8 +56,9 @@ button.navbar-toggle:focus {
 }
 
 /* Mute Button */
-#muteDisplay > img {
+#volume {
     height: 2.5rem;
+    outline: none;
 }
 
 /***************************************************
@@ -65,6 +66,16 @@ button.navbar-toggle:focus {
  */
 #gameArea {
     background-color: #d27a2d;
+}
+
+/* Test block for mute button */
+#soundTest {
+    position: relative;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    background: red;
+    color: white;
 }
 
 /***************************************************
