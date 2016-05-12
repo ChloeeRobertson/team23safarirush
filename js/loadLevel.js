@@ -104,16 +104,23 @@ function makePieceDom( id, piece, tileSize ) {
     var orientation = piece.w == 1 ? 'dragY' : 'dragX';
 
     // Create and return a DOM element
-    return $( '<div></div>' )
-            .addClass( 'tile ' + orientation )
-            .attr( 'id', 'piece' + id )
-            .css( {
-                width:  piece.w * tileSize,
-                height: piece.h * tileSize,
-                left:   piece.x * tileSize,
-                top:    piece.y * tileSize,
-                'background-color': bgColor
-            } );
+    var domPiece = $( '<div></div>' )
+        .addClass( 'tile ' + orientation )
+        .attr( 'id', 'piece' + id )
+        .css( {
+            width:  piece.w * tileSize,
+            height: piece.h * tileSize,
+            left:   piece.x * tileSize,
+            top:    piece.y * tileSize,
+            'background-color': bgColor
+        } );
+
+    // Easter Egg: Double click Jeep
+    if ( piece.isJeep ) {
+        domPiece.on('dblclick', easterEgg);
+    }
+
+    return domPiece;
 }
 
 /**
@@ -149,6 +156,13 @@ function loadLevel( levelString, boardId, callback ) {
     if ( typeof callback === 'function' ) {
         callback();
     }
+}
+
+// Easter Egg
+function easterEgg() {
+    var audio = new Audio();
+    audio.src = '../sound/CrocHunterCrikey3.wav';
+    audio.play();
 }
 
 // TEMPOARY !!!
