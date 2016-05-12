@@ -52,24 +52,164 @@
     </style>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="jquery.pep.js"></script>
+    <script src="http://rawgithub.com/briangonzalez/jquery.pep.js/master/src/jquery.pep.js"></script>
     <script type="text/javascript">
+
+        var BOARD_HEIGHT;
+        var BOARD_WIDTH;
+        var TILE_HEIGHT;
+        var TILE_WIDTH;
+        var FIRST_CELL = 0;
+        var RIGHT_MOST_CELL;
+        var BOTTOM_CELL;
+
+        function isCellEmpty(x,y) {
+
+            for (var i = 0; i < $.pep.peps.length; i++) {
+                var block = $.pep.peps[i];
+
+                if ( (getLeftCell(block) <= x) && (getRightCell(block) >= x) ) {
+
+                    if ( (getTopCell(block) <= y) && (getBottomCell(block) >= y) ) {
+
+                        //the cell is not empty;
+                        return false;
+                    }
+
+                }
+            }
+            return true;
+        }
+
+        function getLeftCell(thisBlock) {
+            var i = getLeftPosition(thisBlock);
+            if ( i > 0 ) {
+                i = i / TILE_WIDTH;
+            }
+            return i;
+        }
+
+        function getRightCell(thisBlock) {
+            var i = getLeftPosition(thisBlock) + getWidth(thisBlock);
+            return (i / TILE_WIDTH) - 1;
+        }
+
+        function getTopCell(thisBlock) {
+            var i = getTopPosition(thisBlock);
+            if ( i > 0 ) {
+                i = i / TILE_WIDTH;
+            }
+            return i;
+        }
+
+        function getBottomCell(thisBlock) {
+            var i = getTopPosition(thisBlock) + getHeight(thisBlock);
+            return (i / TILE_HEIGHT) - 1;
+        }
+
+        function getLeftPosition(thisBlock) {
+            return thisBlock.el.getBoundingClientRect().left;
+        }
+
+        function getTopPosition(thisBlock) {
+            return thisBlock.el.getBoundingClientRect().top;
+        }
+
+        function getWidth(thisBlock) {
+            return thisBlock.el.clientWidth;
+        }
+
+        function getHeight(thisBlock) {
+            return thisBlock.el.clientHeight;
+        }
+
+        function setConstrains(selectedBlock) {
+
+            //debugging:
+            var p1 = $.pep.peps[0];
+            var p2 = $.pep.peps[1];
+            var p3 = $.pep.peps[2];
+            var p4 = $.pep.peps[3];
+
+            for (var i = 0; i < $.pep.peps.length; i++) {
+                if ( $.pep.peps[i] == selectedBlock ) {
+                    //we don't need to setConstrains for the selectedBlock...
+                } else {
+                    setConstrainsFor($.pep.peps[i]);
+                };
+            }
+        }
+
+        function setConstrainsFor(thisBlock) {
+
+            var t = getTopCell(thisBlock);
+            var r = 0;
+            var b = 0;
+            var l = getLeftCell(thisBlock);
+
+            if (thisBlock.el.className.indexOf('dragX') > -1) { //horizontal
+
+                while ( (l > FIRST_CELL) && isCellEmpty(l - 1, t) ) {
+                    l-=1;
+                }
+
+                r = getRightCell(thisBlock);
+
+                while ( (r < RIGHT_MOST_CELL) && isCellEmpty(r + 1, t) ) {
+                    r+=1;
+                }
+
+            } else { //vertical
+
+                while ( (t > FIRST_CELL) && isCellEmpty(l, t - 1) ) {
+                    t-=1;
+                }
+
+                b = getBottomCell(thisBlock);
+
+                while ( (b < BOTTOM_CELL) && isCellEmpty(l, b + 1) ) {
+                    b+=1;
+                }
+            }
+
+            t = t * TILE_HEIGHT;
+            r = ((r + 1) * TILE_HEIGHT) - getWidth(thisBlock);
+            l = l * TILE_WIDTH;
+            b = ((b + 1) * TILE_WIDTH) - getHeight(thisBlock);
+
+            thisBlock.options.constrainTo = [ t, r, b, l ];
+        }
+
         $(document).ready(function() {
+
+            BOARD_HEIGHT = parseInt($(".board").css('height'));
+            BOARD_WIDTH = parseInt($(".board").css('width'));
+            TILE_HEIGHT = BOARD_HEIGHT / 6;
+            TILE_WIDTH = BOARD_WIDTH / 6;
+            RIGHT_MOST_CELL = (BOARD_WIDTH / TILE_WIDTH) - 1;
+            BOTTOM_CELL = (BOARD_HEIGHT / TILE_HEIGHT) - 1;
+
             $('.dragX').pep({
                 axis: 'x',
                 cssEaseDuration: 0,
-                grid: [60, 60],
+                grid: [TILE_HEIGHT, TILE_WIDTH],
                 shouldEase: false,
-                constrainTo: 'parent'
+                stop: function(event, obj) {
+                    setConstrains(obj);
+                }
             });
 
             $('.dragY').pep({
                 axis: 'y',
                 cssEaseDuration: 0,
-                constrainTo: 'parent',
-                grid: [60, 60],
-                shouldEase: false
+                grid: [TILE_HEIGHT, TILE_WIDTH],
+                shouldEase: false,
+                stop: function(event, obj) {
+                    setConstrains(obj);
+                }
             });
+
+            setConstrains();
         });
 
 
@@ -80,10 +220,10 @@
 
 
 <div class='board'>
-    <div class='orange dragX'></div>
-    <div class='blue dragY'></div>
-    <div class='pink dragY'></div>
-    <div class='green dragX'></div>
+    <div class='one orange dragX'></div>
+    <div class='two blue dragY'></div>
+    <div class='three pink dragY'></div>
+    <div class='four green dragX'></div>
 </div>
 
 </body>

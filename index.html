@@ -17,11 +17,7 @@
 
     <!-- Safari Rush -->
     <link rel="stylesheet" href="css/base.css">
-    <script src="js/animal.js"></script>
-    <script src="js/gameGrid.js"></script>
-    <script src="js/gameManager.js"></script>
-
-    <script src="js/temp_resizeGameArea.js"></script>
+    <script src="mute.js"></script>
 </head>
 <body>
     <!-- Site navigation bar -->
@@ -65,12 +61,13 @@
             </div>
 
             <div class="col-xs-3" id="muteDisplay">
-                <img src="images/volume_on.gif">
+                <input type="image" src="images/volume_on.gif" id="volume">
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-12" id="gameArea">
+                <div id="soundTest">Test</div>
             </div>
         </div>
     </div><!-- /.container -->
