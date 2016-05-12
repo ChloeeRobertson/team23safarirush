@@ -161,7 +161,7 @@ function loadLevel( levelString, boardId, callback ) {
 // Easter Egg
 function easterEgg() {
     var audio = new Audio();
-    audio.src = '../sound/CrocHunterCrikey3.wav';
+    audio.src = '../audio/CrocHunterCrikey3.wav';
     audio.play();
 }
 
