@@ -70,27 +70,7 @@ button.navbar-toggle:focus {
 /***************************************************
  * Bottom Area - Levels & Reset Buttons
  */
-#levelDisplay, #resetDisplay {
-    margin-top: 1rem;
-}
-#levelDisplay > span, #resetDisplay > span {
-    display: inline-block;
-    color: #f4decb;
-    background-color: #1b7b34;
-    padding: .3rem .8rem;
-    text-transform: uppercase;
-    font-size: 1.5em;
-}
 
-/*  */
-#levelDisplay > span > span {
-    font-size: .7em;
-    padding-left: 1rem;
-}
-
-#resetDisplay > span {
-    float: right;
-}
 
 /***************************************************
  * Miscellaneous
