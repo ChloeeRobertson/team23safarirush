@@ -88,6 +88,15 @@ button.navbar-toggle:focus span {
     color: white;
 }
 
+#soundTest2 {
+    position: relative;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    background: blue;
+    color: white;
+}
+
 #gameBoard {
     width: 400px;
     height: 400px;
