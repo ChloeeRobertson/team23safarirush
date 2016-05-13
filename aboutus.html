@@ -21,25 +21,34 @@
     <link rel="stylesheet" href="css/aboutus.css">
 </head>
 <body>
-	
-	<div class="container-fluid">
-		<div class="row" id="navbar">
-			<div class="col-xs-9" id="titleDisplay">
-				<h1>About Us</h1>
+
+	<!-- Site navigation bar -->
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Safari Rush</a>
 			</div>
 
-			<div class="col-xs-3" id="menuDisplay">
-				<button data-toggle="collapse" data-target="#menu"><img src="images/menu_icon.gif"></button>
-			</div>
-		</div>
-
-		<div class="row collapse" id="menu">
-			<a href="index.html">Play</a>
-			<a href="#">Leader Board</a>
-			<a href="howtoplay.html">How To Play</a>
-			<a href="aboutus.html">About Us</a>
-		</div>
-	</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">Play</a></li>
+					<li><a href="leaderboard.html">Leaderboard</a></li>
+					<li><a href="howtoplay.html">How to Play</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="aboutus.html">About Us</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
 
 	<div id="team" class="container">
 		<div class="wrapper">
