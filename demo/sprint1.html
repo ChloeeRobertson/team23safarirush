@@ -46,10 +46,14 @@
         var RIGHT_MOST_CELL;
         var BOTTOM_CELL;
 
-        /*
-        Function to check if a cell is empty. Coordinates given by x and y.
-        x: X coordinate of cell to check.
-        Y: Y coordinate of cell to check.
+        /**
+         * Function to check if a cell is empty.
+         *
+         * @params X    X coordinate of cell to check.
+         * @params Y    Y coordinate of cell to check.
+         *
+         * @return Boolean  if cell is empty or not
+         *
          */
         function isCellEmpty(x,y) {
 
@@ -69,9 +73,13 @@
             return true;
         }
 
-        /*
-        Function to get the cell to the left of the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the cell to the left of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return i    variable representing a tile
+         *
          */
         function getLeftCell(thisBlock) {
             var i = getLeftPosition(thisBlock);
@@ -81,18 +89,27 @@
             return i;
         }
 
-        /*
-         Function to get the cell to the right of the active block.
-         thisBlock: The active block.
+        /**
+         * Function to get the cell to the right of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing a tile
+         *
          */
         function getRightCell(thisBlock) {
             var i = getLeftPosition(thisBlock) + getWidth(thisBlock);
             return (i / TILE_WIDTH) - 1;
         }
 
-        /*
-         Function to get the cell above the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the cell above thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return i    variable representing a tile
+         *
          */
         function getTopCell(thisBlock) {
             var i = getTopPosition(thisBlock);
@@ -102,50 +119,77 @@
             return i;
         }
 
-        /*
-         Function to get the cell below the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the cell below thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing a tile
+         *
          */
         function getBottomCell(thisBlock) {
             var i = getTopPosition(thisBlock) + getHeight(thisBlock);
             return (i / TILE_HEIGHT) - 1;
         }
 
-        /*
-        Function to get the left bound of the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the left bound of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing the left bound
+         *
          */
         function getLeftPosition(thisBlock) {
             return thisBlock.el.getBoundingClientRect().left;
         }
 
-        /*
-         Function to get the top bound of the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the top bound of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing the top bound
+         *
          */
         function getTopPosition(thisBlock) {
             return thisBlock.el.getBoundingClientRect().top;
         }
 
-        /*
-         Function to get the width of the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the width of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing the block width
+         *
          */
         function getWidth(thisBlock) {
             return thisBlock.el.clientWidth;
         }
 
-        /*
-         Function to get the height of the active block.
-         thisBlock: The block/div to check.
+        /**
+         * Function to get the height of thisBlock
+         *
+         * @params thisBlock    The block to check
+         *
+         * @return
+         *          value representing the block width
+         *
          */
         function getHeight(thisBlock) {
             return thisBlock.el.clientHeight;
         }
 
-        /*
-        Function to call the setConstrainsFor method on all blocks other than the active block.
-        selectedBlock: The active block.
+        /**
+         * Function to call the setConstrainsFor method on all blocks other than the active block.
+         *
+         * @params selectedBlock    The block to check
+         *
          */
         function setConstrains(selectedBlock) {
 
@@ -164,9 +208,11 @@
             }
         }
 
-        /*
-        Function to set the constrains for the given block
-        thisBlock: all blocks not active.
+        /**
+         * Function to set the constrains for the given block.
+         *
+         * @params thisBlock    a non-active block
+         *
          */
         function setConstrainsFor(thisBlock) {
 
@@ -210,8 +256,8 @@
 
         // EDITED --------------------------------------
         // Dumped your loadPep code into a function
-        /*
-        Function to load all the pep data necessary for the board and tiles.
+        /**
+         * Function to load all the pep data necessary for the board and tiles, and call setConstrains the first time.
          */
         function loadPep() {
             BOARD_HEIGHT = parseInt($(".board").css('height'));
