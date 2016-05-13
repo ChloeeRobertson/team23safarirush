@@ -35,6 +35,9 @@
     <script src="../js/loadLevel.js"></script>
     <script type="text/javascript">
 
+        /*
+        Constants to store some board and tile variables
+         */
         var BOARD_HEIGHT;
         var BOARD_WIDTH;
         var TILE_HEIGHT;
@@ -43,6 +46,11 @@
         var RIGHT_MOST_CELL;
         var BOTTOM_CELL;
 
+        /*
+        Function to check if a cell is empty. Coordinates given by x and y.
+        x: X coordinate of cell to check.
+        Y: Y coordinate of cell to check.
+         */
         function isCellEmpty(x,y) {
 
             for (var i = 0; i < $.pep.peps.length; i++) {
@@ -61,6 +69,10 @@
             return true;
         }
 
+        /*
+        Function to get the cell to the left of the active block.
+         thisBlock: The block/div to check.
+         */
         function getLeftCell(thisBlock) {
             var i = getLeftPosition(thisBlock);
             if ( i > 0 ) {
@@ -69,11 +81,19 @@
             return i;
         }
 
+        /*
+         Function to get the cell to the right of the active block.
+         thisBlock: The active block.
+         */
         function getRightCell(thisBlock) {
             var i = getLeftPosition(thisBlock) + getWidth(thisBlock);
             return (i / TILE_WIDTH) - 1;
         }
 
+        /*
+         Function to get the cell above the active block.
+         thisBlock: The block/div to check.
+         */
         function getTopCell(thisBlock) {
             var i = getTopPosition(thisBlock);
             if ( i > 0 ) {
@@ -82,27 +102,51 @@
             return i;
         }
 
+        /*
+         Function to get the cell below the active block.
+         thisBlock: The block/div to check.
+         */
         function getBottomCell(thisBlock) {
             var i = getTopPosition(thisBlock) + getHeight(thisBlock);
             return (i / TILE_HEIGHT) - 1;
         }
 
+        /*
+        Function to get the left bound of the active block.
+         thisBlock: The block/div to check.
+         */
         function getLeftPosition(thisBlock) {
             return thisBlock.el.getBoundingClientRect().left;
         }
 
+        /*
+         Function to get the top bound of the active block.
+         thisBlock: The block/div to check.
+         */
         function getTopPosition(thisBlock) {
             return thisBlock.el.getBoundingClientRect().top;
         }
 
+        /*
+         Function to get the width of the active block.
+         thisBlock: The block/div to check.
+         */
         function getWidth(thisBlock) {
             return thisBlock.el.clientWidth;
         }
 
+        /*
+         Function to get the height of the active block.
+         thisBlock: The block/div to check.
+         */
         function getHeight(thisBlock) {
             return thisBlock.el.clientHeight;
         }
 
+        /*
+        Function to call the setConstrainsFor method on all blocks other than the active block.
+        selectedBlock: The active block.
+         */
         function setConstrains(selectedBlock) {
 
             //debugging:
@@ -120,6 +164,10 @@
             }
         }
 
+        /*
+        Function to set the constrains for the given block
+        thisBlock: all blocks not active.
+         */
         function setConstrainsFor(thisBlock) {
 
             var t = getTopCell(thisBlock);
@@ -162,6 +210,9 @@
 
         // EDITED --------------------------------------
         // Dumped your loadPep code into a function
+        /*
+        Function to load all the pep data necessary for the board and tiles.
+         */
         function loadPep() {
             BOARD_HEIGHT = parseInt($(".board").css('height'));
             BOARD_WIDTH = parseInt($(".board").css('width'));
