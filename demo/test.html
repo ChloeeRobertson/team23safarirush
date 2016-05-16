@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        #board,
+        #levels {
+            width: 360px;
+            margin-top: 20px;
+            margin-left: 20px;
+            background: #999966;
+        }
+
+        #board {
+            position: relative;
+        }
+
+        #board:hover .piece {
+            background-color: red;
+        }
+
+        #levels {
+            text-align: center;
+        }
+
+        #JEEP {
+            background-color: green;
+        }
+
+        /* Animals and Jeep
+         ********************/
+
+        .piece {
+            position: absolute;
+            box-sizing: border-box;
+        }
+        
+        /* Horizontal pieces */
+        .piece.dragX img {
+            width: 100%;
+        }
+
+        /* Vertical pieces */
+        .piece.dragY img {
+            transform: rotate(90deg);
+            transform-origin: 0 0;
+            margin-left: 100%;
+        }
+
+        /* Vertical, size 2 */
+        .piece.dragY.size2 img {
+            width: 200%;
+        }
+
+        /* Vertical, size 3 */
+        .piece.dragY.size3 img {
+            width: 300%;
+        }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://rawgithub.com/briangonzalez/jquery.pep.js/master/src/jquery.pep.js"></script>
+
+    <script src="../js/ajaxGet.js"></script>
+    <script src="../js/loadLevel.js"></script>
+    <script src="../untracked/loadMechanics.js"></script>
+    <script src="../js/loadPieceAsset.js"></script>
+    <script type="text/javascript">
+
+        var levelString = [,
+            '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531',
+            '6,5,2,0012,3031,3112,5113,0221j,4212,0331,2412,4421,0521,3521',
+            '6,5,2,1221j,3213,1321,5313,1412,2521'
+        ];
+
+        // Load level 1 when document ready
+        $(document).ready(function() {
+            sr.setBoard('board');
+            sr.loadLevel(levelString[1]);
+        });
+    </script>
+
+</head>
+<body>
+
+<div id="board"></div>
+
+<div id="levels">
+    Level:
+    <a href="#" onclick="sr.loadLevel(levelString[1])">1</a> |
+    <a href="#" onclick="sr.loadLevel(levelString[2])">2</a> |
+    <a href="#" onclick="sr.loadLevel(levelString[3])">3</a> |
+    <a href="#" onclick="sr.loadLevel()">Reset</a>
+</div>
+
+</body>
+</html>
