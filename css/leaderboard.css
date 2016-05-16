@@ -1,24 +1,37 @@
-.wrapper {
-    text-align: center;
-    padding: 3em 0 0 0;
-}
 
-h2 {
+
+#leaderboard h2 {
     border-bottom: 2px solid #d27a2d;
     color: #d27a2d;
     font-size: 2em;
+    text-align: center;
+    padding: 1.5em 0 0 0;
 }
 
-th {
+#leaderboard th {
     text-align: center;
     font-weight: bold;
 }
 
-.col-xs-12 {
-    position: absolute;
+#leaderboard td {
+    text-align: center;
 }
 
-.table {
+#leaderboard .col-xs-12 {
+    padding: 0;
+}
+
+#leaderboard .row {
+    margin: 0;
+}
+
+#leaderboard .col-xs-12 > div {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -25px 0 0;
+}
+
+#leaderboard table {
     position: relative;
     margin: auto;
     width: 50%;
