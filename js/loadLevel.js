@@ -89,7 +89,7 @@ function loadLevel(levelNum) {
 
 /**
  * Load level pieces onto the board and invoke
- * sr.loadMechanics function after pieces finish loading.
+ * sr.loadMechanics() after pieces finish loading.
  */
 function loadLevelFromString(levelString) {
     if (levelString) {
@@ -115,9 +115,11 @@ function loadLevelFromString(levelString) {
  * Loads a piece into the HTML DOM.
  */
 function loadPiece(piece) {
-    var classNames = PIECE_CLASSES.ALL + ' ';
-    classNames += (piece.w == 1) ? PIECE_CLASSES.VERTICAL : PIECE_CLASSES.HORIZONTAL;
-    classNames += ' ' + PIECE_CLASSES.SIZE[Math.max(piece.w, piece.h)];
+
+    // Class names applied to piece
+    var orientation = (piece.w == 1) ? PIECE_CLASSES.VERTICAL : PIECE_CLASSES.HORIZONTAL;
+    var pieceSize   = PIECE_CLASSES.SIZE[Math.max(piece.w, piece.h)];
+    var classNames  = PIECE_CLASSES.ALL + ' ' + orientation + ' ' + pieceSize;
 
     var pieceElement = $('<div></div>')
         .addClass(classNames)

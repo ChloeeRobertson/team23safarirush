@@ -5,6 +5,7 @@
     <title>Title</title>
 
     <style>
+        #movesWrapper,
         #board,
         #levels {
             width: 360px;
@@ -65,15 +66,29 @@
 
     <script src="../js/ajaxGet.js"></script>
     <script src="../js/loadLevel.js"></script>
-    <script src="../untracked/loadMechanics.js"></script>
+    <script src="../js/loadMechanics.js"></script>
     <script src="../js/loadPieceAsset.js"></script>
     <script type="text/javascript">
 
         var levelString = [,
+            // Level 1 - 5
             '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531',
             '6,5,2,0012,3031,3112,5113,0221j,4212,0331,2412,4421,0521,3521',
-            '6,5,2,1221j,3213,1321,5313,1412,2521'
+            '6,5,2,1221j,3213,1321,5313,1412,2521',
+            '6,5,2,0013,3013,1221j,2312,3331,5412,2531',
+            '6,5,2,0021,3013,5012,0113,4113,1221j,5212,1331,0412,4421,4521',
+
+            // Level 6-10
+            '6,5,2,0021,0121,0321,0412,1221j,2312,3012,3213,3531,4113,5113',
+            '6,5,2,1012,2021,4012,5012,3112,1221j,5212,2321,3412',
+            '6,5,2,0221j,0321,0421,0521,2121,2212,2412,3021,3212,3431,3531,4112,4321,5013',
+            '6,5,2,0221j,0313,1012,1331,2021,2412,3112,4021,4121,4213,5212,5412',
+            '6,5,2,0021,0121,0213,0521,2012,1221j,1331,3412,4021,4421,4521,5113'
         ];
+
+        function loadLevel(levelNum) {
+            sr.loadLevel(levelString[levelNum]);
+        }
 
         // Load level 1 when document ready
         $(document).ready(function() {
@@ -85,13 +100,25 @@
 </head>
 <body>
 
+<div id="movesWrapper">
+    Moves: <span id="moves"></span>
+</div>
+
 <div id="board"></div>
 
 <div id="levels">
     Level:
-    <a href="#" onclick="sr.loadLevel(levelString[1])">1</a> |
-    <a href="#" onclick="sr.loadLevel(levelString[2])">2</a> |
-    <a href="#" onclick="sr.loadLevel(levelString[3])">3</a> |
+    <a href="#" onclick="loadLevel(1)">1</a> |
+    <a href="#" onclick="loadLevel(2)">2</a> |
+    <a href="#" onclick="loadLevel(3)">3</a> |
+    <a href="#" onclick="loadLevel(4)">4</a> |
+    <a href="#" onclick="loadLevel(5)">5</a> |
+    <a href="#" onclick="loadLevel(6)">6</a> |
+    <a href="#" onclick="loadLevel(7)">7</a> |
+    <a href="#" onclick="loadLevel(8)">8</a> |
+    <a href="#" onclick="loadLevel(9)">9</a> |
+    <a href="#" onclick="loadLevel(10)">10</a> |
+
     <a href="#" onclick="sr.loadLevel()">Reset</a>
 </div>
 

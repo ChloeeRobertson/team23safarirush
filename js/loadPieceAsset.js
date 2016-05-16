@@ -1,5 +1,6 @@
 /*
  * Loads Jeep and animal images and sounds.
+ * Must be loaded after loadLevel.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]
