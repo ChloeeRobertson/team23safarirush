@@ -33,7 +33,7 @@ var
     JEEP_ID          = window.sr.JEEP_ID;
 
 var
-    activePiece; // Stores active piece element and last position
+    activePiecePosition; // Stores active piece's original position
 
 var
     NUM_MOVES_DIV,
@@ -87,7 +87,7 @@ function loadMechanics(levelGoalX, levelGoalY) {
  * Invoked when first touch/click is triggered on pieceObj. (touchstart/mousedown)
  */
 function handleMovementInitiate(event, pieceObj) {
-    setActivePiece(pieceObj);
+    setActivePiecePosition(pieceObj);
 }
 
 /**
@@ -145,7 +145,7 @@ function checkWin(pieceObj) {
 // ----------------------------------------------------------
 
 /**
- * Initialize global variables.
+ * Initialize variables.
  */
 function initializeVariables(levelGoalX, levelGoalY) {
     PIECES          = $.pep.peps;
@@ -155,7 +155,7 @@ function initializeVariables(levelGoalX, levelGoalY) {
 
     NUM_MOVES_DIV   = $('#' + NUM_MOVES_DIV_ID);
 
-    // Goal x,y tile midpoints relative to the BOARD
+    // Goal x,y tile midpoints
     goalX = levelGoalX * TILE_LENGTH_PX + (TILE_LENGTH_PX / 2);
     goalY = levelGoalY * TILE_LENGTH_PX + (TILE_LENGTH_PX / 2);
 }
@@ -169,15 +169,15 @@ function updateNumMoves(newNumMoves) {
 }
 
 /**
- * Sets the current active piece.
+ * Sets the current active piece's original position.
  */
-function setActivePiece(pieceObj) {
-    activePiece = {
-        object: pieceObj,
+function setActivePiecePosition(pieceObj) {
+    activePiecePosition = {
         left:   pieceObj.el.offsetLeft,
         top:    pieceObj.el.offsetTop
     };
 }
+
 /**
  * Sets piece movement constraints.
  */
@@ -189,11 +189,11 @@ function setMovementConstraintFor(pieceObj) {
     var range;
 
     if (movesHorizontally(pieceObj)) {
-        range   = getRangeX(pieceObj);
+        range   = getMovableRangeX(pieceObj);
         left    = range.min;
         right   = range.max;
     } else {
-        range   = getRangeY(pieceObj);
+        range   = getMovableRangeY(pieceObj);
         top     = range.min;
         bottom  = range.max;
     }
@@ -205,8 +205,11 @@ function setMovementConstraintFor(pieceObj) {
  * Determines whether a piece has moved or not.
  */
 function hasMoved(pieceObj) {
-    return Math.abs(activePiece.left - pieceObj.el.offsetLeft) > (TILE_LENGTH_PX / 2) ||
-           Math.abs(activePiece.top - pieceObj.el.offsetTop) > (TILE_LENGTH_PX / 2);
+    var xDifference = Math.abs(activePiecePosition.left - pieceObj.el.offsetLeft);
+    var yDifference = Math.abs(activePiecePosition.top - pieceObj.el.offsetTop);
+
+    return xDifference > (TILE_LENGTH_PX / 2) ||
+           yDifference > (TILE_LENGTH_PX / 2);
 }
 
 /**
@@ -223,7 +226,7 @@ function getCoordinates(pieceObj) {
 /**
  * Calculates valid min-x and max-x coordinates for a horizontally moving piece.
  */
-function getRangeX(pieceObj) {
+function getMovableRangeX(pieceObj) {
     var coord = getCoordinates(pieceObj);
     var minX  = coord.x;
     var maxX  = coord.x;
@@ -245,7 +248,7 @@ function getRangeX(pieceObj) {
 /**
  * Calculates valid min-y and max-y coordinates for a vertically moving piece.
  */
-function getRangeY(pieceObj) {
+function getMovableRangeY(pieceObj) {
     var coord = getCoordinates(pieceObj);
     var minY = coord.y;
     var maxY = coord.y;
