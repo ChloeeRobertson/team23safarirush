@@ -44,6 +44,7 @@
             '6,5,2,0221j,0313,1012,1331,2021,2412,3112,4021,4121,4213,5212,5412',
             '6,5,2,0021,0121,0213,0521,2012,1221j,1331,3412,4021,4421,4521,5113'
         ];
+
         function loadLevel(levelNum) {
             // LOAD FROM LEVEL STRING
             sr.loadLevel(levelString[levelNum]);
@@ -51,6 +52,14 @@
             // LOAD FROM DATABASE
             // sr.loadLevel(levelNum);
         }
+
+        function changeLevel() {
+            var x = $("#level").value.parseInt();
+            console.log(x);
+            loadLevel(x);
+            return false;
+        }
+
     </script>
 </head>
 <body>
@@ -167,14 +176,42 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                            <h4 class="modal-title" id="myModalLabel">Change Difficulty</h4>
                         </div>
-                        <div class="modal-body">
-                            ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
+
+                        <form id="levelSelectForm" role="form" method="post" onsubmit="return changeLevel();">
+                            <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="difficulty">Difficulty:</label>
+                                        <select class="form-control" id="difficulty" name="difficulty">
+                                            <option value="easy">Easy</option>
+                                            <option value="intermediate">Intermediate</option>
+                                            <option value="advanced">Advanced</option>
+                                            <option value="expert">Expert</option>
+                                        </select>
+                                        <br>
+                                        <label for="level">Difficulty:</label>
+                                        <select class="form-control" id="level" name="level">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                        <br>
+                                    </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary"">OK</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
