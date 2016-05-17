@@ -45,7 +45,7 @@ $('#volume').click(function mute() {
         sound = true;
     }
     return sound;
-/*
+
     if (tracks[0].muted === true) {
         for(var i=0; i<tracks.length; i++){
             tracks[i].muted = false;
@@ -54,7 +54,7 @@ $('#volume').click(function mute() {
         for(var j=0; j<tracks.length; j++){
             tracks[j].muted = true;
         }
-    } */
+    }
 });
 
 });

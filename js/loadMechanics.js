@@ -177,7 +177,8 @@ function setMovementConstraints(pieceObj) {
  */
 function checkWin(pieceObj) {
     if (pieceObj.el.id == JEEP_ID && occupying(goalX, goalY, pieceObj)) {
-        alert('You win!');
+        /*alert('You win!');*/
+        $('#levelCompleteModal').modal('show');
     }
 }
 
