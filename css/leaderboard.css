@@ -1,6 +1,6 @@
 
 
-#leaderboard h2 {
+#main h2 {
     border-bottom: 2px solid #d27a2d;
     color: #d27a2d;
     font-size: 2em;
@@ -8,30 +8,30 @@
     padding: 1.5em 0 0 0;
 }
 
-#leaderboard th {
+#main th {
     text-align: center;
     font-weight: bold;
 }
 
-#leaderboard td {
+#main td {
     text-align: center;
 }
 
-#leaderboard .col-xs-12 {
+#main .col-xs-12 {
     padding: 0;
 }
 
-#leaderboard .row {
+#main .row {
     margin: 0;
 }
 
-#leaderboard .col-xs-12 > div {
+#main .col-xs-12 > div {
     position: relative;
     overflow: hidden;
     margin: 0 -25px 0 0;
 }
 
-#leaderboard table {
+#main table {
     position: relative;
     margin: auto;
     width: 50%;
