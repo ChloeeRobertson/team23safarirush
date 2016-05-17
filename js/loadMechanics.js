@@ -37,7 +37,7 @@ var
 
 var
     NUM_MOVES_DIV,
-    NUM_MOVES_DIV_ID = 'moves',
+    NUM_MOVES_DIV_ID = 'numMoves',
     numMoves         = 0;
 
 var
@@ -52,7 +52,7 @@ var
 /**
  * Add game mechanics to all pieces inside the board.
  */
-function loadMechanics(levelGoalX, levelGoalY) {
+function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
 
     // Pep objects does not auto-reset when loading new level,
     // so we manually reset it.
@@ -80,7 +80,10 @@ function loadMechanics(levelGoalX, levelGoalY) {
 
     initializeVariables(levelGoalX, levelGoalY);
     setMovementConstraints();
-    updateNumMoves(0);
+    
+    if (resetMoveCounter) {
+        updateNumMoves(0);
+    }
 }
 
 /**

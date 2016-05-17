@@ -22,7 +22,7 @@ function setGlobals() {
 var
     JEEP_ID         = sr.JEEP_ID,
     PIECE_CLASSES   = sr.PIECE_CLASSES,
-    ANIMAL_IMG_DIR  = '../images/animals/',
+    ANIMAL_IMG_DIR  = 'images/animals/',
     ANIMAL_IMG_EXT  = '.jpg',
     ANIMALS = [
         [], [], // Index(size) 0,1 empty. No animals of that size.
@@ -34,7 +34,7 @@ var
     EASTER_EGG = {
         CLICKS_NEEDED:  10,    // # of clicks to activate Easter Egg
         CLICK_SPEED:    400,   // Click succession speed in ms
-        AUDIO_SRC:      '../audio/CrocHunterCrikey3.wav'
+        AUDIO_SRC:      'audio/CrocHunterCrikey3.wav'
     },
 
     // Used for Desktop clicks only

@@ -1,0 +1,43 @@
+
+#gameBoard {
+    background: #999966;
+    position: relative;
+    margin: 0 auto;
+    width: 370px;
+    height: 400px;
+}
+
+/* Animals and Jeep
+ ********************/
+
+#JEEP {
+    background-color: green;
+}
+
+/* All pieces */
+.piece {
+    position: absolute;
+    box-sizing: border-box;
+}
+
+/* Horizontal pieces */
+.piece.dragX img {
+    width: 100%;
+}
+
+/* Vertical pieces */
+.piece.dragY img {
+    transform: rotate(90deg);
+    transform-origin: 0 0;
+    margin-left: 100%;
+}
+
+/* Vertical, size 2 */
+.piece.dragY.size2 img {
+    width: 200%;
+}
+
+/* Vertical, size 3 */
+.piece.dragY.size3 img {
+    width: 300%;
+}

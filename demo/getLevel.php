@@ -12,16 +12,14 @@ if ($conn->connect_error) {
     die('Connection failed: ' . $conn->connect_error);
 }
 
-$sql = "
-    SELECT level, boardSize, goalX, goalY, pieces
-    FROM levels
-    WHERE level = " . $levelNum . "
-";
+$sql = "SELECT level, boardSize, goalX, goalY, jeepPiece, pieces
+        FROM levels
+        WHERE level = " . $levelNum;
 
 $result = $conn->query($sql);
 
 while ($row = $result->fetch_assoc()) {
-    echo $row['boardSize'] . ',' . $row['goalX'] . ',' . $row['goalY'] . ',' . $row['pieces'];
+    echo $row['boardSize'] . ',' . $row['goalX'] . ',' . $row['goalY'] . ',' . $row['jeepPiece'] . ',' . $row['pieces'];
 }
 
 ?>

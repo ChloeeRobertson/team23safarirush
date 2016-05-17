@@ -98,10 +98,11 @@ button.navbar-toggle:focus span {
     color: white;
 }
 
-#gameBoard {
+/* Moved to gameboard.css */
+/*#gameBoard {
     width: 370px;
     height: 400px;
-}
+}*/
 
 /***************************************************
  * Footer area / Displays level selection and level reset buttons

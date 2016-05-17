@@ -25,7 +25,7 @@
 /**
  * Create accesspoints outside of loadLevel.js
  */
-function setGlobals() {
+function setGlobalsAndLoadBoard() {
     window.sr = {};
 
     // Add functions to sr object
@@ -35,6 +35,15 @@ function setGlobals() {
     // Add vars and properties to sr object
     window.sr.JEEP_ID       = JEEP_ID;
     window.sr.PIECE_CLASSES = PIECE_CLASSES;
+
+    // Load level one after document loads
+    $(document).ready(function() {
+
+        // Temporary level 1 string
+        var lvl1 = '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531';
+        sr.setBoard();
+        sr.loadLevel(lvl1);
+    });
 }
 
 // ----------------------------------------------------------
@@ -42,7 +51,8 @@ function setGlobals() {
 // ----------------------------------------------------------
 
 var
-    BOARD,           // Board element
+    BOARD_ID        = 'gameBoard',
+    BOARD,          // Board element
     GET_LEVEL_URL   = 'http://team23.site88.net/demo/getLevel.php',
 
     level,           // Level object
@@ -66,8 +76,8 @@ var
 /**
  * Sets board height to its width. (Makes it a square.)
  */
-function setBoard(boardId) {
-    BOARD = $('#' + boardId);
+function setBoard() {
+    BOARD = $('#' + BOARD_ID),
     BOARD.height(BOARD[0].offsetWidth);
 }
 
@@ -93,6 +103,8 @@ function loadLevel(levelNum) {
  */
 function loadLevelFromString(levelString) {
     if (levelString) {
+        var resetMoveCounter = true;
+
         level = createLevel(levelString.trim());
         tileLengthPx = BOARD[0].offsetWidth / level.boardLength;
     }
@@ -104,7 +116,7 @@ function loadLevelFromString(levelString) {
     }
 
     // Might need to set a delay incase images not loaded
-    sr.loadMechanics(level.goalX, level.goalY);
+    sr.loadMechanics(level.goalX, level.goalY, resetMoveCounter);
 }
 
 // ----------------------------------------------------------
@@ -170,6 +182,6 @@ function createPiece(pieceString) {
 }
 
 // Set global variables
-setGlobals();
+setGlobalsAndLoadBoard();
 
 })();
