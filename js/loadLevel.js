@@ -41,7 +41,7 @@ function setGlobalsAndLoadBoard() {
         sr.setBoard();
 
         // LOADS LVL 1 FROM LEVEL STRING
-        var lvl1 = '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531';
+        var lvl1 = '6,5,2,1221j';
         sr.loadLevel(lvl1);
 
         // LOADS LVL 1 FROM DATABASE

@@ -60,6 +60,11 @@
             return false;
         }
 
+       /* $('#levelCompleteModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })*/
+
     </script>
 </head>
 <body>
@@ -210,6 +215,26 @@
             <button type="button" onclick="sr.loadLevel()" class="btn btn-primary btn-lg pull-right">
                 Reset <span class="glyphicon glyphicon-refresh"></span>
             </button>
+
+            <!-- Game completion modal -->
+            <!-- Modal opens when level is completed -->
+            <div id="levelCompleteModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">WOO HOO!  You win!</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <button type="button" class="btn btn-primary">Next</button>
+                            <button type="button" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-primary">Random</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div><!-- /.container -->
     </footer>
