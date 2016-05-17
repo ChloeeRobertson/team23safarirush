@@ -52,7 +52,7 @@ $result = $conn->query($sql);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Safari Rush</a>
+                <a class="navbar-brand" href="index.html">Safari Rush</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->

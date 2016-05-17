@@ -47,14 +47,44 @@ var
     goalX,
     goalY;
 
+// Timer variables
+var
+    minuteTimer = 0,
+    secondTimer = 0,
+    tenthsTimer = 0,
+    timeoutID,
+    TIMER_DIV,
+    TIMER_DIV_ID = 'timerDisplay';
+
+
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
 
 /**
+ * Timer function
+ */
+function timer(){
+
+    tenthsTimer++;
+    if (tenthsTimer == 10) {
+        secondTimer++;
+        tenthsTimer = 0;
+    }
+    if (secondTimer == 60) {
+        secondTimer = 0;
+        minuteTimer++;
+    }
+    updateTimer(tenthsTimer, secondTimer, minuteTimer);
+    timeoutID = setTimeout(function(){timer()}, 100);
+
+}
+    
+/**
  * Add game mechanics to all pieces inside the board.
  */
 function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
+
 
     // Pep objects does not auto-reset when loading new level,
     // so we manually reset it.
@@ -82,9 +112,15 @@ function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
 
     initializeVariables(levelGoalX, levelGoalY);
     setMovementConstraints();
-    
+
+
     if (resetMoveCounter) {
         updateNumMoves(0);
+        clearTimer(timeoutID);
+        tenthsTimer = 0;
+        secondTimer = 0;
+        minuteTimer = 0;
+        timer();
     }
 }
 
@@ -150,6 +186,13 @@ function checkWin(pieceObj) {
 // ----------------------------------------------------------
 
 /**
+ * Clears the timer
+ */
+function clearTimer(timeoutID) {
+    clearTimeout(timeoutID);
+}
+
+/**
  * Initialize variables.
  */
 function initializeVariables(levelGoalX, levelGoalY) {
@@ -159,6 +202,7 @@ function initializeVariables(levelGoalX, levelGoalY) {
     TILE_LENGTH_PX  = Math.min(PIECES[0].el.offsetWidth, PIECES[0].el.offsetHeight);
 
     NUM_MOVES_DIV   = $('#' + NUM_MOVES_DIV_ID);
+    TIMER_DIV       = $('#' + TIMER_DIV_ID);
 
     // Goal x,y tile midpoints
     goalX = levelGoalX * TILE_LENGTH_PX + (TILE_LENGTH_PX / 2);
@@ -171,6 +215,24 @@ function initializeVariables(levelGoalX, levelGoalY) {
 function updateNumMoves(newNumMoves) {
     numMoves = (Number.isInteger(newNumMoves)) ? newNumMoves : ++numMoves;
     NUM_MOVES_DIV.text(numMoves);
+}
+
+/**
+ * Function to update the timer display
+ * @param tenthsTimer   tenths of seconds
+ * @param secondTimer   seconds display value
+ * @param minuteTimer   minutes display value
+ */
+function updateTimer (tenthsTimer, secondTimer, minuteTimer) {
+    if (secondTimer < 10 && minuteTimer < 10) {
+        TIMER_DIV.text("0" + minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+    } else if (secondTimer < 10 && minuteTimer >= 10) {
+        TIMER_DIV.text(minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+    } else if (secondTimer >= 10 && minuteTimer < 10) {
+        TIMER_DIV.text("0" + minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+    } else {
+        TIMER_DIV.text(minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+    }
 }
 
 /**
