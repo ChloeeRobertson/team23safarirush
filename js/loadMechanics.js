@@ -74,7 +74,7 @@ function timer(){
         secondTimer = 0;
         minuteTimer++;
     }
-    updateTimer();
+    updateTimer(tenthsTimer, secondTimer, minuteTimer);
     setTimeout(function(){timer()}, 100);
 
 }
@@ -84,8 +84,6 @@ function timer(){
  */
 function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
 
-    //TEST
-    timer();
 
     // Pep objects does not auto-reset when loading new level,
     // so we manually reset it.
@@ -113,7 +111,10 @@ function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
 
     initializeVariables(levelGoalX, levelGoalY);
     setMovementConstraints();
-    
+
+    //TEST
+    timer();
+
     if (resetMoveCounter) {
         updateNumMoves(0);
     }
