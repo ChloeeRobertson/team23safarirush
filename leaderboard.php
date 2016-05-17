@@ -58,12 +58,12 @@ $result = $conn->query($sql);
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.html">Play</a></li>
-                    <li><a href="leaderboard.html">Leaderboard</a></li>
-                    <li><a href="howtoplay.html">How to Play</a></li>
+                    <li><a href="index.html"><span class="glyphicon glyphicon-grain"></span> Play</a></li>
+                    <li><a href="leaderboard.html"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Leaderboard</a></li>
+                    <li><a href="howtoplay.html"><span class="glyphicon glyphicon-question-sign"></span> How to Play</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="aboutus.html"><span class="glyphicon glyphicon-user"></span> About Us</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
