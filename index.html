@@ -20,6 +20,35 @@
     <script src="mute.js"></script>
 </head>
 <body>
+
+<script>
+
+    $(document).ready(function(){
+        var secondTimer = 0;
+        var hundrethsTimer = 0;
+
+        function timer(){
+
+            hundrethsTimer++;
+            if (hundrethsTimer == 100) {
+                secondTimer++;
+                hundrethsTimer = 0;
+            }
+
+            if (hundrethsTimer < 10) {
+                $("#timerDisplay").text(secondTimer + " : 0" + hundrethsTimer);
+            } else {
+                $("#timerDisplay").text(secondTimer + " : " + hundrethsTimer);
+            }
+            setTimeout(function(){timer()}, 10);
+
+        }
+
+        timer();
+
+    });
+</script>
+
     <!-- Site navigation bar -->
     <nav class="navbar navbar-default">
         <div class="container">
@@ -57,7 +86,7 @@
             </div>
 
             <div class="col-xs-6" id="timerDisplay">
-                00:23
+
             </div>
 
             <div class="col-xs-3" id="muteDisplay">
