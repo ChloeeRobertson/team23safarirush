@@ -56,14 +56,9 @@
         function changeLevel() {
             var x = parseInt($('#level').val());
             loadLevel(x);
+            $('#levelModal').modal('hide');
             return false;
         }
-
-        $('#levelSelectForm').submit(function(event) {
-            var x = parseInt($('#level').val());
-            loadLevel(x);
-            event.preventDefault();
-        });
 
     </script>
 </head>
@@ -193,7 +188,7 @@
                             <h4 class="modal-title" id="myModalLabel">Change Level</h4>
                         </div>
 
-                        <form id="levelSelectForm" role="form" method="post" action="javascript:alert( 'success!' );">
+                        <form id="levelSelectForm" role="form" method="post" action="javascript:alert('success!');" onsubmit="return changeLevel();">
                             <div class="modal-body">
                                     <div class="form-group">
                                         <label for="difficulty">Difficulty:</label>
