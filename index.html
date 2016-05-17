@@ -58,23 +58,32 @@
 <script>
 
     $(document).ready(function(){
+        var minuteTimer = 0;
         var secondTimer = 0;
-        var hundrethsTimer = 0;
+        var tenthsTimer = 0;
 
         function timer(){
 
-            hundrethsTimer++;
-            if (hundrethsTimer == 100) {
+            tenthsTimer++;
+            if (tenthsTimer == 10) {
                 secondTimer++;
-                hundrethsTimer = 0;
+                tenthsTimer = 0;
+            }
+            if (secondTimer == 60) {
+                secondTimer = 0;
+                minuteTimer++;
             }
 
-            if (hundrethsTimer < 10) {
-                $("#timerDisplay").text(secondTimer + " : 0" + hundrethsTimer);
+            if (secondTimer < 10 && minuteTimer < 10) {
+                $("#timerDisplay").text("0" + minuteTimer + " : 0" + secondTimer + " : " + tenthsTimer);
+            } else if (secondTimer < 10 && minuteTimer >= 10) {
+                $("#timerDisplay").text(minuteTimer + " : 0" + secondTimer + " : " + tenthsTimer);
+            } else if (secondTimer >= 10 && minuteTimer < 10) {
+                $("#timerDisplay").text("0" + minuteTimer + " : " + secondTimer + " : " + tenthsTimer);
             } else {
-                $("#timerDisplay").text(secondTimer + " : " + hundrethsTimer);
+                $("#timerDisplay").text(minuteTimer + " : " + secondTimer + " : " + tenthsTimer);
             }
-            setTimeout(function(){timer()}, 10);
+            setTimeout(function(){timer()}, 100);
 
         }
 
