@@ -1,3 +1,22 @@
+<?php
+// Get database configurations
+require_once('db/config.php');
+
+// Make connection to DB
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die('Connection failed: ' . $conn->connect_error);
+}
+
+// Get top 10 scores
+$sql = "SELECT name, score
+        FROM leaderboard
+        ORDER BY score DESC
+        LIMIT 10";
+
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,63 +82,24 @@
                                 <th>NAME</th>
                                 <th>SCORE</th>
                             </tr>
+                            <?php
+                                $rank = 0;
+                                while ($row = $result->fetch_assoc()) {
+                            ?>
                             <tr>
-                                <td>1</td>
-                                <td>PLAYER1</td>
-                                <td>9001</td>
+                                <td><?php echo ++$rank; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['score']; ?></td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>PLAYER2</td>
-                                <td>7500</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>PLAYER3</td>
-                                <td>7000</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>PLAYER4</td>
-                                <td>6500</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>PLAYER5</td>
-                                <td>6000</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>PLAYER6</td>
-                                <td>5000</td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>PLAYER7</td>
-                                <td>4000</td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td>PLAYER8</td>
-                                <td>3000</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>PLAYER9</td>
-                                <td>2000</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>PLAYER10</td>
-                                <td>1000</td>
-                            </tr>
+                            <?php
+                                }
+                            ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 </body>
 </html>

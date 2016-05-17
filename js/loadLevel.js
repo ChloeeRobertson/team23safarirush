@@ -24,9 +24,9 @@
 
 /**
  * Create accesspoints outside of loadLevel.js
+ * and load first level onto board.
  */
 function setGlobalsAndLoadBoard() {
-    window.sr = {};
 
     // Add functions to sr object
     window.sr.setBoard      = setBoard;
@@ -38,11 +38,14 @@ function setGlobalsAndLoadBoard() {
 
     // Load level one after document loads
     $(document).ready(function() {
-
-        // Temporary level 1 string
-        var lvl1 = '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531';
         sr.setBoard();
+
+        // LOADS LVL 1 FROM LEVEL STRING
+        var lvl1 = '6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531';
         sr.loadLevel(lvl1);
+
+        // LOADS LVL 1 FROM DATABASE
+        // sr.loadLevel(1);
     });
 }
 
@@ -53,7 +56,7 @@ function setGlobalsAndLoadBoard() {
 var
     BOARD_ID        = 'gameBoard',
     BOARD,          // Board element
-    GET_LEVEL_URL   = 'http://team23.site88.net/demo/getLevel.php',
+    GET_LEVEL_URL   = 'http://team23.site88.net/db/getLevel.php',
 
     level,           // Level object
     tileLengthPx;    // Length of tile in px
@@ -74,7 +77,8 @@ var
 // ----------------------------------------------------------
 
 /**
- * Sets board height to its width. (Makes it a square.)
+ * Sets board height to its width (makes it a square) and set BOARD to
+ * reference jQuery wrapped board object.
  */
 function setBoard() {
     BOARD = $('#' + BOARD_ID),
@@ -82,19 +86,26 @@ function setBoard() {
 }
 
 /**
- * Get levelString from backend and invoke loadLevelFromString().
+ * Get levelString from backend and invoke loadLevelFromString() to
+ * load level onto board.
  */
 function loadLevel(levelNum) {
-    loadLevelFromString(levelNum);
 
-    // GETS LEVEL STRING FROM BACKEND:
+    // Re-loads default board configurations for current level
+    if (!levelNum) {
+        loadLevelFromString();
+    }
 
-    // if (!levelNum) {
-    //     loadLevelFromString();
-    // } else {
-    //     var getLevelURL = GET_LEVEL_URL + '?level=' + levelNum;
-    //     sr.ajaxGet(getLevelURL, loadLevelFromString);
-    // }
+    // Load level from backend
+    else if (Number.isInteger(levelNum)) {
+        var getLevelStringURL = GET_LEVEL_URL + '?level=' + levelNum;
+        sr.ajaxGet(getLevelStringURL, loadLevelFromString);
+    }
+
+    // Load level from a levelString
+    else {
+        loadLevelFromString(levelNum);
+    }
 }
 
 /**
@@ -102,6 +113,8 @@ function loadLevel(levelNum) {
  * sr.loadMechanics() after pieces finish loading.
  */
 function loadLevelFromString(levelString) {
+
+    // Loads a new level
     if (levelString) {
         var resetMoveCounter = true;
 
@@ -109,13 +122,13 @@ function loadLevelFromString(levelString) {
         tileLengthPx = BOARD[0].offsetWidth / level.boardLength;
     }
 
+    // Deletes all pieces from board
     BOARD.empty();
 
     for (var i = 0; i < level.pieces.length; i++) {
         loadPiece(level.pieces[i]);
     }
 
-    // Might need to set a delay incase images not loaded
     sr.loadMechanics(level.goalX, level.goalY, resetMoveCounter);
 }
 
@@ -133,6 +146,7 @@ function loadPiece(piece) {
     var pieceSize   = PIECE_CLASSES.SIZE[Math.max(piece.w, piece.h)];
     var classNames  = PIECE_CLASSES.ALL + ' ' + orientation + ' ' + pieceSize;
 
+    // Create new element in HTML DOM
     var pieceElement = $('<div></div>')
         .addClass(classNames)
         .css({
@@ -154,6 +168,7 @@ function createLevel(levelString) {
     var parts = levelString.split(',');
     var pieces = [];
 
+    // Create each piece (data object) and push into pieces[]
     for (var i = 3; i < parts.length; i++) {
         var id    = i - 3;
         var piece = createPiece(parts[i]);
@@ -181,7 +196,7 @@ function createPiece(pieceString) {
     };
 }
 
-// Set global variables
+// Set global variables and load board
 setGlobalsAndLoadBoard();
 
 })();

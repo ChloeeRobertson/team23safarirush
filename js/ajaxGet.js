@@ -2,7 +2,7 @@
  * Uses AJAX to retrieve information or submit data.
  */
 
-(function(_window) {
+(function() {
 
 /**
  * Retrieves content from URL using AJAX and
@@ -20,11 +20,9 @@ function ajaxGet(url, callback) {
 }
 
 // Create global 'sr' object
-if (!_window.sr) {
-    _window.sr = {};
-}
+window.sr = {};
 
 // Add functions to sr object
-_window.sr.ajaxGet = ajaxGet;
+window.sr.ajaxGet = ajaxGet;
 
-})(window);
+})();

@@ -1,5 +1,7 @@
 /*
- * Adds game mechanics to all pieces using pep library.
+ * Adds game mechanics to all pieces with the assistance of
+ * jQuery.pep library.
+ *
  * Must be loaded after loadLevel.js
  *
  * Requires:
@@ -36,7 +38,7 @@ var
     activePiecePosition; // Stores active piece's original position
 
 var
-    NUM_MOVES_DIV,
+    NUM_MOVES_DIV,   // DIV container holding # of moves
     NUM_MOVES_DIV_ID = 'numMoves',
     numMoves         = 0;
 
@@ -167,7 +169,7 @@ function initializeVariables(levelGoalX, levelGoalY) {
  * Updates number of moves taken.
  */
 function updateNumMoves(newNumMoves) {
-    numMoves = (typeof newNumMoves === 'number') ? newNumMoves : ++numMoves;
+    numMoves = (Number.isInteger(newNumMoves)) ? newNumMoves : ++numMoves;
     NUM_MOVES_DIV.text(numMoves);
 }
 
