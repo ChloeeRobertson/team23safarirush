@@ -67,7 +67,7 @@ button.navbar-toggle:focus span {
 
     /* Mute Button */
 #volume {
-    height: 2.5rem;
+    height: 1.8rem;
     outline: none;
 }
 
@@ -80,7 +80,7 @@ button.navbar-toggle:focus span {
 }
 
 /* Test block for mute button */
-#soundTest {
+/*#soundTest {
     position: relative;
     margin: auto;
     width: 50px;
@@ -96,7 +96,7 @@ button.navbar-toggle:focus span {
     height: 50px;
     background: blue;
     color: white;
-}
+}*/
 
 /***************************************************
  * Footer area / Displays level selection and level reset buttons
