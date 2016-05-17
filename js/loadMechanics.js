@@ -52,6 +52,7 @@ var
     minuteTimer = 0,
     secondTimer = 0,
     tenthsTimer = 0,
+    timeoutID,
     TIMER_DIV,
     TIMER_DIV_ID = 'timerDisplay';
 
@@ -75,7 +76,7 @@ function timer(){
         minuteTimer++;
     }
     updateTimer(tenthsTimer, secondTimer, minuteTimer);
-    setTimeout(function(){timer()}, 100);
+    timeoutID = setTimeout(function(){timer()}, 100);
 
 }
     
@@ -112,11 +113,14 @@ function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
     initializeVariables(levelGoalX, levelGoalY);
     setMovementConstraints();
 
-    //TEST
-    timer();
 
     if (resetMoveCounter) {
         updateNumMoves(0);
+        clearTimer(timeoutID);
+        tenthsTimer = 0;
+        secondTimer = 0;
+        minuteTimer = 0;
+        timer();
     }
 }
 
@@ -180,6 +184,13 @@ function checkWin(pieceObj) {
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
 // ----------------------------------------------------------
+
+/**
+ * Clears the timer
+ */
+function clearTimer(timeoutID) {
+    clearTimeout(timeoutID);
+}
 
 /**
  * Initialize variables.
