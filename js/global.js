@@ -18,7 +18,7 @@ var PIECE = {
         ['elephant', 'giraffe']
     ],
 
-    JEEP_IMG_NAME:   'jeep',
+    JEEP_IMG_NAME:  'jeep',
 
     IMG_DIR:        'images/animals/',
     IMG_EXT:        '.png',

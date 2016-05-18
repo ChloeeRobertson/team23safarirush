@@ -244,15 +244,15 @@ function resetTimer() {
  * Function to update the timer display
  */
 function updateTimerDisplay() {
-     if (secondTimer < 10 && minuteTimer < 10) {
-         TIMER.text("0" + minuteTimer + ":0" + secondTimer);
-     } else if (secondTimer < 10 && minuteTimer >= 10) {
-         TIMER.text(minuteTimer + ":0" + secondTimer);
-     } else if (secondTimer >= 10 && minuteTimer < 10) {
-         TIMER.text("0" + minuteTimer + ":" + secondTimer);
-     } else {
-         TIMER.text(minuteTimer + ":" + secondTimer);
-     }
+    if (secondTimer < 10 && minuteTimer < 10) {
+        TIMER.text("0" + minuteTimer + ":0" + secondTimer);
+    } else if (secondTimer < 10 && minuteTimer >= 10) {
+        TIMER.text(minuteTimer + ":0" + secondTimer);
+    } else if (secondTimer >= 10 && minuteTimer < 10) {
+        TIMER.text("0" + minuteTimer + ":" + secondTimer);
+    } else {
+        TIMER.text(minuteTimer + ":" + secondTimer);
+    }
 }
 
 /**
