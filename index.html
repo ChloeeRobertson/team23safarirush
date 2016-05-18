@@ -90,20 +90,16 @@
 
         ];
 
-        function loadLevel(levelNum) {
-            // LOAD FROM LEVEL STRING
-            sr.loadLevel(levelString[levelNum]);
-
-            // LOAD FROM DATABASE
-            // sr.loadLevel(levelNum);
-        }
-
         function changeLevel() {
             var x = parseInt($('#level').val());
-            loadLevel(x);
+            sr.loadLevel(levelString[x]);
             $('#levelModal').modal('hide');
+            $('#levelSelectionButton').text(
+                    $('#difficulty').val().charAt(0).toUpperCase()
+                    + $('#difficulty').val().substr(1)
+                    + " - " + $('#level').val() + " ");
             return false;
-        }
+        };
 
        /* $('#levelCompleteModal').modal({
             backdrop: 'static',
