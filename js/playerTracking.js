@@ -10,6 +10,7 @@
 (function() {
 
 var
+    levelsCompleted = [],
     totalScore      = 0;
 
 // ----------------------------------------------------------
@@ -20,13 +21,14 @@ var
  * Mark level as complete and add level score to total score.
  */
 function addToScore(level, numMoves, secondsTaken) {
-    var difficulty = parseInt((level / 10) + 1);
+    var level                = parseInt(level);
+    var difficulty           = parseInt((level / 10) + 1);
+    var difficultyMultiplier = SCORING.DIFFICULTY_MULTIPLIER * difficulty;
+    var movesMultiplier      = Math.pow(SCORING.MOVES_MULTIPLIER, numMoves);
+    var secondsMultiplier    = Math.pow(SCORING.SECONDS_MULTIPLIER, secondsTaken);
 
-    totalScore = (SCORING.DIFFICULTY_MULTIPLIER * difficulty) *
-         (SCORING.MOVES_MULTIPLIER * numMoves) *
-         (SCORING.SECONDS_MULTIPLIER * secondsTaken);
-
-    level = parseInt(level);
+    levelsCompleted[level] = true;
+    totalScore = difficultyMultiplier * movesMultiplier * secondsMultiplier;
 
     console.log('lvl: ' + level + ', difficulty: ' + difficulty + ', moves: ' + numMoves + ', sec: ' + secondsTaken + ', score: ' + totalScore);
 }
@@ -39,9 +41,17 @@ function submitScore() {
     // sr.ajaxGet(submitScoreURL, loadLevelFromString);
 }
 
+function getRandomLevel() {
+    
+}
+
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
 // ----------------------------------------------------------
+
+function initLevels() {
+    for (var lvl = 0; lvl <= TOTAL_LEVELS;) {}
+}
 
 /**
  * Get player name from input element.
