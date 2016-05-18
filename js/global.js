@@ -11,7 +11,7 @@ var ANIMAL = {
     ],
 
     IMG_DIR:    'images/animals/',
-    IMG_EXT:    '.jpg',
+    IMG_EXT:    '.png',
 
     AUDIO_DIR:  'audio/animals/',
     AUDIO_EXT:  '.wav'
