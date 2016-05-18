@@ -84,7 +84,12 @@ button.navbar-toggle:focus span {
  * Footer area / Displays level selection and level reset buttons
  */
 
-
+/***************************************************
+ * Modal
+ */
+.modal-dialog {
+    margin-top: 15%;
+}
 /***************************************************
  * Miscellaneous
  */
