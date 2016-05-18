@@ -17,34 +17,32 @@
 
 // Board and Pieces
 var
+    level,                  // Level object for current level
     pieces,                 // Stores all board pieces
     activePiecePosition,    // Original position of active piece
 
     goalCoordinates,        // Game ends when Jeep gets to here
-
     tileLengthPx;           // Length of 1 tile in px
 
 // Number of Moves
 var
-    numMoves         = 0,   // Number of moves taken in current level
-    totalMoves       = 0;   // Number of moves taken total
+    numMoves          = 0;   // Number of moves taken in current level
 
 // Timer variables
 var
     minuteTimer       = 0,
     secondTimer       = 0,
     tenthsTimer       = 0,
-    totalSecondsTimer = 0,
     timerInstance;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
-    
+
 /**
  * Add game mechanics to all pieces inside the board.
  */
-function loadMechanics(goalTile, resetCounters) {
+function loadMechanics(levelObj, resetCounters) {
 
     // Pep objects does not auto-reset when loading new level,
     // so we manually reset it.
@@ -55,8 +53,6 @@ function loadMechanics(goalTile, resetCounters) {
         shouldEase:         false,
         useCSSTranslation:  false,
         initiate: handleMovementInitiate,
-        // start: handleMovementStart,
-        // drag: handleMovementDrag,
         stop: handleMovementStop
     });
 
@@ -65,12 +61,10 @@ function loadMechanics(goalTile, resetCounters) {
         shouldEase:         false,
         useCSSTranslation:  false,
         initiate: handleMovementInitiate,
-        // start: handleMovementStart,
-        // drag: handleMovementDrag,
         stop: handleMovementStop
     });
 
-    initializeVariables(goalTile);
+    initializeVariables(levelObj);
     setMovementConstraints();
 
     if (resetCounters) {
@@ -149,6 +143,9 @@ function setMovementConstraints(pieceObj) {
  */
 function checkWin(pieceObj) {
     if (pieceObj.el.id == DIV_ID.JEEP && occupying(goalCoordinates.x, goalCoordinates.y, pieceObj)) {
+        var secondsTaken = secondTimer + (minuteTimer * 60);
+
+        sr.addToScore(level, numMoves, secondsTaken);
         $('#' + DIV_ID.LEVEL_COMPLETE_MODAL).modal('show');
     }
 }
@@ -160,13 +157,14 @@ function checkWin(pieceObj) {
 /**
  * Initialize variables.
  */
-function initializeVariables(goalTile) {
+function initializeVariables(levelObj) {
     pieces       = $.pep.peps;
+    level        = levelObj.level;
     tileLengthPx = Math.min(pieces[0].el.offsetWidth, pieces[0].el.offsetHeight);
 
     goalCoordinates = {
-        x: goalTile.x * tileLengthPx + (tileLengthPx / 2),
-        y: goalTile.y * tileLengthPx + (tileLengthPx / 2)
+        x: levelObj.goalX * tileLengthPx + (tileLengthPx / 2),
+        y: levelObj.goalY * tileLengthPx + (tileLengthPx / 2)
     };
 }
 
@@ -175,7 +173,6 @@ function initializeVariables(goalTile) {
  */
 function incrementNumMoves() {
     numMoves++;
-    totalMoves++;
 
     // Start timer on first move of level
     if (numMoves == 1) {
@@ -186,7 +183,7 @@ function incrementNumMoves() {
 }
 
 /**
- * Reset number of moves. (Not totalMoves counter)
+ * Reset number of moves.
  */
 function resetNumMoves() {
     numMoves = 0;
@@ -201,11 +198,10 @@ function updateNumMovesDisplay() {
 }
 
 /**
- * Adds time into totalSecondsTimer and resets 
+ * Adds time into totalTimeSeconds and resets 
  */
 function resetTimer() {
     clearTimeout(timerInstance);
-    totalSecondsTimer += secondTimer + (minuteTimer * 60);
 
     tenthsTimer = 0;
     secondTimer = 0;
@@ -263,7 +259,7 @@ function setMovementConstraintFor(pieceObj) {
 }
 
 /**
- * Determines whether a piece has moved or not.
+ * Determines whether active piece has moved or not.
  */
 function hasMoved(pieceObj) {
     var xDifference = Math.abs(activePiecePosition.left - pieceObj.el.offsetLeft);

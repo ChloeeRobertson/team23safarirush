@@ -26,7 +26,7 @@
 
 var
     tileLengthPx,   // Length of 1 tile in px
-    level;          // Level object for current level
+    levelObj;       // Level object for current level
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -69,29 +69,29 @@ function loadLevel(levelNum) {
 function loadLevelFromString(levelString) {
 
     var resetCounters;
-    var goalTile;
+    // var goalTile;
 
     // Loads a new level
     if (levelString) {
         var resetCounters = true;
 
-        level = createLevel(levelString.trim());
-        tileLengthPx = BOARD.width() / level.boardLength;
+        levelObj = createLevel(levelString.trim());
+        tileLengthPx = BOARD.width() / levelObj.boardLength;
     }
 
     // Deletes all pieces from board
     BOARD.empty();
 
-    for (var i = 0; i < level.pieces.length; i++) {
-        loadPiece(level.pieces[i]);
+    for (var i = 0; i < levelObj.pieces.length; i++) {
+        loadPiece(levelObj.pieces[i]);
     }
 
-    goalTile = {
-        x: level.goalX,
-        y: level.goalY
-    };
+    // goalTile = {
+    //     x: levelObj.goalX,
+    //     y: levelObj.goalY
+    // };
 
-    sr.loadMechanics(goalTile, resetCounters);
+    sr.loadMechanics(levelObj, resetCounters);
 }
 
 // ----------------------------------------------------------
@@ -131,16 +131,16 @@ function createLevel(levelString) {
     var pieces = [];
 
     // Create each piece (data object) and push into pieces[]
-    for (var i = 3; i < parts.length; i++) {
-        var id    = i - 3;
+    for (var i = 4; i < parts.length; i++) {
         var piece = createPiece(parts[i]);
         pieces.push(piece);
     }
 
     return {
-        boardLength:  parts[0],
-        goalX:        parts[1],
-        goalY:        parts[2],
+        level:        parts[0],
+        boardLength:  parts[1],
+        goalX:        parts[2],
+        goalY:        parts[3],
         pieces:       pieces
     };
 }
@@ -167,7 +167,7 @@ $(document).ready(function() {
     sr.setupBoard();
 
     // LOADS LVL FROM LEVEL STRING
-    var lvl1 = '6,5,2,1221j';
+    var lvl1 = '40,6,5,2,1221j';
     sr.loadLevel(lvl1);
 
     // LOADS LVL FROM DATABASE

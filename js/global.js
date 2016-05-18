@@ -28,10 +28,11 @@ var EASTER_EGG = {
  **************************/
 
 var DIV_ID = {
-    BOARD:      'gameBoard',
-    JEEP:       'JEEP',
-    NUM_MOVES:  'numMoves',
-    TIMER:      'timerDisplay',
+    BOARD:          'gameBoard',
+    JEEP:           'JEEP',
+    NUM_MOVES:      'numMoves',
+    TIMER:          'timerDisplay',
+    PLAYER_NAME:    'playerName',
     LEVEL_COMPLETE_MODAL: 'levelCompleteModal'
 };
 
@@ -41,6 +42,18 @@ var PIECE_CLASSNAME = {
     VERTICAL:   'dragY',
     SIZE:       ['', '', 'size2', 'size3']
 };
+
+/*
+ * Scoring
+ **************************/
+
+var SCORING = {
+    DIFFICULTY_MULTIPLIER:  100,
+    MOVES_MULTIPLIER:       0.98,
+    SECONDS_MULTIPLIER:     0.999
+};
+
+var TOTAL_LEVELS = 40;
 
 /*
  * AJAX
