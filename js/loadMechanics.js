@@ -215,13 +215,13 @@ function resetTimer() {
  */
 function updateTimerDisplay() {
     if (secondTimer < 10 && minuteTimer < 10) {
-        TIMER.text("0" + minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+        TIMER.text("0" + minuteTimer + ":0" + secondTimer);
     } else if (secondTimer < 10 && minuteTimer >= 10) {
-        TIMER.text(minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+        TIMER.text(minuteTimer + ":0" + secondTimer);
     } else if (secondTimer >= 10 && minuteTimer < 10) {
-        TIMER.text("0" + minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+        TIMER.text("0" + minuteTimer + ":" + secondTimer);
     } else {
-        TIMER.text(minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+        TIMER.text(minuteTimer + ":" + secondTimer);
     }
 }
 
