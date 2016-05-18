@@ -63,6 +63,8 @@ var SCORING = {
     SECONDS_MULTIPLIER:     0.999
 };
 
+var TOTAL_LEVELS = 40;
+
 /*
  * AJAX
  **************************/
