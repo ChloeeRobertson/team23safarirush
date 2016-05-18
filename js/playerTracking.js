@@ -10,6 +10,7 @@
 (function() {
 
 var
+    levelsCompleted = [],
     totalScore      = 0;
 
 // ----------------------------------------------------------
@@ -20,14 +21,15 @@ var
  * Mark level as complete and add level score to total score.
  */
 function addToScore(level, numMoves, secondsTaken) {
-    var difficulty = parseInt((level / 10) + 1);
-    // var multiplier = ;
+    var difficulty           = parseInt((level / 10) + 1);
+    var difficultyMultiplier = SCORING.DIFFICULTY_MULTIPLIER * difficulty;
+    var movesMultiplier      = Math.pow(SCORING.MOVES_MULTIPLIER, numMoves);
+    var secondsMultiplier    = Math.pow(SCORING.SECONDS_MULTIPLIER, secondsTaken);
 
-    totalScore = (SCORING.DIFFICULTY_MULTIPLIER * difficulty) *
-         (SCORING.MOVES_MULTIPLIER * numMoves) *
-         (SCORING.SECONDS_MULTIPLIER * secondsTaken);
+    var level = parseInt(level);
 
-    level = parseInt(level);
+    totalScore = difficultyMultiplier * movesMultiplier * secondsMultiplier;
+    // level = 
 
     console.log('lvl: ' + level + ', difficulty: ' + difficulty + ', moves: ' + numMoves + ', sec: ' + secondsTaken + ', score: ' + totalScore);
 }
@@ -39,6 +41,8 @@ function submitScore() {
     var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + score;
     // sr.ajaxGet(submitScoreURL, loadLevelFromString);
 }
+
+function 
 
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
