@@ -22,7 +22,7 @@
     <script src="js/global.js"></script>
     <script src="js/loadLevel.js"></script>
     <script src="js/loadMechanics.js"></script>
-    <script src="js/loadPieceAsset.js"></script>
+    <script src="js/loadPieceAssets.js"></script>
     <script src="js/playerTracking.js"></script>
     <script src="js/mute.js"></script>
     <script src="js/autoload.js"></script>
@@ -32,7 +32,7 @@
     <script>
         function changeLevel() {
             var x = parseInt($('#level').val());
-            sr.loadLevel(levelString[x]);
+            sr.loadLevel(x);
             $('#levelModal').modal('hide');
             $('#levelSelectionButton').text(
                     $('#difficulty').val().charAt(0).toUpperCase()
@@ -40,7 +40,6 @@
                     + " - " + $('#level').val() + " ");
             return false;
         };
-
     </script>
 </head>
 <body>
@@ -166,9 +165,10 @@
                         </div>
 
                         <div class="modal-body">
-                            <button type="button" class="btn btn-success btn-block">Next</button>
-                            <button type="button" class="btn btn-success btn-block">Save</button>
-                            <button type="button" class="btn btn-success btn-block">Random</button>
+                            <button id="nextLevelBtn" type="button" class="btn btn-success btn-block">Next</button>
+                            <button id="randomLevelBtn" type="button" class="btn btn-success btn-block">Random</button>
+                            <input id="playerNameInput" type="text" value="Your name">
+                            <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Save</button>
                         </div>
                     </div>
                 </div>

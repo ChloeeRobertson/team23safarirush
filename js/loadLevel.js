@@ -52,13 +52,11 @@ function loadLevel(levelNum) {
 
     // Load level from backend
     else if (Number.isInteger(levelNum)) {
-        var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
-        sr.ajaxGet(getLevelStringURL, loadLevelFromString);
-    }
+        loadLevelFromString(LEVELS_STRING[levelNum]);
 
-    // Load level from a levelString
-    else {
-        loadLevelFromString(levelNum);
+        // Loads from backend. Don't work locally.
+        // var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
+        // sr.ajaxGet(getLevelStringURL, loadLevelFromString);
     }
 }
 
@@ -116,7 +114,7 @@ function loadPiece(piece) {
             top:    piece.y * tileLengthPx,
         });
 
-    sr.loadPieceAsset(piece, pieceElement, BOARD);
+    sr.loadPieceAssets(piece, pieceElement, BOARD);
 
     BOARD.append(pieceElement);
 }

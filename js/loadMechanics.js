@@ -176,7 +176,8 @@ function checkWin(pieceObj) {
         var secondsTaken = secondTimer + (minuteTimer * 60);
 
         sr.addToScore(level, numMoves, secondsTaken);
-        $('#' + DIV_ID.LEVEL_COMPLETE_MODAL).modal('show');
+        sr.showLevelCompleteModal();
+        resetTimer();
     }
 }
 

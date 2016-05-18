@@ -1,5 +1,5 @@
 /*
- * Loads Jeep & animal images and sounds.
+ * Loads pieces' (jeep and animal) images and sounds.
  * 
  * Must be loaded after global.js and loadLevel.js
  *
@@ -10,12 +10,12 @@
 (function() {
 
 var
-    animal;
+    audio = new Audio();
 
 var
     // Used for Desktop clicks only
-    easterEggClickCounter   = 0,    // Counts # of clicks in succession
-    easterEggLastClick      = 0;    // Last click timestamp
+    easterEggClickCounter = 0,    // Counts # of clicks in succession
+    easterEggLastClick    = 0;    // Last click timestamp
 
 // ----------------------------------------------------------
 //               P U B L I C   F U N C T I O N S
@@ -24,17 +24,17 @@ var
 /**
  * Loads piece assets.
  */
-function loadPieceAsset(piece, pieceElement, board) {
+function loadPieceAssets(piece, pieceElement, board) {
     if (piece.isJeep) {
-        loadJeep(pieceElement);
+        loadJeepAssets(pieceElement);
     } else {
-        assignRandomAnimal(piece);
-        loadAnimal(pieceElement);
+        var animal = getRandomAnimalName(piece);
+        loadAnimalAssets(pieceElement, animal);
     }
 };
 
 // Attach public functions to global sr object
-window.sr.loadPieceAsset = loadPieceAsset;
+window.sr.loadPieceAssets = loadPieceAssets;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -43,20 +43,23 @@ window.sr.loadPieceAsset = loadPieceAsset;
 /**
  * Load jeep assets.
  */
-function loadJeep(pieceElement) {
-    animal = PIECE.JEEP_IMG_NAME;
-
+function loadJeepAssets(pieceElement) {
     pieceElement
         .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
-        .append('<img src="' + getImgUrl() + '">')
+        .append('<img src="' + getImgUrl(PIECE.JEEP_IMG_NAME) + '">')
         .on('click touchstart', easterEgg);
 }
 
 /**
  * Load animal assets.
  */
-function loadAnimal(pieceElement) {
-    pieceElement.append('<img src="' + getImgUrl() + '">');
+function loadAnimalAssets(pieceElement, animalName) {
+    pieceElement
+        .append('<img src="' + getImgUrl(animalName) + '">')
+        .on('click touchstart', function() {
+            var audioSource = getAudioUrl(animalName);
+            playAudio(audioSource);
+        });
 }
 
 /**
@@ -65,7 +68,6 @@ function loadAnimal(pieceElement) {
 function easterEgg(event) {
     var clickSpeed = event.timeStamp - easterEggLastClick;
     var clicksReached;
-    var audio;
 
     // Mobile tap
     if (event.detail) {
@@ -79,10 +81,7 @@ function easterEgg(event) {
 
     if (clicksReached) {
         easterEggClickCounter = 0;
-
-        audio = new Audio();
-        audio.src = EASTER_EGG.AUDIO_SRC;
-        audio.play();
+        playAudio(EASTER_EGG.AUDIO_SRC);
     }
 
     easterEggLastClick = event.timeStamp;
@@ -93,27 +92,35 @@ function easterEgg(event) {
 // ----------------------------------------------------------
 
 /**
- * Assign piece a random animal.
+ * Stops currently playing audio and plays another file.
  */
-function assignRandomAnimal(piece) {
+function playAudio(source) {
+    audio.src = source;
+    audio.play();
+}
+
+/**
+ * Get a random animal name.
+ */
+function getRandomAnimalName(piece) {
     var size        = Math.max(piece.w, piece.h);
     var randomIndex = Math.floor(Math.random() * PIECE.LIST[size].length);
     
-    animal  = PIECE.LIST[size][randomIndex];
+    return PIECE.LIST[size][randomIndex];
 }
 
 /**
- * Get animal's image URL.
+ * Get a piece's image URL.
  */
-function getImgUrl() {
-    return PIECE.IMG_DIR + animal + PIECE.IMG_EXT;
+function getImgUrl(pieceName) {
+    return PIECE.IMG_DIR + pieceName + PIECE.IMG_EXT;
 }
 
 /**
- * Get animal's audio URL.
+ * Get a piece's audio URL.
  */
-function getAudioUrl() {
-    return PIECE.AUDIO_DIR + animal + PIECE.AUDIO_EXT;
+function getAudioUrl(pieceName) {
+    return PIECE.AUDIO_DIR + pieceName + PIECE.AUDIO_EXT;
 }
 
 })();
