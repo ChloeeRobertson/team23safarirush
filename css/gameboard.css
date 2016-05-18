@@ -1,6 +1,7 @@
 
 #gameBoard {
-    background: #999966;
+    background: url("../images/backgroundPlaceholder.jpg");
+    background-size: 370px 400px;
     position: relative;
     margin: 0 auto;
     width: 370px;
