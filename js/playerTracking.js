@@ -21,6 +21,7 @@ var
  */
 function addToScore(level, numMoves, secondsTaken) {
     var difficulty = parseInt((level / 10) + 1);
+    // var multiplier = ;
 
     totalScore = (SCORING.DIFFICULTY_MULTIPLIER * difficulty) *
          (SCORING.MOVES_MULTIPLIER * numMoves) *

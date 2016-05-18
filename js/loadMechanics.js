@@ -36,7 +36,7 @@ var
     timerInstance;
 
 // ----------------------------------------------------------
-//               C O R E   F U N C T I O N S
+//               P U B L I C   F U N C T I O N S
 // ----------------------------------------------------------
 
 /**
@@ -72,6 +72,13 @@ function loadMechanics(levelObj, resetCounters) {
         resetTimer();
     }
 }
+
+// Attach public functions to global sr object
+window.sr.loadMechanics = loadMechanics;
+
+// ----------------------------------------------------------
+//               C O R E   F U N C T I O N S
+// ----------------------------------------------------------
 
 /**
  * Invoked when first touch/click is triggered on pieceObj. (touchstart/mousedown)
@@ -136,6 +143,29 @@ function setMovementConstraints(pieceObj) {
             setMovementConstraintFor(pieces[i]);
         }
     }
+}
+
+/**
+ * Sets piece movement constraints.
+ */
+function setMovementConstraintFor(pieceObj) {
+    var top     = 0;
+    var right   = BOARD_LENGTH_PX;
+    var bottom  = BOARD_LENGTH_PX;
+    var left    = 0;
+    var range;
+
+    if (movesHorizontally(pieceObj)) {
+        range   = getMovableRangeX(pieceObj);
+        left    = range.min;
+        right   = range.max;
+    } else {
+        range   = getMovableRangeY(pieceObj);
+        top     = range.min;
+        bottom  = range.max;
+    }
+
+    pieceObj.options.constrainTo = [top, right, bottom, left];
 }
 
 /**
@@ -214,15 +244,15 @@ function resetTimer() {
  * Function to update the timer display
  */
 function updateTimerDisplay() {
-    if (secondTimer < 10 && minuteTimer < 10) {
-        TIMER.text("0" + minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
-    } else if (secondTimer < 10 && minuteTimer >= 10) {
-        TIMER.text(minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
-    } else if (secondTimer >= 10 && minuteTimer < 10) {
-        TIMER.text("0" + minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
-    } else {
-        TIMER.text(minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
-    }
+     if (secondTimer < 10 && minuteTimer < 10) {
+         TIMER.text("0" + minuteTimer + ":0" + secondTimer);
+     } else if (secondTimer < 10 && minuteTimer >= 10) {
+         TIMER.text(minuteTimer + ":0" + secondTimer);
+     } else if (secondTimer >= 10 && minuteTimer < 10) {
+         TIMER.text("0" + minuteTimer + ":" + secondTimer);
+     } else {
+         TIMER.text(minuteTimer + ":" + secondTimer);
+     }
 }
 
 /**
@@ -233,29 +263,6 @@ function setActivePiecePosition(pieceObj) {
         left:   pieceObj.el.offsetLeft,
         top:    pieceObj.el.offsetTop
     };
-}
-
-/**
- * Sets piece movement constraints.
- */
-function setMovementConstraintFor(pieceObj) {
-    var top     = 0;
-    var right   = BOARD_LENGTH_PX;
-    var bottom  = BOARD_LENGTH_PX;
-    var left    = 0;
-    var range;
-
-    if (movesHorizontally(pieceObj)) {
-        range   = getMovableRangeX(pieceObj);
-        left    = range.min;
-        right   = range.max;
-    } else {
-        range   = getMovableRangeY(pieceObj);
-        top     = range.min;
-        bottom  = range.max;
-    }
-
-    pieceObj.options.constrainTo = [top, right, bottom, left];
 }
 
 /**
@@ -363,8 +370,5 @@ function inBounds(x, y) {
 function movesHorizontally(pieceObj) {
     return pieceObj.el.offsetWidth > pieceObj.el.offsetHeight;
 }
-
-// Attach public functions to global sr object
-window.sr.loadMechanics = loadMechanics;
 
 })();

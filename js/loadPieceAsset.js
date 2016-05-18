@@ -18,7 +18,7 @@ var
     easterEggLastClick      = 0;    // Last click timestamp
 
 // ----------------------------------------------------------
-//               C O R E   F U N C T I O N S
+//               P U B L I C   F U N C T I O N S
 // ----------------------------------------------------------
 
 /**
@@ -33,12 +33,22 @@ function loadPieceAsset(piece, pieceElement, board) {
     }
 };
 
+// Attach public functions to global sr object
+window.sr.loadPieceAsset = loadPieceAsset;
+
+// ----------------------------------------------------------
+//               C O R E   F U N C T I O N S
+// ----------------------------------------------------------
+
 /**
  * Load jeep assets.
  */
 function loadJeep(pieceElement) {
+    animal = PIECE.JEEP_IMG_NAME;
+
     pieceElement
         .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
+        .append('<img src="' + getImgUrl() + '">')
         .on('click touchstart', easterEgg);
 }
 
@@ -48,10 +58,6 @@ function loadJeep(pieceElement) {
 function loadAnimal(pieceElement) {
     pieceElement.append('<img src="' + getImgUrl() + '">');
 }
-
-// ----------------------------------------------------------
-//            H E L P E R   F U N C T I O N S
-// ----------------------------------------------------------
 
 /**
  * Easter Egg.
@@ -82,31 +88,32 @@ function easterEgg(event) {
     easterEggLastClick = event.timeStamp;
 }
 
+// ----------------------------------------------------------
+//            H E L P E R   F U N C T I O N S
+// ----------------------------------------------------------
+
 /**
  * Assign piece a random animal.
  */
 function assignRandomAnimal(piece) {
     var size        = Math.max(piece.w, piece.h);
-    var randomIndex = Math.floor(Math.random() * ANIMAL.LIST[size].length);
+    var randomIndex = Math.floor(Math.random() * PIECE.LIST[size].length);
     
-    animal  = ANIMAL.LIST[size][randomIndex];
+    animal  = PIECE.LIST[size][randomIndex];
 }
 
 /**
  * Get animal's image URL.
  */
 function getImgUrl() {
-    return ANIMAL.IMG_DIR + animal + ANIMAL.IMG_EXT;
+    return PIECE.IMG_DIR + animal + PIECE.IMG_EXT;
 }
 
 /**
  * Get animal's audio URL.
  */
 function getAudioUrl() {
-    return ANIMAL.AUDIO_DIR + animal + ANIMAL.AUDIO_EXT;
+    return PIECE.AUDIO_DIR + animal + PIECE.AUDIO_EXT;
 }
-
-// Attach public functions to global sr object
-window.sr.loadPieceAsset = loadPieceAsset;
 
 })();

@@ -1,20 +1,30 @@
 
+
+var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
+
+// For scripts to attach public functions to
+// See bottom of "Public Functions" in the load scripts
+var sr = {};
+
+
 /*
  * Animals and Easter Egg
  **************************/
 
-var ANIMAL = {
+var PIECE = {
     LIST: [
         [], [], // Index (size) 0, 1 empty. No animals of that size.
         ['zebra', 'lion'],
         ['elephant', 'giraffe']
     ],
 
-    IMG_DIR:    'images/animals/',
-    IMG_EXT:    '.jpg',
+    JEEP_IMG_NAME:   'jeep',
 
-    AUDIO_DIR:  'audio/animals/',
-    AUDIO_EXT:  '.wav'
+    IMG_DIR:        'images/animals/',
+    IMG_EXT:        '.png',
+
+    AUDIO_DIR:      'audio/animals/',
+    AUDIO_EXT:      '.wav'
 };
 
 var EASTER_EGG = {
@@ -29,7 +39,7 @@ var EASTER_EGG = {
 
 var DIV_ID = {
     BOARD:          'gameBoard',
-    JEEP:           'JEEP',
+    JEEP:           'jeep',
     NUM_MOVES:      'numMoves',
     TIMER:          'timerDisplay',
     PLAYER_NAME:    'playerName',
@@ -52,8 +62,6 @@ var SCORING = {
     MOVES_MULTIPLIER:       0.98,
     SECONDS_MULTIPLIER:     0.999
 };
-
-var TOTAL_LEVELS = 40;
 
 /*
  * AJAX
@@ -94,8 +102,3 @@ $(document).ready(function() {
 
     BOARD_LENGTH_PX = BOARD.width();
 });
-
-
-
-// For scripts to attach public functions to
-var sr = {};

@@ -29,7 +29,7 @@ var
     levelObj;       // Level object for current level
 
 // ----------------------------------------------------------
-//               C O R E   F U N C T I O N S
+//               P U B L I C   F U N C T I O N S
 // ----------------------------------------------------------
 
 /**
@@ -62,6 +62,14 @@ function loadLevel(levelNum) {
     }
 }
 
+// Attach public functions to global sr object
+window.sr.setupBoard    = setupBoard;
+window.sr.loadLevel     = loadLevel;
+
+// ----------------------------------------------------------
+//               C O R E   F U N C T I O N S
+// ----------------------------------------------------------
+
 /**
  * Load level pieces onto the board and invoke
  * sr.loadMechanics() after pieces finish loading.
@@ -69,7 +77,6 @@ function loadLevel(levelNum) {
 function loadLevelFromString(levelString) {
 
     var resetCounters;
-    // var goalTile;
 
     // Loads a new level
     if (levelString) {
@@ -86,17 +93,8 @@ function loadLevelFromString(levelString) {
         loadPiece(levelObj.pieces[i]);
     }
 
-    // goalTile = {
-    //     x: levelObj.goalX,
-    //     y: levelObj.goalY
-    // };
-
     sr.loadMechanics(levelObj, resetCounters);
 }
-
-// ----------------------------------------------------------
-//            H E L P E R   F U N C T I O N S
-// ----------------------------------------------------------
 
 /**
  * Loads a piece into the HTML DOM.
@@ -122,6 +120,10 @@ function loadPiece(piece) {
 
     BOARD.append(pieceElement);
 }
+
+// ----------------------------------------------------------
+//            H E L P E R   F U N C T I O N S
+// ----------------------------------------------------------
 
 /**
  * Create and returns a level (data object).
@@ -157,21 +159,5 @@ function createPiece(pieceString) {
         isJeep: pieceString[4] ? true : false
     };
 }
-
-// Attach public functions to global sr object
-window.sr.setupBoard    = setupBoard;
-window.sr.loadLevel     = loadLevel;
-
-// Auto setup board and load level 1 on document ready
-$(document).ready(function() {
-    sr.setupBoard();
-
-    // LOADS LVL FROM LEVEL STRING
-    var lvl1 = '40,6,5,2,1221j';
-    sr.loadLevel(lvl1);
-
-    // LOADS LVL FROM DATABASE
-    // sr.loadLevel(1);
-});
 
 })();
