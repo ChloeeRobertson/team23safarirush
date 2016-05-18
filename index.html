@@ -89,20 +89,16 @@
 
         ];
 
-        function loadLevel(levelNum) {
-            // LOAD FROM LEVEL STRING
-            sr.loadLevel(levelString[levelNum]);
-
-            // LOAD FROM DATABASE
-            // sr.loadLevel(levelNum);
-        }
-
         function changeLevel() {
             var x = parseInt($('#level').val());
-            loadLevel(x);
+            sr.loadLevel(levelString[x]);
             $('#levelModal').modal('hide');
+            $('#levelSelectionButton').text(
+                    $('#difficulty').val().charAt(0).toUpperCase()
+                    + $('#difficulty').val().substr(1)
+                    + " - " + $('#level').val() + " ");
             return false;
-        }
+        };
 
        /* $('#levelCompleteModal').modal({
             backdrop: 'static',
@@ -169,7 +165,7 @@
 
             <!-- Level selection button trigger modal -->
             <button id="levelSelectionButton" type="button" class="btn btn-primary btn-lg pull-left" data-toggle="modal" data-target="#levelModal">
-                    Easy &ndash; 5 <span class="glyphicon glyphicon-triangle-top"></span>
+                Easy - 1 <span class="glyphicon glyphicon-triangle-top"></span>
             </button>
 
             <!-- Modal -->
