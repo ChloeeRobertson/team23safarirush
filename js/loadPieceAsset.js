@@ -1,6 +1,7 @@
 /*
- * Loads Jeep and animal images and sounds.
- * Must be loaded after loadLevel.js
+ * Loads Jeep & animal images and sounds.
+ * 
+ * Must be loaded after global.js and loadLevel.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]
@@ -8,38 +9,13 @@
 
 (function() {
 
-/**
- * Create accesspoints outside of loadPieceAsset.js
- */
-function setGlobals() {
-    window.sr.loadPieceAsset = loadPieceAsset;
-}
-
-// ----------------------------------------------------------
-//                     V A R I A B L E S
-// ----------------------------------------------------------
+var
+    animal;
 
 var
-    JEEP_ID         = sr.JEEP_ID,
-    PIECE_CLASSES   = sr.PIECE_CLASSES,
-    ANIMAL_IMG_DIR  = 'images/animals/',
-    ANIMAL_IMG_EXT  = '.jpg',
-    ANIMALS = [
-        [], [], // Index(size) 0,1 empty. No animals of that size.
-        ['zebra', 'lion'],
-        ['elephant', 'giraffe']
-    ];
-
-var
-    EASTER_EGG = {
-        CLICKS_NEEDED:  10,    // # of clicks to activate Easter Egg
-        CLICK_SPEED:    400,   // Click succession speed in ms
-        AUDIO_SRC:      'audio/CrocHunterCrikey3.wav'
-    },
-
     // Used for Desktop clicks only
-    easterEggCounter    = 0,    // Counts # of clicks in succession
-    easterEggLastClick  = 0;    // Last click timestamp
+    easterEggClickCounter   = 0,    // Counts # of clicks in succession
+    easterEggLastClick      = 0;    // Last click timestamp
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -50,14 +26,28 @@ var
  */
 function loadPieceAsset(piece, pieceElement, board) {
     if (piece.isJeep) {
-        pieceElement
-            .attr('id', JEEP_ID) // Used for checkWin() in loadMechanics.js
-            .on('click touchstart', easterEgg);
+        loadJeep(pieceElement);
     } else {
-        var animalImgUrl = getAnimalImgUrl(piece.w, piece.h);
-        pieceElement.append('<img src="' + animalImgUrl + '">');
+        assignRandomAnimal(piece);
+        loadAnimal(pieceElement);
     }
 };
+
+/**
+ * Load jeep assets.
+ */
+function loadJeep(pieceElement) {
+    pieceElement
+        .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
+        .on('click touchstart', easterEgg);
+}
+
+/**
+ * Load animal assets.
+ */
+function loadAnimal(pieceElement) {
+    pieceElement.append('<img src="' + getImgUrl() + '">');
+}
 
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
@@ -78,11 +68,11 @@ function easterEgg(event) {
 
     // Desktop click
     else if (event.timeStamp && clickSpeed <= EASTER_EGG.CLICK_SPEED) {
-        clicksReached = (++easterEggCounter >= EASTER_EGG.CLICKS_NEEDED - 1);
+        clicksReached = (++easterEggClickCounter >= EASTER_EGG.CLICKS_NEEDED - 1);
     }
 
     if (clicksReached) {
-        easterEggCounter = 0;
+        easterEggClickCounter = 0;
 
         audio = new Audio();
         audio.src = EASTER_EGG.AUDIO_SRC;
@@ -93,17 +83,30 @@ function easterEgg(event) {
 }
 
 /**
- * Get a random animal image given a size.
+ * Assign piece a random animal.
  */
-function getAnimalImgUrl(pieceW, pieceH) {
-    var size         = Math.max(pieceW, pieceH);
-    var randomIndex  = Math.floor(Math.random() * ANIMALS[size].length);
-    var randomAnimal = ANIMALS[size][randomIndex];
-
-    return ANIMAL_IMG_DIR + randomAnimal + ANIMAL_IMG_EXT;
+function assignRandomAnimal(piece) {
+    var size        = Math.max(piece.w, piece.h);
+    var randomIndex = Math.floor(Math.random() * ANIMAL.LIST[size].length);
+    
+    animal  = ANIMAL.LIST[size][randomIndex];
 }
 
-// Set global variables
-setGlobals();
+/**
+ * Get animal's image URL.
+ */
+function getImgUrl() {
+    return ANIMAL.IMG_DIR + animal + ANIMAL.IMG_EXT;
+}
+
+/**
+ * Get animal's audio URL.
+ */
+function getAudioUrl() {
+    return ANIMAL.AUDIO_DIR + animal + ANIMAL.AUDIO_EXT;
+}
+
+// Attach public functions to global sr object
+window.sr.loadPieceAsset = loadPieceAsset;
 
 })();

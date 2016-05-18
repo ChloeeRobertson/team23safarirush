@@ -19,11 +19,11 @@
     <link rel="stylesheet" href="css/meyerreset.css">
 
     <!-- Safari Rush -->
-    <script src="js/ajaxGet.js"></script>
+    <script src="js/global.js"></script>
     <script src="js/loadLevel.js"></script>
     <script src="js/loadMechanics.js"></script>
     <script src="js/loadPieceAsset.js"></script>
-    <script src="mute.js"></script>
+    <script src="js/mute.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/gameboard.css">
 
@@ -68,44 +68,6 @@
     </script>
 </head>
 <body>
-
-<script>
-
-    $(document).ready(function(){
-        var minuteTimer = 0;
-        var secondTimer = 0;
-        var tenthsTimer = 0;
-
-        function timer(){
-
-            tenthsTimer++;
-            if (tenthsTimer == 10) {
-                secondTimer++;
-                tenthsTimer = 0;
-            }
-            if (secondTimer == 60) {
-                secondTimer = 0;
-                minuteTimer++;
-            }
-
-            if (secondTimer < 10 && minuteTimer < 10) {
-                $("#timerDisplay").text("0" + minuteTimer + " : 0" + secondTimer + " : " + tenthsTimer);
-            } else if (secondTimer < 10 && minuteTimer >= 10) {
-                $("#timerDisplay").text(minuteTimer + " : 0" + secondTimer + " : " + tenthsTimer);
-            } else if (secondTimer >= 10 && minuteTimer < 10) {
-                $("#timerDisplay").text("0" + minuteTimer + " : " + secondTimer + " : " + tenthsTimer);
-            } else {
-                $("#timerDisplay").text(minuteTimer + " : " + secondTimer + " : " + tenthsTimer);
-            }
-            setTimeout(function(){timer()}, 100);
-
-        }
-
-        timer();
-
-    });
-</script>
-
     <!-- Site navigation bar -->
     <nav class="navbar navbar-default">
         <div class="container">

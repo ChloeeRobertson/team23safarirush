@@ -2,7 +2,7 @@
  * Adds game mechanics to all pieces with the assistance of
  * jQuery.pep library.
  *
- * Must be loaded after loadLevel.js
+ * Must be loaded after global.js and loadLevel.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]
@@ -15,82 +15,42 @@
 
 (function() {
 
-/**
- * Create accesspoints outside of loadMechanics.js
- */
-function setGlobals() {
-    window.sr.loadMechanics = loadMechanics;
-}
-
-// ----------------------------------------------------------
-//                     V A R I A B L E S
-// ----------------------------------------------------------
-
+// Board and Pieces
 var
-    BOARD,           // Board element
-    BOARD_LENGTH_PX, // Board length in px
-    TILE_LENGTH_PX,  // Tile length in px
-    PIECES,          // Board pieces (jQuery.pep objects)
-    PIECE_CLASSES    = window.sr.PIECE_CLASSES,
-    JEEP_ID          = window.sr.JEEP_ID;
+    pieces,                 // Stores all board pieces
+    activePiecePosition,    // Original position of active piece
 
-var
-    activePiecePosition; // Stores active piece's original position
+    goalCoordinates,        // Game ends when Jeep gets to here
 
-var
-    NUM_MOVES_DIV,   // DIV container holding # of moves
-    NUM_MOVES_DIV_ID = 'numMoves',
-    numMoves         = 0;
+    tileLengthPx;           // Length of 1 tile in px
 
+// Number of Moves
 var
-    // User wins when Jeep gets to these x, y coordinates
-    goalX,
-    goalY;
+    numMoves         = 0,   // Number of moves taken in current level
+    totalMoves       = 0;   // Number of moves taken total
 
 // Timer variables
 var
-    minuteTimer = 0,
-    secondTimer = 0,
-    tenthsTimer = 0,
-    timeoutID,
-    TIMER_DIV,
-    TIMER_DIV_ID = 'timerDisplay';
-
+    minuteTimer       = 0,
+    secondTimer       = 0,
+    tenthsTimer       = 0,
+    totalSecondsTimer = 0,
+    timerInstance;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
-
-/**
- * Timer function
- */
-function timer(){
-
-    tenthsTimer++;
-    if (tenthsTimer == 10) {
-        secondTimer++;
-        tenthsTimer = 0;
-    }
-    if (secondTimer == 60) {
-        secondTimer = 0;
-        minuteTimer++;
-    }
-    updateTimer(tenthsTimer, secondTimer, minuteTimer);
-    timeoutID = setTimeout(function(){timer()}, 100);
-
-}
     
 /**
  * Add game mechanics to all pieces inside the board.
  */
-function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
-
+function loadMechanics(goalTile, resetCounters) {
 
     // Pep objects does not auto-reset when loading new level,
     // so we manually reset it.
     $.pep.peps = [];
 
-    $('.' + PIECE_CLASSES.HORIZONTAL).pep({
+    $('.' + PIECE_CLASSNAME.HORIZONTAL).pep({
         axis:               'x',
         shouldEase:         false,
         useCSSTranslation:  false,
@@ -100,7 +60,7 @@ function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
         stop: handleMovementStop
     });
 
-    $('.' + PIECE_CLASSES.VERTICAL).pep({
+    $('.' + PIECE_CLASSNAME.VERTICAL).pep({
         axis:               'y',
         shouldEase:         false,
         useCSSTranslation:  false,
@@ -110,17 +70,12 @@ function loadMechanics(levelGoalX, levelGoalY, resetMoveCounter) {
         stop: handleMovementStop
     });
 
-    initializeVariables(levelGoalX, levelGoalY);
+    initializeVariables(goalTile);
     setMovementConstraints();
 
-
-    if (resetMoveCounter) {
-        updateNumMoves(0);
-        clearTimer(timeoutID);
-        tenthsTimer = 0;
-        secondTimer = 0;
-        minuteTimer = 0;
-        timer();
+    if (resetCounters) {
+        resetNumMoves();
+        resetTimer();
     }
 }
 
@@ -139,9 +94,26 @@ function handleMovementStop(event, pieceObj) {
 
     if (hasMoved(pieceObj)) {
         setMovementConstraints(pieceObj);
-        updateNumMoves();
+        incrementNumMoves();
         checkWin(pieceObj);
     }
+}
+
+/**
+ * Initiates Timer function
+ */
+function timer() {
+    tenthsTimer++;
+    if (tenthsTimer == 10) {
+        secondTimer++;
+        tenthsTimer = 0;
+    }
+    if (secondTimer == 60) {
+        secondTimer = 0;
+        minuteTimer++;
+    }
+    updateTimerDisplay();
+    timerInstance = setTimeout(function(){timer()}, 100);
 }
 
 /**
@@ -150,12 +122,12 @@ function handleMovementStop(event, pieceObj) {
 function snapToGrid(pieceObj) {
     if (movesHorizontally(pieceObj)) {
         var currentX = pieceObj.el.offsetLeft;
-        var newX     = Math.round(currentX / TILE_LENGTH_PX) * TILE_LENGTH_PX;
+        var newX     = Math.round(currentX / tileLengthPx) * tileLengthPx;
 
         pieceObj.el.style.left = newX + 'px';
     } else {
         var currentY = pieceObj.el.offsetTop;
-        var newY     = Math.round(currentY / TILE_LENGTH_PX) * TILE_LENGTH_PX;
+        var newY     = Math.round(currentY / tileLengthPx) * tileLengthPx;
 
         pieceObj.el.style.top = newY + 'px';
     }
@@ -165,9 +137,9 @@ function snapToGrid(pieceObj) {
  * Sets constraint for every other piece except the piece in parameter.
  */
 function setMovementConstraints(pieceObj) {
-    for (var i in PIECES) {
-        if (PIECES[i] != pieceObj) {
-            setMovementConstraintFor(PIECES[i]);
+    for (var i in pieces) {
+        if (pieces[i] != pieceObj) {
+            setMovementConstraintFor(pieces[i]);
         }
     }
 }
@@ -176,9 +148,8 @@ function setMovementConstraints(pieceObj) {
  * Checks if user has won the game.
  */
 function checkWin(pieceObj) {
-    if (pieceObj.el.id == JEEP_ID && occupying(goalX, goalY, pieceObj)) {
-        /*alert('You win!');*/
-        $('#levelCompleteModal').modal('show');
+    if (pieceObj.el.id == DIV_ID.JEEP && occupying(goalCoordinates.x, goalCoordinates.y, pieceObj)) {
+        $('#' + DIV_ID.LEVEL_COMPLETE_MODAL).modal('show');
     }
 }
 
@@ -187,52 +158,74 @@ function checkWin(pieceObj) {
 // ----------------------------------------------------------
 
 /**
- * Clears the timer
- */
-function clearTimer(timeoutID) {
-    clearTimeout(timeoutID);
-}
-
-/**
  * Initialize variables.
  */
-function initializeVariables(levelGoalX, levelGoalY) {
-    PIECES          = $.pep.peps;
-    BOARD           = PIECES[0].el.offsetParent;
-    BOARD_LENGTH_PX = BOARD.offsetWidth;
-    TILE_LENGTH_PX  = Math.min(PIECES[0].el.offsetWidth, PIECES[0].el.offsetHeight);
+function initializeVariables(goalTile) {
+    pieces       = $.pep.peps;
+    tileLengthPx = Math.min(pieces[0].el.offsetWidth, pieces[0].el.offsetHeight);
 
-    NUM_MOVES_DIV   = $('#' + NUM_MOVES_DIV_ID);
-    TIMER_DIV       = $('#' + TIMER_DIV_ID);
-
-    // Goal x,y tile midpoints
-    goalX = levelGoalX * TILE_LENGTH_PX + (TILE_LENGTH_PX / 2);
-    goalY = levelGoalY * TILE_LENGTH_PX + (TILE_LENGTH_PX / 2);
+    goalCoordinates = {
+        x: goalTile.x * tileLengthPx + (tileLengthPx / 2),
+        y: goalTile.y * tileLengthPx + (tileLengthPx / 2)
+    };
 }
 
 /**
- * Updates number of moves taken.
+ * Increment number of moves by 1 and start timer on first move.
  */
-function updateNumMoves(newNumMoves) {
-    numMoves = (Number.isInteger(newNumMoves)) ? newNumMoves : ++numMoves;
-    NUM_MOVES_DIV.text(numMoves);
+function incrementNumMoves() {
+    numMoves++;
+    totalMoves++;
+
+    // Start timer on first move of level
+    if (numMoves == 1) {
+        timer();
+    }
+
+    updateNumMovesDisplay();
+}
+
+/**
+ * Reset number of moves. (Not totalMoves counter)
+ */
+function resetNumMoves() {
+    numMoves = 0;
+    updateNumMovesDisplay();
+}
+
+/**
+ * Update number of moves display.
+ */
+function updateNumMovesDisplay() {
+    NUM_MOVES.text(numMoves);
+}
+
+/**
+ * Adds time into totalSecondsTimer and resets 
+ */
+function resetTimer() {
+    clearTimeout(timerInstance);
+    totalSecondsTimer += secondTimer + (minuteTimer * 60);
+
+    tenthsTimer = 0;
+    secondTimer = 0;
+    minuteTimer = 0;
+
+    updateTimerDisplay();
 }
 
 /**
  * Function to update the timer display
- * @param tenthsTimer   tenths of seconds
- * @param secondTimer   seconds display value
- * @param minuteTimer   minutes display value
  */
-function updateTimer (tenthsTimer, secondTimer, minuteTimer) {
+function updateTimerDisplay() {
     if (secondTimer < 10 && minuteTimer < 10) {
-        TIMER_DIV.text("0" + minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+        TIMER.text("0" + minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
     } else if (secondTimer < 10 && minuteTimer >= 10) {
-        TIMER_DIV.text(minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
+        TIMER.text(minuteTimer + ":0" + secondTimer + ":" + tenthsTimer);
     } else if (secondTimer >= 10 && minuteTimer < 10) {
-        TIMER_DIV.text("0" + minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+        TIMER.text("0" + minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
     } else {
-        TIMER_DIV.text(minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
+        TIMER.text(minuteTimer + ":" + secondTimer + ":" + tenthsTimer);
     }
 }
 
@@ -276,8 +269,8 @@ function hasMoved(pieceObj) {
     var xDifference = Math.abs(activePiecePosition.left - pieceObj.el.offsetLeft);
     var yDifference = Math.abs(activePiecePosition.top - pieceObj.el.offsetTop);
 
-    return xDifference > (TILE_LENGTH_PX / 2) ||
-           yDifference > (TILE_LENGTH_PX / 2);
+    return xDifference > (tileLengthPx / 2) ||
+           yDifference > (tileLengthPx / 2);
 }
 
 /**
@@ -286,8 +279,8 @@ function hasMoved(pieceObj) {
  */
 function getCoordinates(pieceObj) {
     return {
-        x: pieceObj.el.offsetLeft + (TILE_LENGTH_PX / 2),
-        y: pieceObj.el.offsetTop + (TILE_LENGTH_PX / 2)
+        x: pieceObj.el.offsetLeft + (tileLengthPx / 2),
+        y: pieceObj.el.offsetTop + (tileLengthPx / 2)
     };
 }
 
@@ -300,16 +293,16 @@ function getMovableRangeX(pieceObj) {
     var maxX  = coord.x;
 
     while (inBounds(minX, coord.y) && canOccupy(minX, coord.y, pieceObj)) {
-        minX -= TILE_LENGTH_PX;
+        minX -= tileLengthPx;
     }
 
     while (inBounds(maxX, coord.y) && canOccupy(maxX, coord.y, pieceObj)) {
-        maxX += TILE_LENGTH_PX;
+        maxX += tileLengthPx;
     }
 
     return {
-        min: minX + (TILE_LENGTH_PX / 2),
-        max: maxX - (TILE_LENGTH_PX / 2) - pieceObj.el.offsetWidth
+        min: minX + (tileLengthPx / 2),
+        max: maxX - (tileLengthPx / 2) - pieceObj.el.offsetWidth
     };
 }
 
@@ -322,16 +315,16 @@ function getMovableRangeY(pieceObj) {
     var maxY = coord.y;
 
     while (inBounds(coord.x, minY) && canOccupy(coord.x, minY, pieceObj)) {
-        minY -= TILE_LENGTH_PX;
+        minY -= tileLengthPx;
     }
 
     while (inBounds(coord.x, maxY) && canOccupy(coord.x, maxY, pieceObj)) {
-        maxY += TILE_LENGTH_PX;
+        maxY += tileLengthPx;
     }
 
     return {
-        min: minY + (TILE_LENGTH_PX / 2),
-        max: maxY - (TILE_LENGTH_PX / 2) - pieceObj.el.offsetHeight
+        min: minY + (tileLengthPx / 2),
+        max: maxY - (tileLengthPx / 2) - pieceObj.el.offsetHeight
     };
 }
 
@@ -339,8 +332,8 @@ function getMovableRangeY(pieceObj) {
  * Determines if a piece can occupy a coordinate x, y.
  */
 function canOccupy(x, y, pieceObj) {
-    for (var i in PIECES) {
-        if (pieceObj != PIECES[i] && occupying(x, y, PIECES[i])) {
+    for (var i in pieces) {
+        if (pieceObj != pieces[i] && occupying(x, y, pieces[i])) {
             return false;
         }
     }
@@ -375,7 +368,7 @@ function movesHorizontally(pieceObj) {
     return pieceObj.el.offsetWidth > pieceObj.el.offsetHeight;
 }
 
-// Set global variables
-setGlobals();
+// Attach public functions to global sr object
+window.sr.loadMechanics = loadMechanics;
 
 })();

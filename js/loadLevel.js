@@ -1,6 +1,8 @@
 /*
  * Loads level onto a board.
  *
+ * Must be loaded after global.js
+ *
  * Requires:
  *     - jQuery         [http://jquery.com/]
  *
@@ -22,67 +24,19 @@
 
 (function() {
 
-/**
- * Create accesspoints outside of loadLevel.js
- * and load first level onto board.
- */
-function setGlobalsAndLoadBoard() {
-
-    // Add functions to sr object
-    window.sr.setBoard      = setBoard;
-    window.sr.loadLevel     = loadLevel;
-
-    // Add vars and properties to sr object
-    window.sr.JEEP_ID       = JEEP_ID;
-    window.sr.PIECE_CLASSES = PIECE_CLASSES;
-
-    // Load level one after document loads
-    $(document).ready(function() {
-        sr.setBoard();
-
-        // LOADS LVL 1 FROM LEVEL STRING
-        var lvl1 = '6,5,2,1221j';
-        sr.loadLevel(lvl1);
-
-        // LOADS LVL 1 FROM DATABASE
-        // sr.loadLevel(1);
-    });
-}
-
-// ----------------------------------------------------------
-//                     V A R I A B L E S
-// ----------------------------------------------------------
-
 var
-    BOARD_ID        = 'gameBoard',
-    BOARD,          // Board element
-    GET_LEVEL_URL   = 'http://team23.site88.net/db/getLevel.php',
-
-    level,           // Level object
-    tileLengthPx;    // Length of tile in px
-
-var
-    JEEP_ID         = 'JEEP',
-
-    // Class names assigned to different pieces
-    PIECE_CLASSES = {
-        ALL:        'piece',    // Assigned to all pieces
-        HORIZONTAL: 'dragX',    // Only for horizontal moving pieces
-        VERTICAL:   'dragY',    // Only for vertical moving pieces
-        SIZE:       ['', '', 'size2', 'size3']  // No size 0 and 1
-    };
+    tileLengthPx,   // Length of 1 tile in px
+    level;          // Level object for current level
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
 
 /**
- * Sets board height to its width (makes it a square) and set BOARD to
- * reference jQuery wrapped board object.
+ * Sets board height to its width (makes it a square).
  */
-function setBoard() {
-    BOARD = $('#' + BOARD_ID),
-    BOARD.height(BOARD[0].offsetWidth);
+function setupBoard() {
+    BOARD.height(BOARD.width());
 }
 
 /**
@@ -98,7 +52,7 @@ function loadLevel(levelNum) {
 
     // Load level from backend
     else if (Number.isInteger(levelNum)) {
-        var getLevelStringURL = GET_LEVEL_URL + '?level=' + levelNum;
+        var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
         sr.ajaxGet(getLevelStringURL, loadLevelFromString);
     }
 
@@ -114,12 +68,15 @@ function loadLevel(levelNum) {
  */
 function loadLevelFromString(levelString) {
 
+    var resetCounters;
+    var goalTile;
+
     // Loads a new level
     if (levelString) {
-        var resetMoveCounter = true;
+        var resetCounters = true;
 
         level = createLevel(levelString.trim());
-        tileLengthPx = BOARD[0].offsetWidth / level.boardLength;
+        tileLengthPx = BOARD.width() / level.boardLength;
     }
 
     // Deletes all pieces from board
@@ -129,7 +86,12 @@ function loadLevelFromString(levelString) {
         loadPiece(level.pieces[i]);
     }
 
-    sr.loadMechanics(level.goalX, level.goalY, resetMoveCounter);
+    goalTile = {
+        x: level.goalX,
+        y: level.goalY
+    };
+
+    sr.loadMechanics(goalTile, resetCounters);
 }
 
 // ----------------------------------------------------------
@@ -142,9 +104,9 @@ function loadLevelFromString(levelString) {
 function loadPiece(piece) {
 
     // Class names applied to piece
-    var orientation = (piece.w == 1) ? PIECE_CLASSES.VERTICAL : PIECE_CLASSES.HORIZONTAL;
-    var pieceSize   = PIECE_CLASSES.SIZE[Math.max(piece.w, piece.h)];
-    var classNames  = PIECE_CLASSES.ALL + ' ' + orientation + ' ' + pieceSize;
+    var orientation = (piece.w == 1) ? PIECE_CLASSNAME.VERTICAL : PIECE_CLASSNAME.HORIZONTAL;
+    var pieceSize   = PIECE_CLASSNAME.SIZE[Math.max(piece.w, piece.h)];
+    var classNames  = PIECE_CLASSNAME.ALL + ' ' + orientation + ' ' + pieceSize;
 
     // Create new element in HTML DOM
     var pieceElement = $('<div></div>')
@@ -196,7 +158,20 @@ function createPiece(pieceString) {
     };
 }
 
-// Set global variables and load board
-setGlobalsAndLoadBoard();
+// Attach public functions to global sr object
+window.sr.setupBoard    = setupBoard;
+window.sr.loadLevel     = loadLevel;
+
+// Auto setup board and load level 1 on document ready
+$(document).ready(function() {
+    sr.setupBoard();
+
+    // LOADS LVL FROM LEVEL STRING
+    var lvl1 = '6,5,2,1221j';
+    sr.loadLevel(lvl1);
+
+    // LOADS LVL FROM DATABASE
+    // sr.loadLevel(1);
+});
 
 })();
