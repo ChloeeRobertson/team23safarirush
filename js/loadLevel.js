@@ -189,26 +189,41 @@ function createPiece(pieceString) {
 }
 
 /**
- * Updates the level selection button to show correct difficulty and level
+ * Updates the level selection button and modal to show correct difficulty and level
  */
 function updateLevel() {
     var diff;
     var lvl;
+    var lvlIndex;
 
+    // Evaluate the level number to determine difficuly and level
+    // Also updates the difficulty selection in the level selection modal
     if (levelObj.level <= 10) {
         diff = "Easy";
         lvl = levelObj.level;
+        lvlIndex = lvl - 1;
+        $('#difficulty').prop("selectedIndex", "0");
     } else if (levelObj.level <= 20) {
         diff = "Intermediate";
         lvl = levelObj.level - 10;
+        lvlIndex = lvl - 1;
+        $('#difficulty').prop("selectedIndex", "1");
     } else if (levelObj.level <= 30) {
         diff = "Advanced";
         lvl = levelObj.level - 20;
+        lvlIndex = lvl - 1;
+        $('#difficulty').prop("selectedIndex", "2");
     } else {
         diff = "Expert";
         lvl = levelObj.level - 30;
+        lvlIndex = lvl - 1;
+        $('#difficulty').prop("selectedIndex", "3");
     }
 
+    // Update the level selection in the level selection modal
+    $('#level').prop("selectedIndex", lvlIndex);
+
+    // Update the level selection button
     $('#levelSelectionButton').html(
         diff + " - " + lvl
         + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
