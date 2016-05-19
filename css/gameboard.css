@@ -1,11 +1,28 @@
 
 #gameBoard {
     background: url("../images/backgroundPlaceholder.jpg");
-    background-size: 370px 400px;
+    background-size: 360px 360px;
     position: relative;
     margin: 0 auto;
-    width: 370px;
-    height: 400px;
+    width: 360px;
+    height: 360px;
+}
+/*
+Media query for iPhone 5 size screens
+*/
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 320px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    #gameBoard {
+        background: url("../images/backgroundPlaceholder.jpg");
+        background-size: 320px 320px;
+        position: relative;
+        margin: 0 auto;
+        width: 320px;
+        height: 320px;
+    }
 }
 
 /* Animals and Jeep
