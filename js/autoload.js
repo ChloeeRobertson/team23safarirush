@@ -11,5 +11,6 @@ if (AUTO_LOAD_LEVEL_ON_DOCUMENT_READY) {
     $(document).ready(function() {
         sr.setupBoard();
         sr.loadLevel(1);
+        updateLevelButton();
     });
 }

@@ -20,6 +20,7 @@
 
     <!-- Safari Rush -->
     <script src="js/global.js"></script>
+    <script src="js/changeLevel.js"></script>
     <script src="js/loadLevel.js"></script>
     <script src="js/loadMechanics.js"></script>
     <script src="js/loadPieceAssets.js"></script>
@@ -28,19 +29,6 @@
     <script src="js/autoload.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/gameboard.css">
-
-    <script>
-        function changeLevel() {
-            var x = parseInt($('#level').val());
-            sr.loadLevel(x);
-            $('#levelModal').modal('hide');
-            $('#levelSelectionButton').text(
-                    $('#difficulty').val().charAt(0).toUpperCase()
-                    + $('#difficulty').val().substr(1)
-                    + " - " + $('#level').val() + " ");
-            return false;
-        };
-    </script>
 </head>
 <body>
     <!-- Site navigation bar -->
@@ -100,7 +88,6 @@
 
             <!-- Level selection button trigger modal -->
             <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left" data-toggle="modal" data-target="#levelModal">
-                    Easy &ndash; 5 <span class="glyphicon glyphicon-triangle-top"></span>
             </button>
 
             <!-- Modal -->
@@ -117,7 +104,7 @@
                                     <div class="form-group">
                                         <label for="difficulty">Difficulty:</label>
                                         <select class="form-control" id="difficulty" name="difficulty">
-                                            <option value="easy">Easy</option>
+                                            <option value="easy" selected>Easy</option>
                                             <option value="intermediate">Intermediate</option>
                                             <option value="advanced">Advanced</option>
                                             <option value="expert">Expert</option>
@@ -125,7 +112,7 @@
                                         <br>
                                         <label for="level">Level:</label>
                                         <select class="form-control" id="level" name="level">
-                                            <option value="1">1</option>
+                                            <option value="1" selected>1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
@@ -149,7 +136,7 @@
             </div>
 
             <!-- Level reset button -->
-            <button type="button" onclick="sr.loadLevel()" class="btn btn-success btn-lg pull-right">
+            <button id="levelResetButton" type="button" onclick="sr.loadLevel()" class="btn btn-success btn-lg pull-right">
                 Reset <span class="glyphicon glyphicon-refresh"></span>
             </button>
 
