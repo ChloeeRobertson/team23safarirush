@@ -41,6 +41,7 @@ var DIV_ID = {
     BOARD:          'gameBoard',
     NUM_MOVES:      'numMoves',
     TIMER:          'timerDisplay',
+    MUTE:           'volume',
 
     JEEP:           'jeep',
 
@@ -107,7 +108,7 @@ $(document).ready(function() {
     BOARD     = $('#' + DIV_ID.BOARD);
     NUM_MOVES = $('#' + DIV_ID.NUM_MOVES);
     TIMER     = $('#' + DIV_ID.TIMER);
-
+    MUTE      = $('#' + DIV_ID.MUTE);
     BOARD_LENGTH_PX = BOARD.width();
 });
 

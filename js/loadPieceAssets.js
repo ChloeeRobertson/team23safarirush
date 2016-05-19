@@ -58,7 +58,9 @@ function loadAnimalAssets(pieceElement, animalName) {
         .append('<img src="' + getImgUrl(animalName) + '">')
         .on('click touchstart', function() {
             var audioSource = getAudioUrl(animalName);
-            playAudio(audioSource);
+            if (sound === true) {
+                playAudio(audioSource);
+            }
         });
 }
 
@@ -97,6 +99,7 @@ function easterEgg(event) {
 function playAudio(source) {
     audio.src = source;
     audio.play();
+    tracks.push(audio);
 }
 
 /**

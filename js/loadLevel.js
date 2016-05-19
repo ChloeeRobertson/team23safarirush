@@ -58,6 +58,9 @@ function loadLevel(levelNum) {
         // var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
         // sr.ajaxGet(getLevelStringURL, loadLevelFromString);
     }
+
+    // Reset array containing audio tracks
+    sr.clearArray();
 }
 
 // Attach public functions to global sr object
