@@ -61,6 +61,29 @@ function loadLevel(levelNum) {
 
     // Reset array containing audio tracks
     sr.clearArray();
+
+    // Updates the level selection button to show correct difficulty and level
+    var diff;
+    var lvl;
+
+    if (levelNum <= 10) {
+        diff = "Easy";
+        lvl = levelNum;
+    } else if (levelNum <= 20) {
+        diff = "Intermediate";
+        lvl = levelNum - 10;
+    } else if (levelNum <= 30) {
+        diff = "Advanced";
+        lvl = levelNum - 20;
+    } else {
+        diff = "Expert";
+        lvl = levelNum - 30;
+    }
+
+    $('#levelSelectionButton').html(
+        diff + " - " + lvl
+        + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
+    );
 }
 
 // Attach public functions to global sr object

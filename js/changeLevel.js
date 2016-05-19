@@ -13,15 +13,15 @@
 /*
  * Updates the level selection button to show current selected level
  */
-function updateLevelButton() {
-    $('#levelSelectionButton').html(
-        $('#difficulty').val().charAt(0).toUpperCase()
-        + $('#difficulty').val().substr(1)
-        + " - "
-        + $('#level').val()
-        + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
-    );
-}
+// function updateLevelButton() {
+//     $('#levelSelectionButton').html(
+//         $('#difficulty').val().charAt(0).toUpperCase()
+//         + $('#difficulty').val().substr(1)
+//         + " - "
+//         + $('#level').val()
+//         + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
+//     );
+// }
 
 /*
  * Changes the level based on the difficulty and level selected on the level selection modal.
@@ -43,6 +43,5 @@ function changeLevel() {
 
     // Hide the modal after level selection
     $('#levelModal').modal('hide');
-    updateLevelButton();
     return false;
 };
