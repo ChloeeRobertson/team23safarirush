@@ -5,20 +5,26 @@ $(document).ready(function(){
     
     // State of mute button
     sound = true;
-    
-    // Mute button: checks sound variable then mutes or unmutes the tracks
+
+// Mute button: checks sound variable then mutes or unmutes the tracks
     $('#' + DIV_ID.MUTE).click(function mute() {
         if (sound === true) {
             cutAudio();
+            muteToggle();
             sound = false;
         } else if (sound === false) {
+            muteToggle();
             sound = true;
         }
     });
-    
-    // Toggles mute button image
+
+// Toggles mute button image
     function muteToggle() {
-    
+        if (sound == false) {
+            $('#' + DIV_ID.MUTE).attr('src', "images/volume_on.gif");
+        } else {
+            $('#' + DIV_ID.MUTE).attr('src', "images/volume_off.gif");
+        }
     }
     
     // Cuts off audio when mute button pressed
