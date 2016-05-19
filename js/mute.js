@@ -9,21 +9,26 @@ sound = true;
 // Mute button: checks sound variable then mutes or unmutes the tracks
 $('#' + DIV_ID.MUTE).click(function mute() {
     if (sound === true) {
+        cutAudio();
         sound = false;
     } else if (sound === false) {
         sound = true;
     }
+});
 
-    if (tracks[0].muted === true) {
-        for(var i=0; i<tracks.length; i++){
-            tracks[i].muted = false;
-        }
-    } else {
-        for(var j=0; j<tracks.length; j++){
-            tracks[j].muted = true;
+// Toggles mute button image
+function muteToggle() {
+
+}
+
+// Cuts off audio when mute button pressed
+function cutAudio() {
+    for (var i = 0; i < tracks.length; i++) {
+        if (tracks[i].currentTime > 0) {
+            tracks[i].pause();
         }
     }
-});
+}
 
 // Resets array anytime loadLevel() is called
 function clearArray() {
