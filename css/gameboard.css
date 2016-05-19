@@ -1,11 +1,13 @@
-
+/*
+Gameboard settings for devices with screens larger than the standard phones
+*/
 #gameBoard {
     background: url("../images/backgroundPlaceholder.jpg");
-    background-size: 360px 360px;
+    background-size: 480px 480px;
     position: relative;
     margin: 0 auto;
-    width: 360px;
-    height: 360px;
+    width: 480px;
+    height: 480px;
 }
 /*
 Media query for iPhone 5 size screens
@@ -22,6 +24,38 @@ and (orientation: portrait) {
         margin: 0 auto;
         width: 320px;
         height: 320px;
+    }
+}
+/*
+Media query for larger phone screens
+*/
+@media only screen
+and (min-device-width: 360px)
+and (max-device-width: 420px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    #gameBoard {
+        background: url("../images/backgroundPlaceholder.jpg");
+        background-size: 360px 360px;
+        position: relative;
+        margin: 0 auto;
+        width: 360px;
+        height: 360px;
+    }
+}
+/*
+Media query for all devices in between large phones and tablets
+*/
+@media only screen
+and (min-device-width: 420px)
+and (max-device-width: 719px) {
+    #gameBoard {
+        background: url("../images/backgroundPlaceholder.jpg");
+        background-size: 420px 420px;
+        position: relative;
+        margin: 0 auto;
+        width: 420px;
+        height: 420px;
     }
 }
 
