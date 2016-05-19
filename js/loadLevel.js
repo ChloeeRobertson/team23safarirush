@@ -62,33 +62,37 @@ function loadLevel(levelNum) {
     // Reset array containing audio tracks
     sr.clearArray();
 
-    // Updates the level selection button to show correct difficulty and level
-    var diff;
-    var lvl;
+    // Updates the level selection button
+    updateLevel();
+}
 
-    if (levelNum <= 10) {
-        diff = "Easy";
-        lvl = levelNum;
-    } else if (levelNum <= 20) {
-        diff = "Intermediate";
-        lvl = levelNum - 10;
-    } else if (levelNum <= 30) {
-        diff = "Advanced";
-        lvl = levelNum - 20;
-    } else {
-        diff = "Expert";
-        lvl = levelNum - 30;
+/**
+ * Changes the level based on the difficulty and level selected on the level selection modal.
+ */
+function changeLevel() {
+    var diff = $('#difficulty').val();
+    var lvl = parseInt($('#level').val());
+
+    // Modify the level value depending on difficulty to get correct configuration
+    if (diff == "intermediate") {
+        lvl += 10;
+    } else if (diff == "advanced") {
+        lvl += 20;
+    } else if (diff == "expert") {
+        lvl += 30;
     }
 
-    $('#levelSelectionButton').html(
-        diff + " - " + lvl
-        + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
-    );
-}
+    sr.loadLevel(lvl);
+
+    // Hide the modal after level selection
+    $('#levelModal').modal('hide');
+    return false;
+};
 
 // Attach public functions to global sr object
 window.sr.setupBoard    = setupBoard;
 window.sr.loadLevel     = loadLevel;
+window.sr.changeLevel   = changeLevel;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -182,6 +186,33 @@ function createPiece(pieceString) {
         h: parseInt(pieceString[3]),
         isJeep: pieceString[4] ? true : false
     };
+}
+
+/**
+ * Updates the level selection button to show correct difficulty and level
+ */
+function updateLevel() {
+    var diff;
+    var lvl;
+
+    if (levelObj.level <= 10) {
+        diff = "Easy";
+        lvl = levelObj.level;
+    } else if (levelObj.level <= 20) {
+        diff = "Intermediate";
+        lvl = levelObj.level - 10;
+    } else if (levelObj.level <= 30) {
+        diff = "Advanced";
+        lvl = levelObj.level - 20;
+    } else {
+        diff = "Expert";
+        lvl = levelObj.level - 30;
+    }
+
+    $('#levelSelectionButton').html(
+        diff + " - " + lvl
+        + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
+    );
 }
 
 })();
