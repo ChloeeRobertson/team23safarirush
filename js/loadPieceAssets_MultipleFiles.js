@@ -55,7 +55,7 @@ function loadJeepAssets(pieceElement) {
     pieceElement
         .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
         .append('<img src="' + getImgUrl(DIV_ID.JEEP) + '">')
-        .on('mousedown touchstart', function() {
+        .on('click touchstart', function() {
             var audioIndex = addAudioBySource(EASTER_EGG.AUDIO_SRC);
             easterEgg(audioIndex);
         });
@@ -67,7 +67,7 @@ function loadJeepAssets(pieceElement) {
 function loadAnimalAssets(pieceElement, animalName) {
     pieceElement
         .append('<img src="' + getImgUrl(animalName) + '">')
-        .on('mousedown touchstart', function() {
+        .on('click touchstart', function() {
             var audioIndex = addAudioByPieceName(animalName);
             playAudio(audioIndex);
         });

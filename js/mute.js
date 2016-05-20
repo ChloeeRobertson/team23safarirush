@@ -10,7 +10,7 @@ $(document).ready(function(){
     var sound = true;
 
     // Mute button: checks sound variable then mutes or unmutes the tracks
-    MUTE_BUTTON.on('click touchend', function mute() {
+    MUTE_BUTTON.on('click', function mute() {
         if (sound === true) {
             cutAudio();
             muteToggle();
