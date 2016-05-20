@@ -10,10 +10,9 @@ var LOAD_LEVELS_FROM_BACKEND = false;
 // See bottom of "Public Functions" in the load scripts
 var sr = {};
 
-
-/*
- * Pieces, Audio, and Easter Egg
- **************************/
+// ----------------------------------------------------------
+// P I E C E S ,   A U D I O   S P R I T E ,   E A S T E R   E G G
+// ----------------------------------------------------------
 
 var PIECE = {
     ANIMALS: [
@@ -22,42 +21,47 @@ var PIECE = {
         ['elephant', 'giraffe']
     ],
 
-    IMG_DIR:        'images/animals/',
-    IMG_EXT:        '.png',
+    IMG_DIR:          'images/animals/',
+    IMG_EXT:          '.png',
 
     AUDIO_SPRITE_URL: 'audio/audioSprite.mp3',
 };
 
 // Position and duration info for audio sprite
+// Join audio files: http://audio-joiner.com/
 var AUDIO = [];
-AUDIO['zebra']    = {start: 50.0, duration: 3.0};
-AUDIO['lion']     = {start: 60.0, duration: 3.0};
-AUDIO['elephant'] = {start: 30.0, duration: 3.0};
-AUDIO['giraffe']  = {start: 40.0, duration: 3.0};
+AUDIO['zebra']    = {start: 0.01, duration: 1.02};
+AUDIO['lion']     = {start: 0.01, duration: 1.02};
+AUDIO['elephant'] = {start: 0.01, duration: 1.02};
+AUDIO['giraffe']  = {start: 0.01, duration: 1.02};
+AUDIO['jeep']     = {start: 0.01, duration: 1.02};
+AUDIO['easter']   = {start: 1.05, duration: 2.9};
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
     CLICK_SPEED:    400,   // Consecutive click speed in ms
-    AUDIO_SRC:      'audio/CrocHunterCrikey3.wav'
 };
 
-/*
- * DIV ID's and Classnames
- **************************/
+// ----------------------------------------------------------
+//    D I V   I D s   &   P I E C E   C L A S S N A M E S
+// ----------------------------------------------------------
 
 var DIV_ID = {
+
+    // Board and mechanics
     BOARD:          'gameBoard',
     NUM_MOVES:      'numMoves',
     TIMER:          'timerDisplay',
     MUTE_BUTTON:    'volume',
 
-    JEEP:           'jeep',
-
+    // Level Complete Modal
     LEVEL_COMPLETE_MODAL:   'levelCompleteModal',
     NEXT_LEVEL_BUTTON:      'nextLevelBtn',
     RANDOM_LEVEL_BUTTON:    'randomLevelBtn',
     SUBMIT_SCORE_BUTTON:    'submitScoreBtn',
-    PLAYER_NAME_INPUT:      'playerNameInput'
+    PLAYER_NAME_INPUT:      'playerNameInput',
+
+    JEEP:           'jeep'
 };
 
 var PIECE_CLASSNAME = {
@@ -67,9 +71,9 @@ var PIECE_CLASSNAME = {
     SIZE:       ['', '', 'size2', 'size3']
 };
 
-/*
- * Scoring & Levels
- **************************/
+// ----------------------------------------------------------
+//             S C O R I N G   A N D   L E V E L S
+// ----------------------------------------------------------
 
 var SCORING = {
     DIFFICULTY_MULTIPLIER:  100,
@@ -79,9 +83,9 @@ var SCORING = {
 
 var TOTAL_LEVELS = 40;
 
-/*
- * AJAX
- **************************/
+// ----------------------------------------------------------
+//                          A J A X
+// ----------------------------------------------------------
 
 var AJAX_URL = {
     GET_LEVEL:      'http://team23.site88.net/db/getLevel.php',
@@ -101,9 +105,9 @@ sr.ajaxGet = function(url, callback) {
     xhttp.send();
 }
 
-/*
- * DOM Objects and Related
- **************************/
+// ----------------------------------------------------------
+//        D O M   O B J E C T S   R E F E R E N C E S
+// ----------------------------------------------------------
 
 // Board and mechanics
 var BOARD;
@@ -136,11 +140,12 @@ $(document).ready(function() {
     BOARD_LENGTH_PX = BOARD.width();
 });
 
-/*
- * Levels String
- **************************/
+// ----------------------------------------------------------
+//                L E V E L S   S T R I N G
+// ----------------------------------------------------------
 
 // For detailed explanation, see loadLevel.js header
+// Used only when LOAD_LEVELS_FROM_BACKEND = false
 var LEVELS_STRING = ['',
 
     // Level 1 - 5

@@ -127,10 +127,6 @@ function loadLevelFromString(levelString) {
         levelObj = createLevel(levelString.trim());
         tileLengthPx = BOARD.width() / levelObj.boardLength;
 
-        // Reset array containing audio tracks
-        // sr.clearArray();
-        sr.clearAudioObjects();
-
         // Updates the level selection button
         updateLevelNumDisplay();
     }

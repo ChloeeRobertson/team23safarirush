@@ -38,7 +38,8 @@ function addToScore(level, numMoves, secondsTaken) {
  * Submit score to leaderboard.
  */
 function submitScore() {
-    var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + totalScore;
+    var score = Math.round(totalScore);
+    var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + score;
     sr.ajaxGet(submitScoreURL, redirectToLeaderboard);
 
     // TEMPORARY: Allows redirecting to leaderboard when submitting scores locally.

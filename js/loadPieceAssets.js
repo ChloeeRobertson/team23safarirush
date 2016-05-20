@@ -10,12 +10,12 @@
 (function() {
 
 var
-    muted = false,  // Is volume muted?
     timeoutInstance,
-    audioSprite = new Audio();
-    audioSprite.src = PIECE.AUDIO_SPRITE_URL;
+    audioSprite;
 
 var
+    lockAudio             = false; // Locks audio while easter egg playing
+
     // Used for Desktop clicks only
     easterEggClickCounter = 0,    // Counts # of clicks in succession
     easterEggLastClick    = 0;    // Last click timestamp
@@ -28,24 +28,22 @@ var
  * Loads piece assets.
  */
 function loadPieceAssets(piece, pieceElement) {
+    if (!audioSprite) {
+        initiateAudioSprite();
+    }
+
     if (piece.isJeep) {
+        var animal = DIV_ID.JEEP;
         loadJeepAssets(pieceElement);
     } else {
         var animal = getRandomAnimalName(piece);
-        loadAnimalAssets(pieceElement, animal);
     }
-}
 
-/**
- * Resets audio objects for new level.
- */
-function clearAudioObjects() {
-    // audio = [];
+    loadAssets(pieceElement, animal);
 }
 
 // Attach public functions to global sr object
-window.sr.loadPieceAssets   = loadPieceAssets;
-window.sr.clearAudioObjects = clearAudioObjects;
+window.sr.loadPieceAssets = loadPieceAssets;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -56,29 +54,35 @@ window.sr.clearAudioObjects = clearAudioObjects;
  */
 function loadJeepAssets(pieceElement) {
     pieceElement
-        .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
-        .append('<img src="' + getImgUrl(DIV_ID.JEEP) + '">')
-        .on('click touchstart', function() {
-            // var audioIndex = addAudioBySource(EASTER_EGG.AUDIO_SRC);
-            // easterEgg(audioIndex);
-        });
+        .on('mousedown touchstart', function() {
+            easterEgg();
+        })
+
+        // Used for checkWin() in loadMechanics.js
+        .attr('id', DIV_ID.JEEP);
 }
 
 /**
- * Load animal-only assets.
+ * Load assets for all animals and the jeep.
  */
-function loadAnimalAssets(pieceElement, animalName) {
+function loadAssets(pieceElement, pieceName) {
     pieceElement
-        .append('<img src="' + getImgUrl(animalName) + '">')
-        .on('click touchstart', function() {
-            playAudio(animalName);
+        .append('<img src="' + getImgUrl(pieceName) + '">')
+        .on('mousedown touchstart', function() {
+            playAudio(pieceName);
         });
 }
 
 /**
  * Easter Egg.
  */
-function easterEgg(audioIndex) {
+function easterEgg() {
+
+    // Audio locked, do nothing
+    if (lockAudio) {
+        return;
+    }
+
     var clickSpeed = event.timeStamp - easterEggLastClick;
     var clicksReached;
 
@@ -93,8 +97,14 @@ function easterEgg(audioIndex) {
     }
 
     if (clicksReached) {
+        playAudio('easter');
+
+        lockAudio             = true;
         easterEggClickCounter = 0;
-        playAudio(audioIndex);
+
+        setTimeout(function() {
+            lockAudio = false;
+        }, AUDIO['easter'].duration * 1000);
     }
 
     easterEggLastClick = event.timeStamp;
@@ -105,19 +115,36 @@ function easterEgg(audioIndex) {
 // ----------------------------------------------------------
 
 /**
+ * Initiate audio sprite.
+ */
+function initiateAudioSprite() {
+    audioSprite     = new Audio();
+    audioSprite.src = PIECE.AUDIO_SPRITE_URL;
+}
+
+/**
  * Plays piece's sound.
  */
 function playAudio(pieceName) {
-    if (!muted) {
+
+    // Audio locked, do nothing
+    if (lockAudio) {
+        return;
+    }
+
+    // Play sound if not muted
+    if (!sr.isMuted()) {
+        var startPosition = AUDIO[pieceName].start;
+        var playDuration  = AUDIO[pieceName].duration;
+
         clearTimeout(timeoutInstance);
 
-        audioSprite.currentTime = AUDIO[pieceName].start;
+        audioSprite.currentTime = startPosition;
         audioSprite.play();
 
         timeoutInstance = setTimeout(function() {
             audioSprite.pause();
-        }, AUDIO[pieceName].length * 1000);
-        // tracks.push(audio);
+        }, playDuration * 1000);
     }
 }
 
@@ -136,13 +163,6 @@ function getRandomAnimalName(piece) {
  */
 function getImgUrl(pieceName) {
     return PIECE.IMG_DIR + pieceName + PIECE.IMG_EXT;
-}
-
-/**
- * Get a piece's audio URL.
- */
-function getAudioUrl(pieceName) {
-    return PIECE.AUDIO_DIR + pieceName + PIECE.AUDIO_EXT;
 }
 
 })();
