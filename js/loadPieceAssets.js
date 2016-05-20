@@ -14,7 +14,7 @@ var
     audioSprite;
 
 var
-    lockAudio             = false; // Locks audio while easter egg playing
+    audioLocked           = false; // Locks audio while easter egg playing
 
     // Used for Desktop clicks only
     easterEggClickCounter = 0,    // Counts # of clicks in succession
@@ -79,7 +79,7 @@ function loadAssets(pieceElement, pieceName) {
 function easterEgg() {
 
     // Audio locked, do nothing
-    if (lockAudio) {
+    if (audioLocked) {
         return;
     }
 
@@ -99,11 +99,11 @@ function easterEgg() {
     if (clicksReached) {
         playAudio('easter');
 
-        lockAudio             = true;
+        audioLocked             = true;
         easterEggClickCounter = 0;
 
         setTimeout(function() {
-            lockAudio = false;
+            audioLocked = false;
         }, AUDIO['easter'].duration * 1000);
     }
 
@@ -127,25 +127,26 @@ function initiateAudioSprite() {
  */
 function playAudio(pieceName) {
 
-    // Audio locked, do nothing
-    if (lockAudio) {
+    // Audio locked or muted, do nothing
+    if (audioLocked || sr.isMuted()) {
         return;
     }
 
-    // Play sound if not muted
-    if (!sr.isMuted()) {
-        var startPosition = AUDIO[pieceName].start;
-        var playDuration  = AUDIO[pieceName].duration;
+    // Temporary. Play individual files instead of sound sprite.
+    audioSprite.src = 'audio/animals/' + pieceName + '.mp3';
+    audioSprite.play();
 
-        clearTimeout(timeoutInstance);
+    // var startPosition = AUDIO[pieceName].start;
+    // var playDuration  = AUDIO[pieceName].duration;
 
-        audioSprite.currentTime = startPosition;
-        audioSprite.play();
+    // clearTimeout(timeoutInstance);
 
-        timeoutInstance = setTimeout(function() {
-            audioSprite.pause();
-        }, playDuration * 1000);
-    }
+    // audioSprite.currentTime = startPosition;
+    // audioSprite.play();
+
+    // timeoutInstance = setTimeout(function() {
+    //     audioSprite.pause();
+    // }, playDuration * 1000);
 }
 
 /**

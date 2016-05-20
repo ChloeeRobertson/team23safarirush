@@ -13,6 +13,6 @@ if (AUTO_LOAD_LEVEL_ON_DOCUMENT_READY) {
         setTimeout(function() {
         	sr.setupBoard();
         	sr.loadLevel(1);
-        }, 500);
+        }, 1000);
     });
 }
