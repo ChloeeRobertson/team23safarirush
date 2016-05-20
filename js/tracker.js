@@ -16,14 +16,6 @@ var
     currentLevel    = 0,
     totalScore      = 0;
 
-// Level complete modal DOM elements
-var
-    levelCompleteModal,
-    nextLevelButton,
-    randomLevelButton,
-    submitScoreButton,
-    playerNameInput;
-
 // ----------------------------------------------------------
 //               P U B L I C   F U N C T I O N S
 // ----------------------------------------------------------
@@ -40,9 +32,6 @@ function addToScore(level, numMoves, secondsTaken) {
     totalScore += calculateScore(level, numMoves, secondsTaken);
 
     markLevelComplete(currentLevel);
-
-    console.log(unplayedLevels);
-    console.log('lvl: ' + currentLevel + ', difficulty: ' + difficulty + ', moves: ' + numMoves + ', sec: ' + secondsTaken + ', score: ' + totalScore);
 }
 
 /**
@@ -52,8 +41,8 @@ function submitScore() {
     var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + totalScore;
     sr.ajaxGet(submitScoreURL, redirectToLeaderboard);
 
-    // Temporary.
-    // Allows redirecting to leaderboard when submitting scores locally.
+    // TEMPORARY: Allows redirecting to leaderboard when submitting scores locally.
+    // No 'Access-Control-Allow-Origin' header is present on the requested resource.
     setTimeout(redirectToLeaderboard, 1000);
 }
 

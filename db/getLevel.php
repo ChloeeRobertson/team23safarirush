@@ -33,7 +33,7 @@ else if ($difficulty) {
 // Query and print results
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
-    echo $row['boardSize'] . ',' . $row['goalX'] . ',' . $row['goalY'] . ',' . $row['jeepPiece'] . 'j,' . $row['pieces'] . "\n";
+    echo $row['level'] . ',' . $row['boardSize'] . ',' . $row['goalX'] . ',' . $row['goalY'] . ',' . $row['jeepPiece'] . 'j,' . $row['pieces'] . "\n";
 }
 
 ?>

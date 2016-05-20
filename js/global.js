@@ -1,6 +1,10 @@
 
-
+// Automatically load first level on document ready
 var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
+
+// True = Loads level string from backend;
+// False = Loads from LEVELS_STRING (at the end of global.js -- this file)
+var LOAD_LEVELS_FROM_BACKEND = false;
 
 // For scripts to attach public functions to
 // See bottom of "Public Functions" in the load scripts
@@ -8,7 +12,7 @@ var sr = {};
 
 
 /*
- * Pieces and Easter Egg
+ * Pieces, Audio, and Easter Egg
  **************************/
 
 var PIECE = {
@@ -22,16 +26,14 @@ var PIECE = {
     IMG_EXT:        '.png',
 
     AUDIO_SPRITE_URL: 'audio/audioSprite.mp3',
-
-    AUDIO_DIR:      'audio/animals/',
-    AUDIO_EXT:      '.mp3'
 };
 
-// var AUDIO = [];
-// AUDIO['zebra']    = {start: 50.0, length: 3.0};
-// AUDIO['lion']     = {start: 60.0, length: 3.0};
-// AUDIO['elephant'] = {start: 30.0, length: 3.0};
-// AUDIO['giraffe']  = {start: 40.0, length: 3.0};
+// Position and duration info for audio sprite
+var AUDIO = [];
+AUDIO['zebra']    = {start: 50.0, duration: 3.0};
+AUDIO['lion']     = {start: 60.0, duration: 3.0};
+AUDIO['elephant'] = {start: 30.0, duration: 3.0};
+AUDIO['giraffe']  = {start: 40.0, duration: 3.0};
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
@@ -103,7 +105,7 @@ sr.ajaxGet = function(url, callback) {
  * DOM Objects and Related
  **************************/
 
-// Board, Moves Counter, Timer Display
+// Board and mechanics
 var BOARD;
 var NUM_MOVES;
 var TIMER;
@@ -138,6 +140,7 @@ $(document).ready(function() {
  * Levels String
  **************************/
 
+// For detailed explanation, see loadLevel.js header
 var LEVELS_STRING = ['',
 
     // Level 1 - 5

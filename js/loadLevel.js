@@ -53,12 +53,18 @@ function loadLevel(levelNum) {
     // Load new level
     else {
 
-        // Loads from globals.js LEVEL_STRING
-        loadLevelFromString(LEVELS_STRING[levelNum]);
+        if (LOAD_LEVELS_FROM_BACKEND) {
 
-        // Loads from backend. Don't work locally.
-        // var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
-        // sr.ajaxGet(getLevelStringURL, loadLevelFromString);
+            // Loads from backend. Don't work locally.
+            var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
+            sr.ajaxGet(getLevelStringURL, loadLevelFromString);
+        }
+
+        else {
+
+            // Loads from globals.js LEVEL_STRING
+            loadLevelFromString(LEVELS_STRING[levelNum]);
+        }
     }
 }
 
