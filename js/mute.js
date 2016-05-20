@@ -7,49 +7,73 @@
 
 (function() {
     
-    // Current/last audio object that played
-    var audioPlaying;
-    
-    // State of mute button
-    var muted = false;
+var
+    audioPlaying,  // Current/last audio object that played
+    muted = false; // State of mute button
 
-    // Toggles mute button image
-    function muteToggle() {
-        var volumeIconUrl;
+// ----------------------------------------------------------
+//               P U B L I C   F U N C T I O N S
+// ----------------------------------------------------------
 
-        if (muted) {
-            muted         = false;
-            volumeIconUrl = VOLUME_ICON.ON;
-        } else {
-            muted         = true;
-            volumeIconUrl = VOLUME_ICON.OFF;
+/**
+ * Set currently playing audio.
+ */
+function setPlayingAudio(audio) {
+    audioPlaying = audio;
+}
 
-            pauseAudio();
-        }
+/**
+ * Checks if volume is muted.
+ */
+function isMuted() {
+    return muted;
+}
 
-        MUTE_BUTTON.attr('src', volumeIconUrl);
+// Attach public functions to global sr object
+window.sr.isMuted         = isMuted;
+window.sr.setPlayingAudio = setPlayingAudio;
+
+// ----------------------------------------------------------
+//               C O R E   F U N C T I O N S
+// ----------------------------------------------------------
+
+/**
+ * Toggles mute state.
+ */
+function muteToggle() {
+    var volumeIconUrl;
+
+    if (muted) {
+        muted         = false;
+        volumeIconUrl = VOLUME_ICON.ON;
+    } else {
+        muted         = true;
+        volumeIconUrl = VOLUME_ICON.OFF;
+
+        pauseAudio();
     }
-    
-    // Cuts off audio when mute button pressed
-    function pauseAudio() {
-        if (audioPlaying) {
-            audioPlaying.pause();
-        }
-    }
 
-    // Set currently playing audio
-    function setPlayingAudio(audio) {
-        audioPlaying = audio;
-    }
+    MUTE_BUTTON.attr('src', volumeIconUrl);
+}
 
-    // Checks if volume is muted
-    function isMuted() {
-        return muted;
+// ----------------------------------------------------------
+//            H E L P E R   F U N C T I O N S
+// ----------------------------------------------------------
+
+/**
+ * Cuts off audio when mute button pressed.
+ */
+function pauseAudio() {
+    if (audioPlaying) {
+        audioPlaying.pause();
     }
-    
-    // Attach public function to global sr object
-    window.sr.isMuted         = isMuted;
-    window.sr.muteToggle      = muteToggle;
-    window.sr.setPlayingAudio = setPlayingAudio;
+}
+
+
+
+// Automatically bind click event to mute button on document ready
+$(document).ready(function() {
+    MUTE_BUTTON.on('click', muteToggle);
+});
 
 })();
