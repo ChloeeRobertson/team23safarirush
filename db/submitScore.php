@@ -29,14 +29,13 @@ if ($conn->connect_error) {
 //     }
 // }
 
-// Post new high score
 $name  = trim($_GET['name']);
 $score = intval($_GET['score']);
 
-$sql = "INSERT INTO leaderboard (name, score)
-        VALUES ('" . $name . "'," . $score . ")";
-
-// Query and print results
-echo $conn->query($sql);
+// Submit score and print results
+echo $conn->query(
+	"INSERT INTO leaderboard (name, score)
+    VALUES ('" . $name . "'," . $score . ")"
+);
 
 ?>

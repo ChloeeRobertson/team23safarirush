@@ -133,7 +133,7 @@ function markLevelComplete(level) {
  * Shows submit score response.
  */
 function redirectToLeaderboard() {
-    window.location.href = AJAX_URL.LEADERBOARD;
+    window.location.href = AJAX_URL.LEADERBOARD + "?score=" + Math.round(totalScore);
 }
 
 /**

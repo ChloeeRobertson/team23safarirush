@@ -36,3 +36,9 @@
     margin: auto;
     width: 50%;
 }
+
+#yourScore {
+    padding-top: 25px;
+    text-align: center;
+    font-weight: bold;
+}
