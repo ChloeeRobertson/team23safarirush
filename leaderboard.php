@@ -1,4 +1,5 @@
 <?php
+// Get database configurations
 require_once('db/config.php');
 
 // Make connection to DB
@@ -8,15 +9,12 @@ if ($conn->connect_error) {
 }
 
 // Get top 10 scores
-$result = $conn->query(
-    "SELECT name, score
-    FROM leaderboard
-    ORDER BY score DESC
-    LIMIT 10"
-);
+$sql = "SELECT name, score
+        FROM leaderboard
+        ORDER BY score DESC
+        LIMIT 10";
 
-// Player's score
-$score = $_GET['score'];
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +22,7 @@ $score = $_GET['score'];
 
 <head>
     <meta charset="UTF-8">
-    <title>Safari Rush - Leaderboard</title>
+    <title>Safari Rush - About Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- jQuery -->
@@ -98,12 +96,6 @@ $score = $_GET['score'];
                             ?>
                         </table>
                     </div>
-                    
-                    <?php if ($score) { ?>
-                    <div id="yourScore">
-                        Your score: <?php echo $score; ?>
-                    </div>
-                    <?php } ?>
                 </div>
             </div>
         </div>
