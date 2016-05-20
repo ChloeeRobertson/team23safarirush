@@ -9,6 +9,15 @@ Gameboard settings for devices with screens larger than the standard phones
     width: 480px;
     height: 480px;
 }
+#gameBorder {
+    background: url("../images/border.png");
+    background-size: 500px 500px;
+    position: relative;
+    margin: 0 auto;
+    width: 500px;
+    height: 500px;
+    padding-top: 10px;
+}
 /*
 Media query for iPhone 5 size screens
 */
@@ -19,11 +28,20 @@ and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: portrait) {
     #gameBoard {
         background: url("../images/backgroundMay19.1205.png");
+        background-size: 300px 300px;
+        position: relative;
+        margin: 0 auto;
+        width: 300px;
+        height: 300px;
+    }
+    #gameBorder {
+        background: url("../images/border.png");
         background-size: 320px 320px;
         position: relative;
         margin: 0 auto;
         width: 320px;
         height: 320px;
+        padding-top: 10px;
     }
 }
 /*
@@ -36,11 +54,20 @@ and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: portrait) {
     #gameBoard {
         background: url("../images/backgroundMay19.1205.png");
+        background-size: 340px 340px;
+        position: relative;
+        margin: 0 auto;
+        width: 340px;
+        height: 340px;
+    }
+    #gameBorder {
+        background: url("../images/border.png");
         background-size: 360px 360px;
         position: relative;
         margin: 0 auto;
         width: 360px;
         height: 360px;
+        padding-top: 10px;
     }
 }
 /*
@@ -51,11 +78,20 @@ and (min-device-width: 420px)
 and (max-device-width: 719px) {
     #gameBoard {
         background: url("../images/backgroundMay19.1205.png");
+        background-size: 400px 400px;
+        position: relative;
+        margin: 0 auto;
+        width: 400px;
+        height: 400px;
+    }
+    #gameBorder {
+        background: url("../images/border.png");
         background-size: 420px 420px;
         position: relative;
         margin: 0 auto;
         width: 420px;
         height: 420px;
+        padding-top: 10px;
     }
 }
 
