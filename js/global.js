@@ -4,14 +4,14 @@ var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
 
 // True = Loads level string from backend;
 // False = Loads from LEVELS_STRING (at the end of global.js -- this file)
-var LOAD_LEVELS_FROM_BACKEND = false;
+var LOAD_LEVEL_FROM_BACKEND = false;
 
 // For scripts to attach public functions to
 // See bottom of "Public Functions" in the load scripts
 var sr = {};
 
 // ----------------------------------------------------------
-// P I E C E S ,   A U D I O   S P R I T E ,   E A S T E R   E G G
+//    P I E C E S ,   A U D I O ,   E A S T E R   E G G
 // ----------------------------------------------------------
 
 var PIECE = {
@@ -25,6 +25,11 @@ var PIECE = {
     IMG_EXT:          '.png',
 
     AUDIO_SPRITE_URL: 'audio/audioSprite.mp3',
+};
+
+var VOLUME_ICON = {
+    ON:  'images/volume_on.gif',
+    OFF: 'images/volume_off.gif'
 };
 
 // Position and duration info for audio sprite

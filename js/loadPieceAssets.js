@@ -120,6 +120,9 @@ function easterEgg() {
 function initiateAudioSprite() {
     audioSprite     = new Audio();
     audioSprite.src = PIECE.AUDIO_SPRITE_URL;
+
+    // Tell mute.js what audio sprite file will be played
+    sr.setPlayingAudio(audioSprite);
 }
 
 /**
@@ -132,21 +135,17 @@ function playAudio(pieceName) {
         return;
     }
 
-    // Temporary. Play individual files instead of sound sprite.
-    audioSprite.src = 'audio/animals/' + pieceName + '.mp3';
+    var startPosition = AUDIO[pieceName].start;
+    var playDuration  = AUDIO[pieceName].duration;
+
+    clearTimeout(timeoutInstance);
+
+    audioSprite.currentTime = startPosition;
     audioSprite.play();
 
-    // var startPosition = AUDIO[pieceName].start;
-    // var playDuration  = AUDIO[pieceName].duration;
-
-    // clearTimeout(timeoutInstance);
-
-    // audioSprite.currentTime = startPosition;
-    // audioSprite.play();
-
-    // timeoutInstance = setTimeout(function() {
-    //     audioSprite.pause();
-    // }, playDuration * 1000);
+    timeoutInstance = setTimeout(function() {
+        audioSprite.pause();
+    }, playDuration * 1000);
 }
 
 /**

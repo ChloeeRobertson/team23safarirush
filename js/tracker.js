@@ -1,6 +1,6 @@
 /*
  * Tracks player's score and levels completed.
- * 
+ * Determines next unplayed level, random unplayed level if any.
  *
  * Must be loaded after global.js and loadLevel.js
  *

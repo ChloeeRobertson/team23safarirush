@@ -5,6 +5,7 @@
  */
 
 require_once('config.php');
+require_once('functions.php');
 
 // Make connection to DB
 $conn = new mysqli($host, $user, $pass, $db);
@@ -12,30 +13,17 @@ if ($conn->connect_error) {
     die('Connection failed: ' . $conn->connect_error);
 }
 
-// Trim $_GET variables
-// $action = trim($_GET['action']);
-
-// Grab top 10
-// if ($action == 'top10') {
-//     $sql = "SELECT name, score
-//             FROM leaderboard
-//             ORDER BY score DESC
-//             LIMIT 10";
-
-//     // Query and print results
-//     $result = $conn->query($sql);
-//     while ($row = $result->fetch_assoc()) {
-//         echo $row['name'] . ',' . $row['score'] . "\n";
-//     }
-// }
-
-$name  = trim($_GET['name']);
-$score = intval($_GET['score']);
+// Clean $_GET variables
+$name  = clean($_GET['name']);
+$score = intval(clean($_GET['score']));
 
 // Submit score and print results
-echo $conn->query(
-	"INSERT INTO leaderboard (name, score)
-    VALUES ('" . $name . "'," . $score . ")"
-);
+if ($score && $name) {
+    
+    echo $conn->query(
+        "INSERT INTO leaderboard (name, score)
+        VALUES ('" . $name . "'," . $score . ")"
+    );
+}
 
 ?>

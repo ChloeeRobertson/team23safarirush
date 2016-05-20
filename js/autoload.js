@@ -1,18 +1,22 @@
 /*
  * Automatically set-up board and load level 1 on document ready
  *
- * Must be loaded after global.js and loadLevel.js
+ * Must be the last script to load on the webpage.
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]
  */
 
+$(document).ready(function() {
+
+// Set-up board and load first level
 if (AUTO_LOAD_LEVEL_ON_DOCUMENT_READY) {
-    $(document).ready(function() {
-    	// Set timeout for media query to complete
-        setTimeout(function() {
-        	sr.setupBoard();
-        	sr.loadLevel(1);
-        }, 1000);
-    });
+    setTimeout(function() {
+    	sr.setupBoard();
+    	sr.loadLevel(1);
+    }, 1000);
 }
+
+MUTE_BUTTON.on('click', sr.muteToggle);
+
+});
