@@ -1,5 +1,6 @@
 /*
  * Tracks player's score and levels completed.
+ * 
  *
  * Must be loaded after global.js and loadLevel.js
  *
@@ -32,8 +33,7 @@ var
  */
 function addToScore(level, numMoves, secondsTaken) {
     if (!unplayedLevels) {
-        initializeLevels();
-        initializeButtons();
+        initializeUnplayedLevels();
     }
 
     currentLevel = parseInt(level);
@@ -46,61 +46,49 @@ function addToScore(level, numMoves, secondsTaken) {
 }
 
 /**
- * Show level complete modal.
+ * Submit score to leaderboard.
  */
-function showLevelCompleteModal() {
-    if (!hasNextLevel()) {
-        nextLevelButton.hide();
-        randomLevelButton.hide();
-    }
+function submitScore() {
+    var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + totalScore;
+    sr.ajaxGet(submitScoreURL, redirectToLeaderboard);
 
-    levelCompleteModal.modal('show');
+    // Temporary.
+    // Allows redirecting to leaderboard when submitting scores locally.
+    setTimeout(redirectToLeaderboard, 1000);
 }
-
-// Attach public functions to global sr object
-window.sr.addToScore             = addToScore;
-window.sr.showLevelCompleteModal = showLevelCompleteModal;
-
-// ----------------------------------------------------------
-//               C O R E   F U N C T I O N S
-// ----------------------------------------------------------
 
 /**
  * Checks if there is an unplayed level.
  */
-function hasNextLevel() {
+function hasNextUnplayedLevel() {
     return unplayedLevels.length > 0;
 }
 
 /**
  * Gets next unplayed level.
  */
-function getNextLevel() {
-    return (hasNextLevel()) ? unplayedLevels[0] : -1;
+function getNextUnplayedLevel() {
+    return (hasNextUnplayedLevel()) ? unplayedLevels[0] : -1;
 }
 
 /**
  * Get a random unplayed level.
  */
-function getRandomLevel() {
+function getRandomUnplayedLevel() {
     var randomIndex = Math.floor(Math.random() * unplayedLevels.length);
     return unplayedLevels[randomIndex];
 }
 
-/**
- * Submit score to leaderboard.
- */
-function submitScore() {
-    var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + totalScore;
-    sr.ajaxGet(submitScoreURL, showSubmitScoreResults);
-}
+// Attach public functions to global sr object
+window.sr.addToScore             = addToScore;
+window.sr.submitScore            = submitScore;
+window.sr.hasNextUnplayedLevel   = hasNextUnplayedLevel;
+window.sr.getNextUnplayedLevel   = getNextUnplayedLevel;
+window.sr.getRandomUnplayedLevel = getRandomUnplayedLevel;
 
-/**
- * Shows submit score response.
- */
-function showSubmitScoreResults(ajaxResponse) {
-    console.log(ajaxResponse);
-}
+// ----------------------------------------------------------
+//               C O R E   F U N C T I O N S
+// ----------------------------------------------------------
 
 /**
  * Calculates score for current level.
@@ -121,39 +109,13 @@ function calculateScore(level, numMoves, secondsTaken) {
 /**
  * Initialize level variables.
  */
-function initializeLevels() {
+function initializeUnplayedLevels() {
     unplayedLevels = [];
 
     for (var i = 0; i < TOTAL_LEVELS; i++) {
         var level = i + 1;
         unplayedLevels[i] = level;
     }
-}
-
-/**
- * Set up level complete modal buttons.
- */
-function initializeButtons() {
-    levelCompleteModal = $('#' + DIV_ID.LEVEL_COMPLETE_MODAL);
-    nextLevelButton    = $('#' + DIV_ID.NEXT_LEVEL_BUTTON);
-    randomLevelButton  = $('#' + DIV_ID.RANDOM_LEVEL_BUTTON);
-    submitScoreButton  = $('#' + DIV_ID.SUBMIT_SCORE_BUTTON);
-    playerNameInput    = $('#' + DIV_ID.PLAYER_NAME_INPUT);
-
-    nextLevelButton.on('click touchstart', function() {
-        sr.loadLevel(getNextLevel());
-        levelCompleteModal.modal('hide');
-    });
-
-    randomLevelButton.on('click touchstart', function() {
-        sr.loadLevel(getRandomLevel());
-        levelCompleteModal.modal('hide');
-    });
-
-    submitScoreButton.on('click touchstart', function() {
-        submitScore();
-        window.location.href = AJAX_URL.LEADERBOARD;
-    });
 }
 
 /**
@@ -168,10 +130,17 @@ function markLevelComplete(level) {
 }
 
 /**
+ * Shows submit score response.
+ */
+function redirectToLeaderboard() {
+    window.location.href = AJAX_URL.LEADERBOARD;
+}
+
+/**
  * Get player name from input element.
  */
 function getPlayerName() {
-    return encodeURIComponent(playerNameInput.val());
+    return encodeURIComponent(PLAYER_NAME_INPUT.val());
 }
 
 })();

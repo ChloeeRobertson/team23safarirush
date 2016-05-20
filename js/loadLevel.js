@@ -37,11 +37,11 @@ var
  */
 function setupBoard() {
     BOARD.height(BOARD.width());
+    initializeLevelCompleteModal();
 }
 
 /**
- * Get levelString from backend and invoke loadLevelFromString() to
- * load level onto board.
+ * Load level configuration onto board.
  */
 function loadLevel(levelNum) {
 
@@ -50,20 +50,16 @@ function loadLevel(levelNum) {
         loadLevelFromString();
     }
 
-    // Load level from backend
-    else if (Number.isInteger(levelNum)) {
+    // Load new level
+    else {
+
+        // Loads from globals.js LEVEL_STRING
         loadLevelFromString(LEVELS_STRING[levelNum]);
 
         // Loads from backend. Don't work locally.
         // var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
         // sr.ajaxGet(getLevelStringURL, loadLevelFromString);
     }
-
-    // Reset array containing audio tracks
-    sr.clearArray();
-
-    // Updates the level selection button
-    updateLevel();
 }
 
 /**
@@ -82,17 +78,30 @@ function changeLevel() {
         lvl += 30;
     }
 
-    sr.loadLevel(lvl);
+    loadLevel(lvl);
 
     // Hide the modal after level selection
     $('#levelModal').modal('hide');
     return false;
-};
+}
+
+/**
+ * Show level complete modal.
+ */
+function showLevelCompleteModal() {
+    if (!sr.hasNextUnplayedLevel()) {
+        NEXT_LEVEL_BUTTON.hide();
+        RANDOM_LEVEL_BUTTON.hide();
+    }
+
+    LEVEL_COMPLETE_MODAL.modal('show');
+}
 
 // Attach public functions to global sr object
-window.sr.setupBoard    = setupBoard;
-window.sr.loadLevel     = loadLevel;
-window.sr.changeLevel   = changeLevel;
+window.sr.setupBoard             = setupBoard;
+window.sr.loadLevel              = loadLevel;
+window.sr.changeLevel            = changeLevel;
+window.sr.showLevelCompleteModal = showLevelCompleteModal;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -103,15 +112,21 @@ window.sr.changeLevel   = changeLevel;
  * sr.loadMechanics() after pieces finish loading.
  */
 function loadLevelFromString(levelString) {
-
     var resetCounters;
 
     // Loads a new level
     if (levelString) {
-        var resetCounters = true;
+        resetCounters = true;
 
         levelObj = createLevel(levelString.trim());
         tileLengthPx = BOARD.width() / levelObj.boardLength;
+
+        // Reset array containing audio tracks
+        // sr.clearArray();
+        sr.clearAudioObjects();
+
+        // Updates the level selection button
+        updateLevelNumDisplay();
     }
 
     // Deletes all pieces from board
@@ -141,10 +156,10 @@ function loadPiece(piece) {
             width:  piece.w * tileLengthPx,
             height: piece.h * tileLengthPx,
             left:   piece.x * tileLengthPx,
-            top:    piece.y * tileLengthPx,
+            top:    piece.y * tileLengthPx
         });
 
-    sr.loadPieceAssets(piece, pieceElement, BOARD);
+    sr.loadPieceAssets(piece, pieceElement);
 
     BOARD.append(pieceElement);
 }
@@ -152,6 +167,35 @@ function loadPiece(piece) {
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
 // ----------------------------------------------------------
+
+/**
+ * Link level complete modal buttons to actual functions.
+ */
+function initializeLevelCompleteModal() {
+    NEXT_LEVEL_BUTTON.on('click touchend', function() {
+        var level = sr.getNextUnplayedLevel();
+        loadLevel(level);
+        hideLevelCompleteModal();
+    });
+
+    RANDOM_LEVEL_BUTTON.on('click touchend', function() {
+        var level = sr.getRandomUnplayedLevel();
+        loadLevel(level);
+        hideLevelCompleteModal();
+    });
+
+    SUBMIT_SCORE_BUTTON.on('click touchend', function() {
+        sr.submitScore();
+        hideLevelCompleteModal();
+    });
+}
+
+/**
+ * Hide level complete modal.
+ */
+function hideLevelCompleteModal() {
+    LEVEL_COMPLETE_MODAL.modal('hide');
+}
 
 /**
  * Create and returns a level (data object).
@@ -189,9 +233,9 @@ function createPiece(pieceString) {
 }
 
 /**
- * Updates the level selection button and modal to show correct difficulty and level
+ * Updates the level selection button and modal to show correct difficulty and level.
  */
-function updateLevel() {
+function updateLevelNumDisplay() {
     var diff;
     var lvl;
     var lvlIndex;

@@ -10,10 +10,7 @@
 (function() {
 
 var
-    muted = false,  // Is volume muted?
-    timeoutInstance,
-    audioSprite = new Audio();
-    audioSprite.src = PIECE.AUDIO_SPRITE_URL;
+    audio = [];     // Stores all audio objects
 
 var
     // Used for Desktop clicks only
@@ -40,7 +37,7 @@ function loadPieceAssets(piece, pieceElement) {
  * Resets audio objects for new level.
  */
 function clearAudioObjects() {
-    // audio = [];
+    audio = [];
 }
 
 // Attach public functions to global sr object
@@ -52,26 +49,27 @@ window.sr.clearAudioObjects = clearAudioObjects;
 // ----------------------------------------------------------
 
 /**
- * Load jeep-only assets.
+ * Load jeep assets.
  */
 function loadJeepAssets(pieceElement) {
     pieceElement
         .attr('id', DIV_ID.JEEP) // Used for checkWin() in loadMechanics.js
         .append('<img src="' + getImgUrl(DIV_ID.JEEP) + '">')
-        .on('click touchstart', function() {
-            // var audioIndex = addAudioBySource(EASTER_EGG.AUDIO_SRC);
-            // easterEgg(audioIndex);
+        .on('mousedown touchstart', function() {
+            var audioIndex = addAudioBySource(EASTER_EGG.AUDIO_SRC);
+            easterEgg(audioIndex);
         });
 }
 
 /**
- * Load animal-only assets.
+ * Load animal assets.
  */
 function loadAnimalAssets(pieceElement, animalName) {
     pieceElement
         .append('<img src="' + getImgUrl(animalName) + '">')
-        .on('click touchstart', function() {
-            playAudio(animalName);
+        .on('mousedown touchstart', function() {
+            var audioIndex = addAudioByPieceName(animalName);
+            playAudio(audioIndex);
         });
 }
 
@@ -105,19 +103,47 @@ function easterEgg(audioIndex) {
 // ----------------------------------------------------------
 
 /**
- * Plays piece's sound.
+ * Add audio object to 'audio' array and returns the
+ * index position of the newly added audio object.
  */
-function playAudio(pieceName) {
-    if (!muted) {
-        clearTimeout(timeoutInstance);
+function addAudioByPieceName(pieceName) {
+    var audioSource = getAudioUrl(pieceName);
+    return addAudioBySource(audioSource);
+}
 
-        audioSprite.currentTime = AUDIO[pieceName].start;
-        audioSprite.play();
+/**
+ * Adds new audio object to the 'audio' array and returns the
+ * index position of the newly added audio object.
+ */
+function addAudioBySource(source) {
+    var newAudio = new Audio();
+    newAudio.src = source;
 
-        timeoutInstance = setTimeout(function() {
-            audioSprite.pause();
-        }, AUDIO[pieceName].length * 1000);
+    audio.push(newAudio);
+    return audio.length - 1;
+}
+
+/**
+ * Stops currently playing audio and plays another file.
+ */
+function playAudio(audioIndex) {
+    if (!sr.isMuted()) {
+        stopOtherAudio(audioIndex);
+        audio[audioIndex].currentTime = 0.1;
+        audio[audioIndex].play();
         // tracks.push(audio);
+        sr.setPlayingAudio(audio[audioIndex]);
+    }
+}
+
+/**
+ * Stops all other audio objects.
+ */
+function stopOtherAudio(audioIndex) {
+    for (var i = 0; i < audio.length; i++) {
+        if (i !== audioIndex) {
+            audio[i].pause();
+        }
     }
 }
 

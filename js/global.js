@@ -8,24 +8,30 @@ var sr = {};
 
 
 /*
- * Animals and Easter Egg
+ * Pieces and Easter Egg
  **************************/
 
 var PIECE = {
-    LIST: [
+    ANIMALS: [
         [], [], // Index (size) 0, 1 empty. No animals of that size.
         ['zebra', 'lion'],
         ['elephant', 'giraffe']
     ],
 
-    JEEP_IMG_NAME:  'jeep',
-
     IMG_DIR:        'images/animals/',
     IMG_EXT:        '.png',
+
+    AUDIO_SPRITE_URL: 'audio/audioSprite.mp3',
 
     AUDIO_DIR:      'audio/animals/',
     AUDIO_EXT:      '.mp3'
 };
+
+// var AUDIO = [];
+// AUDIO['zebra']    = {start: 50.0, length: 3.0};
+// AUDIO['lion']     = {start: 60.0, length: 3.0};
+// AUDIO['elephant'] = {start: 30.0, length: 3.0};
+// AUDIO['giraffe']  = {start: 40.0, length: 3.0};
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
@@ -41,7 +47,7 @@ var DIV_ID = {
     BOARD:          'gameBoard',
     NUM_MOVES:      'numMoves',
     TIMER:          'timerDisplay',
-    MUTE:           'volume',
+    MUTE_BUTTON:    'volume',
 
     JEEP:           'jeep',
 
@@ -60,7 +66,7 @@ var PIECE_CLASSNAME = {
 };
 
 /*
- * Scoring
+ * Scoring & Levels
  **************************/
 
 var SCORING = {
@@ -97,26 +103,43 @@ sr.ajaxGet = function(url, callback) {
  * DOM Objects and Related
  **************************/
 
+// Board, Moves Counter, Timer Display
 var BOARD;
 var NUM_MOVES;
 var TIMER;
+var MUTE_BUTTON;
+
+// Level Complete Modal
+var LEVEL_COMPLETE_MODAL;
+var NEXT_LEVEL_BUTTON;
+var RANDOM_LEVEL_BUTTON;
+var SUBMIT_SCORE_BUTTON;
+var PLAYER_NAME_INPUT;
 
 var BOARD_LENGTH_PX;
 
 // Initialize variables on document ready
 $(document).ready(function() {
-    BOARD     = $('#' + DIV_ID.BOARD);
-    NUM_MOVES = $('#' + DIV_ID.NUM_MOVES);
-    TIMER     = $('#' + DIV_ID.TIMER);
-    MUTE      = $('#' + DIV_ID.MUTE);
+    BOARD       = $('#' + DIV_ID.BOARD);
+    NUM_MOVES   = $('#' + DIV_ID.NUM_MOVES);
+    TIMER       = $('#' + DIV_ID.TIMER);
+    MUTE_BUTTON = $('#' + DIV_ID.MUTE_BUTTON);
+
+    LEVEL_COMPLETE_MODAL    = $('#' + DIV_ID.LEVEL_COMPLETE_MODAL);
+    NEXT_LEVEL_BUTTON       = $('#' + DIV_ID.NEXT_LEVEL_BUTTON);
+    RANDOM_LEVEL_BUTTON     = $('#' + DIV_ID.RANDOM_LEVEL_BUTTON);
+    SUBMIT_SCORE_BUTTON     = $('#' + DIV_ID.SUBMIT_SCORE_BUTTON);
+    PLAYER_NAME_INPUT       = $('#' + DIV_ID.PLAYER_NAME_INPUT);
+
     BOARD_LENGTH_PX = BOARD.width();
 });
 
 /*
- * LEVELS
+ * Levels String
  **************************/
 
-var LEVELS_STRING = [,
+var LEVELS_STRING = ['',
+
     // Level 1 - 5
     '1,6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531',
     '2,6,5,2,0012,3031,3112,5113,0221j,4212,0331,2412,4421,0521,3521',

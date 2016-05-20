@@ -17,8 +17,8 @@
 
 // Board and Pieces
 var
-    level,                  // Level object for current level
-    pieces,                 // Stores all board pieces
+    level,                  // Current level
+    pieces,                 // Stores all board pieces (from jQuery.pep)
     activePiecePosition,    // Original position of active piece
 
     goalCoordinates,        // Game ends when Jeep gets to here

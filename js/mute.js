@@ -1,13 +1,16 @@
 $(document).ready(function(){
     
     // Array storing each audio variable
-    tracks = [];
+    // tracks = [];
+
+    // Current/last audio object that played
+    var audioPlaying;
     
     // State of mute button
-    sound = true;
+    var sound = true;
 
-// Mute button: checks sound variable then mutes or unmutes the tracks
-    $('#' + DIV_ID.MUTE).click(function mute() {
+    // Mute button: checks sound variable then mutes or unmutes the tracks
+    MUTE_BUTTON.on('click touchend', function mute() {
         if (sound === true) {
             cutAudio();
             muteToggle();
@@ -18,32 +21,45 @@ $(document).ready(function(){
         }
     });
 
-// Toggles mute button image
+    // Toggles mute button image
     function muteToggle() {
         if (sound == false) {
-            $('#' + DIV_ID.MUTE).attr('src', "images/volume_on.gif");
+            MUTE_BUTTON.attr('src', "images/volume_on.gif");
         } else {
-            $('#' + DIV_ID.MUTE).attr('src', "images/volume_off.gif");
+            MUTE_BUTTON.attr('src', "images/volume_off.gif");
         }
     }
     
     // Cuts off audio when mute button pressed
     function cutAudio() {
-        for (var i = 0; i < tracks.length; i++) {
-            if (tracks[i].currentTime > 0) {
-                tracks[i].pause();
-            }
+        // for (var i = 0; i < tracks.length; i++) {
+        //     if (tracks[i].currentTime > 0) {
+        //         tracks[i].pause();
+        //     }
+        // }
+
+        if (audioPlaying) {
+            audioPlaying.pause();
         }
     }
     
     // Resets array anytime loadLevel() is called
-    function clearArray() {
-        tracks.length = 0;
+    // function clearArray() {
+    //     tracks.length = 0;
+    // }
+
+    // Set currently playing audio
+    function setPlayingAudio(audio) {
+        audioPlaying = audio;
+    }
+
+    // Checks if volume is muted
+    function isMuted() {
+        return !sound;
     }
     
     // Attach public function to global sr object
-    window.sr.clearArray    = clearArray;
+    window.sr.isMuted         = isMuted;
+    window.sr.setPlayingAudio = setPlayingAudio;
+    // window.sr.clearArray = clearArray;
 });
-
-
-
