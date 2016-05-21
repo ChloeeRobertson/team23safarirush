@@ -71,7 +71,7 @@ function loadLevel(levelNum) {
  */
 function changeLevel() {
     var diff = $('#difficulty').val();
-    var lvl = parseInt($('#level').val());
+    var lvl  = parseInt($('#level').val());
 
     // Modify the level value depending on difficulty to get correct configuration
     if (diff == "intermediate") {

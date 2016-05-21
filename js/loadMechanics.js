@@ -22,6 +22,7 @@ var
     activePiecePosition,    // Original position of active piece
 
     goalCoordinates,        // Game ends when Jeep gets to here
+    boardLengthPx,          // Length of board in px
     tileLengthPx;           // Length of 1 tile in px
 
 // Number of Moves
@@ -150,8 +151,8 @@ function setMovementConstraints(pieceObj) {
  */
 function setMovementConstraintFor(pieceObj) {
     var top     = 0;
-    var right   = BOARD_LENGTH_PX;
-    var bottom  = BOARD_LENGTH_PX;
+    var right   = boardLengthPx;
+    var bottom  = boardLengthPx;
     var left    = 0;
     var range;
 
@@ -189,9 +190,10 @@ function checkWin(pieceObj) {
  * Initialize variables.
  */
 function initializeVariables(levelObj) {
-    pieces       = $.pep.peps;
-    level        = levelObj.level;
-    tileLengthPx = Math.min(pieces[0].el.offsetWidth, pieces[0].el.offsetHeight);
+    pieces        = $.pep.peps;
+    level         = levelObj.level;
+    boardLengthPx = BOARD.width();
+    tileLengthPx  = Math.min(pieces[0].el.offsetWidth, pieces[0].el.offsetHeight);
 
     goalCoordinates = {
         x: levelObj.goalX * tileLengthPx + (tileLengthPx / 2),
@@ -361,8 +363,8 @@ function occupying(x, y, pieceObj) {
  * Determines if a coordinate x, y is within the board.
  */
 function inBounds(x, y) {
-    return 0 <= x && x <= BOARD_LENGTH_PX &&
-           0 <= y && y <= BOARD_LENGTH_PX;
+    return 0 <= x && x <= boardLengthPx &&
+           0 <= y && y <= boardLengthPx;
 }
 
 /**

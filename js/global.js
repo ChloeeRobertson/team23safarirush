@@ -127,8 +127,6 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
-var BOARD_LENGTH_PX;
-
 // Initialize variables on document ready
 $(document).ready(function() {
     BOARD       = $('#' + DIV_ID.BOARD);
@@ -141,8 +139,6 @@ $(document).ready(function() {
     RANDOM_LEVEL_BUTTON     = $('#' + DIV_ID.RANDOM_LEVEL_BUTTON);
     SUBMIT_SCORE_BUTTON     = $('#' + DIV_ID.SUBMIT_SCORE_BUTTON);
     PLAYER_NAME_INPUT       = $('#' + DIV_ID.PLAYER_NAME_INPUT);
-
-    BOARD_LENGTH_PX = BOARD.width();
 });
 
 // ----------------------------------------------------------
