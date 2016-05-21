@@ -10,8 +10,8 @@
 (function() {
 
 var
-    timeoutInstance,
-    audioSprite;
+    timeoutInstance, // Used to pause audio once playDuration is played through
+    audioSprite;     // Audio sprite (1 file) storing all pieces' sounds
 
 var
     audioLocked           = false; // Locks audio while easter egg playing
@@ -50,20 +50,16 @@ window.sr.loadPieceAssets = loadPieceAssets;
 // ----------------------------------------------------------
 
 /**
- * Load jeep-only assets.
+ * Add Easter egg for Jeep.
  */
 function loadJeepAssets(pieceElement) {
     pieceElement
-        .on('mousedown touchstart', function() {
-            easterEgg();
-        })
-
-        // Used for checkWin() in loadMechanics.js
-        .attr('id', DIV_ID.JEEP);
+        .on('mousedown touchstart', easterEgg)
+        .attr('id', DIV_ID.JEEP); // Used for checkWin() in loadMechanics.js
 }
 
 /**
- * Load assets for all animals and the jeep.
+ * Load image and add sound on click/tap for piece.
  */
 function loadAssets(pieceElement, pieceName) {
     pieceElement
@@ -74,7 +70,31 @@ function loadAssets(pieceElement, pieceName) {
 }
 
 /**
- * Easter Egg.
+ * Plays piece's sound.
+ */
+function playAudio(pieceName) {
+
+    // Audio locked or muted, do nothing
+    if (audioLocked || sr.isMuted()) {
+        return;
+    }
+
+    var startPosition = AUDIO[pieceName].start;
+    var playDuration  = AUDIO[pieceName].duration;
+
+    clearTimeout(timeoutInstance);
+
+    audioSprite.currentTime = startPosition;
+    audioSprite.play();
+
+    // Stop audio once playDuration passed
+    timeoutInstance = setTimeout(function() {
+        audioSprite.pause();
+    }, playDuration * 1000);
+}
+
+/**
+ * Easter Egg: click Jeep 10 times to activate.
  */
 function easterEgg() {
 
@@ -115,7 +135,7 @@ function easterEgg() {
 // ----------------------------------------------------------
 
 /**
- * Initiate audio sprite.
+ * Initiate audio sprite object.
  */
 function initiateAudioSprite() {
     audioSprite     = new Audio();
@@ -123,29 +143,6 @@ function initiateAudioSprite() {
 
     // Tell mute.js what audio sprite file will be played
     sr.setPlayingAudio(audioSprite);
-}
-
-/**
- * Plays piece's sound.
- */
-function playAudio(pieceName) {
-
-    // Audio locked or muted, do nothing
-    if (audioLocked || sr.isMuted()) {
-        return;
-    }
-
-    var startPosition = AUDIO[pieceName].start;
-    var playDuration  = AUDIO[pieceName].duration;
-
-    clearTimeout(timeoutInstance);
-
-    audioSprite.currentTime = startPosition;
-    audioSprite.play();
-
-    timeoutInstance = setTimeout(function() {
-        audioSprite.pause();
-    }, playDuration * 1000);
 }
 
 /**
