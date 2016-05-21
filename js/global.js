@@ -51,6 +51,7 @@ var EASTER_EGG = {
 //    D I V   I D s   &   P I E C E   C L A S S N A M E S
 // ----------------------------------------------------------
 
+// ID's assigned for different DOM elements
 var DIV_ID = {
 
     // Board and mechanics
@@ -69,6 +70,8 @@ var DIV_ID = {
     JEEP:           'jeep'
 };
 
+// Classnames for different pieces
+// e.g. horizontal size 2 piece will have classes: "piece dragX size2"
 var PIECE_CLASSNAME = {
     ALL:        'piece',
     HORIZONTAL: 'dragX',
@@ -81,6 +84,7 @@ var PIECE_CLASSNAME = {
 // ----------------------------------------------------------
 
 var SCORING = {
+    LEVEL_MULTIPLIER:       1,
     DIFFICULTY_MULTIPLIER:  100,
     MOVES_MULTIPLIER:       0.98,
     SECONDS_MULTIPLIER:     0.999
@@ -146,7 +150,7 @@ $(document).ready(function() {
 // ----------------------------------------------------------
 
 // For detailed explanation, see loadLevel.js header
-// Used only when LOAD_LEVELS_FROM_BACKEND = false
+// Used only when LOAD_LEVEL_FROM_BACKEND = false
 var LEVELS_STRING = ['',
 
     // Level 1 - 5

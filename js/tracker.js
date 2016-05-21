@@ -86,10 +86,11 @@ window.sr.getRandomUnplayedLevel = getRandomUnplayedLevel;
 function calculateScore(level, numMoves, secondsTaken) {
     var difficulty      = parseInt((level / 10) + 1);
     var difficultyScore = SCORING.DIFFICULTY_MULTIPLIER * difficulty;
+    var levelScore      = SCORING.LEVEL_MULTIPLIER * level;
     var movesMultiplier = Math.pow(SCORING.MOVES_MULTIPLIER, numMoves);
     var timeMultiplier  = Math.pow(SCORING.SECONDS_MULTIPLIER, secondsTaken);
 
-    return difficultyScore * movesMultiplier * timeMultiplier;
+    return difficultyScore * levelScore * movesMultiplier * timeMultiplier;
 }
 
 // ----------------------------------------------------------

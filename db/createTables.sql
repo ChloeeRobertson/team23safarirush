@@ -63,7 +63,7 @@ VALUES
 
 CREATE TABLE leaderboard (
     name VARCHAR(30) NOT NULL,
-    score INT(4) UNSIGNED NOT NULL
+    score INT(8) UNSIGNED NOT NULL
 );
 
 INSERT INTO leaderboard
