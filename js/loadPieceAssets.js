@@ -42,8 +42,33 @@ function loadPieceAssets(piece, pieceElement) {
     loadAssets(pieceElement, animal);
 }
 
+/**
+ * Plays piece's sound.
+ */
+function playAudio(pieceName) {
+
+    // Audio locked or muted, do nothing
+    if (audioLocked || sr.isMuted()) {
+        return;
+    }
+
+    var startPosition = AUDIO[pieceName].start;
+    var playDuration  = AUDIO[pieceName].duration;
+
+    clearTimeout(timeoutInstance);
+
+    audioSprite.currentTime = startPosition;
+    audioSprite.play();
+
+    // Stop audio once playDuration passed
+    timeoutInstance = setTimeout(function() {
+        audioSprite.pause();
+    }, playDuration * 1000);
+}
+
 // Attach public functions to global sr object
 window.sr.loadPieceAssets = loadPieceAssets;
+window.sr.playAudio       = playAudio;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -67,30 +92,6 @@ function loadAssets(pieceElement, pieceName) {
         .on('mousedown touchstart', function() {
             playAudio(pieceName);
         });
-}
-
-/**
- * Plays piece's sound.
- */
-function playAudio(pieceName) {
-
-    // Audio locked or muted, do nothing
-    if (audioLocked || sr.isMuted()) {
-        return;
-    }
-
-    var startPosition = AUDIO[pieceName].start;
-    var playDuration  = AUDIO[pieceName].duration;
-
-    clearTimeout(timeoutInstance);
-
-    audioSprite.currentTime = startPosition;
-    audioSprite.play();
-
-    // Stop audio once playDuration passed
-    timeoutInstance = setTimeout(function() {
-        audioSprite.pause();
-    }, playDuration * 1000);
 }
 
 /**

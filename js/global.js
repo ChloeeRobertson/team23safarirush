@@ -6,6 +6,9 @@ var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
 // False = Loads from LEVELS_STRING (at the end of global.js -- this file)
 var LOAD_LEVEL_FROM_BACKEND = false;
 
+// Jeep will animate to the exit goal if no obstacles in path
+var AUTO_JEEP_EXIT_ON_LAST_MOVE = true;
+
 // For scripts to attach public functions to
 // See bottom of "Public Functions" in the load scripts
 var sr = {};
@@ -13,6 +16,8 @@ var sr = {};
 // ----------------------------------------------------------
 //    P I E C E S ,   A U D I O ,   E A S T E R   E G G
 // ----------------------------------------------------------
+
+var JEEP_EXIT_ANIMATION_DURATION = 5000; // in milliseconds
 
 var PIECE = {
     ANIMALS: [
@@ -41,6 +46,7 @@ AUDIO['elephant'] = {start: 0.01, duration: 1.02};
 AUDIO['giraffe']  = {start: 0.01, duration: 1.02};
 AUDIO['jeep']     = {start: 0.01, duration: 1.02};
 AUDIO['easter']   = {start: 1.05, duration: 2.9};
+AUDIO['win']      = {start: 1.05, duration: 2.9};
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
@@ -55,10 +61,11 @@ var EASTER_EGG = {
 var DIV_ID = {
 
     // Board and mechanics
-    BOARD:          'gameBoard',
-    NUM_MOVES:      'numMoves',
-    TIMER:          'timerDisplay',
-    MUTE_BUTTON:    'volume',
+    BLACKOUT:               'blackout',
+    BOARD:                  'gameBoard',
+    NUM_MOVES:              'numMoves',
+    TIMER:                  'timerDisplay',
+    MUTE_BUTTON:            'volume',
 
     // Level Complete Modal
     LEVEL_COMPLETE_MODAL:   'levelCompleteModal',
@@ -67,16 +74,16 @@ var DIV_ID = {
     SUBMIT_SCORE_BUTTON:    'submitScoreBtn',
     PLAYER_NAME_INPUT:      'playerNameInput',
 
-    JEEP:           'jeep'
+    JEEP:                   'jeep'
 };
 
 // Classnames for different pieces
 // e.g. horizontal size 2 piece will have classes: "piece dragX size2"
 var PIECE_CLASSNAME = {
-    ALL:        'piece',
-    HORIZONTAL: 'dragX',
-    VERTICAL:   'dragY',
-    SIZE:       ['', '', 'size2', 'size3']
+    ALL:                    'piece',
+    HORIZONTAL:             'dragX',
+    VERTICAL:               'dragY',
+    SIZE:                   ['', '', 'size2', 'size3']
 };
 
 // ----------------------------------------------------------
@@ -90,7 +97,7 @@ var SCORING = {
     SECONDS_MULTIPLIER:     0.999
 };
 
-var TOTAL_LEVELS = 40;
+var TOTAL_LEVELS          = 40;
 
 // ----------------------------------------------------------
 //                          A J A X
@@ -119,6 +126,7 @@ sr.ajaxGet = function(url, callback) {
 // ----------------------------------------------------------
 
 // Board and mechanics
+var BLACKOUT;
 var BOARD;
 var NUM_MOVES;
 var TIMER;
@@ -133,6 +141,7 @@ var PLAYER_NAME_INPUT;
 
 // Initialize variables on document ready
 $(document).ready(function() {
+    BLACKOUT    = $('#' + DIV_ID.BLACKOUT);
     BOARD       = $('#' + DIV_ID.BOARD);
     NUM_MOVES   = $('#' + DIV_ID.NUM_MOVES);
     TIMER       = $('#' + DIV_ID.TIMER);

@@ -19,6 +19,7 @@
 var
     level,                  // Current level
     pieces,                 // Stores all board pieces (from jQuery.pep)
+    jeepPiece,              // Reference to the jeep piece
     activePiecePosition,    // Original position of active piece
 
     goalCoordinates,        // Game ends when Jeep gets to here
@@ -159,11 +160,11 @@ function setMovementConstraintFor(pieceObj) {
     if (movesHorizontally(pieceObj)) {
         range   = getMovableRangeX(pieceObj);
         left    = range.min;
-        right   = range.max;
+        right   = range.max - pieceObj.el.offsetWidth;
     } else {
         range   = getMovableRangeY(pieceObj);
         top     = range.min;
-        bottom  = range.max;
+        bottom  = range.max - pieceObj.el.offsetHeight;
     }
 
     pieceObj.options.constrainTo = [top, right, bottom, left];
@@ -173,12 +174,18 @@ function setMovementConstraintFor(pieceObj) {
  * Checks if user has won the game.
  */
 function checkWin(pieceObj) {
-    if (pieceObj.el.id == DIV_ID.JEEP && occupying(goalCoordinates.x, goalCoordinates.y, pieceObj)) {
+    if (jeepCanExit()) {
         var secondsTaken = secondTimer + (minuteTimer * 60);
+        var callback = function() {
+            sr.showLevelCompleteModal();
+            resetNumMoves();
+            resetTimer();
+            enableMovements();
+        };
 
         sr.addToScore(level, numMoves, secondsTaken);
-        sr.showLevelCompleteModal();
-        resetTimer();
+        disableMovements();
+        animateJeepExit(callback);
     }
 }
 
@@ -191,6 +198,7 @@ function checkWin(pieceObj) {
  */
 function initializeVariables(levelObj) {
     pieces        = $.pep.peps;
+    jeepPiece     = getJeepPiece();
     level         = levelObj.level;
     boardLengthPx = BOARD.width();
     tileLengthPx  = Math.min(pieces[0].el.offsetWidth, pieces[0].el.offsetHeight);
@@ -200,6 +208,9 @@ function initializeVariables(levelObj) {
         y: levelObj.goalY * tileLengthPx + (tileLengthPx / 2)
     };
 }
+
+// ----------------------------------------------------------
+//        M O V E S   C O U N T E R   &   T I M E R
 
 /**
  * Increment number of moves by 1 and start timer on first move.
@@ -258,6 +269,69 @@ function updateTimerDisplay() {
     }
 }
 
+// ----------------------------------------------------------
+//                    J E E P   E X I T
+
+/**
+ * Returns the jeep piece.
+ */
+function getJeepPiece() {
+    for (var i in pieces) {
+        if (pieces[i].el.id == DIV_ID.JEEP) {
+            return pieces[i];
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Determines whether the Jeep can reach the exit goal with no
+ * animals blocking its path.
+ */
+function jeepCanExit() {
+    var jeepMovableRangeX = getMovableRangeX(jeepPiece);
+    var jeepMovableRangeY = getMovableRangeY(jeepPiece);
+
+    return jeepMovableRangeX.min <= goalCoordinates.x && goalCoordinates.x <= jeepMovableRangeX.max &&
+           jeepMovableRangeY.min <= goalCoordinates.y && goalCoordinates.y <= jeepMovableRangeY.max;
+}
+
+/**
+ * Animates Jeep exit and calls callback function once complete.
+ */
+function animateJeepExit(callback) {
+
+    // Play level complete audio
+    sr.playAudio('win');
+
+    var moveRightPx  = movesHorizontally(jeepPiece) ? boardLengthPx - jeepPiece.el.offsetLeft : 0;
+    var moveBottomPx = movesHorizontally(jeepPiece) ? 0 : boardLengthPx - jeepPiece.el.offsetTop;
+
+    $(jeepPiece.el).animate({
+        opacity: 0,
+        left: "+=" + moveRightPx,
+        top:  "+=" + moveBottomPx
+    }, JEEP_EXIT_ANIMATION_DURATION, callback);
+}
+
+/**
+ * Disables all movements.
+ */
+function disableMovements() {
+    BLACKOUT.css({'zIndex': 9999});
+}
+
+/**
+ * Enable all movements.
+ */
+function enableMovements() {
+    BLACKOUT.css({'zIndex': -1});
+}
+
+// ----------------------------------------------------------
+//          M O V E M E N T   &   D E T E C T I O N
+
 /**
  * Sets the current active piece's original position.
  */
@@ -308,7 +382,7 @@ function getMovableRangeX(pieceObj) {
 
     return {
         min: minX + (tileLengthPx / 2),
-        max: maxX - (tileLengthPx / 2) - pieceObj.el.offsetWidth
+        max: maxX - (tileLengthPx / 2)
     };
 }
 
@@ -330,7 +404,7 @@ function getMovableRangeY(pieceObj) {
 
     return {
         min: minY + (tileLengthPx / 2),
-        max: maxY - (tileLengthPx / 2) - pieceObj.el.offsetHeight
+        max: maxY - (tileLengthPx / 2)
     };
 }
 
