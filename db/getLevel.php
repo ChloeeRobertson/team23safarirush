@@ -22,7 +22,7 @@ if ($level) {
 	$result = $conn->query(
 		"SELECT level, boardSize, goalX, goalY, jeepPiece, pieces
         FROM levels
-        WHERE level = " . $level
+        WHERE level = " . $level . ";"
 	);
 
 	while ($row = $result->fetch_assoc()) {

@@ -14,7 +14,7 @@ var sr = {};
 //    P I E C E S ,   A U D I O ,   E A S T E R   E G G
 // ----------------------------------------------------------
 
-var JEEP_EXIT_ANIMATION_DURATION = 5000; // in milliseconds
+var JEEP_EXIT_ANIMATION_DURATION = 3000; // in milliseconds
 
 var PIECE = {
     ANIMALS: [
@@ -70,6 +70,7 @@ var PIECE_CLASSNAME = {
 //             S C O R I N G   A N D   L E V E L S
 // ----------------------------------------------------------
 
+// Used to calculate total score for leaderboard
 var SCORING = {
     LEVEL_MULTIPLIER:       1,
     DIFFICULTY_MULTIPLIER:  100,
@@ -77,7 +78,13 @@ var SCORING = {
     SECONDS_MULTIPLIER:     0.999
 };
 
-var TOTAL_LEVELS          = 40;
+// Used for comparing user scores to player averages
+var SCORING_COMPARISON_FACTOR = {
+    NUM_MOVES:    .15,  // +/- 15% of average is still average
+    SECONDS_USED: .15   // +/- 15% of average is still average
+};
+
+var TOTAL_LEVELS = 40;
 
 var LEVEL_DIFFICULTY = [
     'Easy',         // 1 - 10
@@ -86,33 +93,40 @@ var LEVEL_DIFFICULTY = [
     'Expert'        // 31 - 40
 ];
 
+var LEVEL_SELECTOR_DELAY = {
+
+    // Delayed animation to current level due to bootstraps slow modal pop-up
+    // Animation won't work unless the level selector modal is fully loaded
+    ANIMATE_TO_LEVEL:          500,
+
+    // Once level completes, shows the completed level statistics for x amount of time
+    // Then animates to the next level after
+    SHOW_COMPLETED_LEVEL_FOR:  3500,
+
+    // Once player beats all level, a game won message will be shown for x amount of time
+    // Then the level selector will pop-up displaying all level statistics
+    // And allows user to submit his/her score
+    SHOW_GAME_WON_MESSAGE_FOR: 3500
+};
+
 // ----------------------------------------------------------
-//                          A J A X
+//                    A J A X   U R L
 // ----------------------------------------------------------
 
 var AJAX_URL = {
-    GET_LEVEL:      'http://team23.site88.net/db/getLevel.php',
-    SUBMIT_SCORE:   'http://team23.site88.net/db/submitScore.php',
-    LEADERBOARD:    'http://team23.site88.net/leaderboard.php'
+    GET_LEVEL:           'http://team23.site88.net/working/db/getLevel.php',
+    GET_SCORE_AVERAGES:  'http://team23.site88.net/working/db/getScoreAverages.php',
+    SUBMIT_SCORE:        'http://team23.site88.net/working/db/submitScore.php',
+    SUBMIT_LEVEL_STATS:  'http://team23.site88.net/working/db/submitLevelStats.php',
+    LEADERBOARD:         'http://team23.site88.net/working/leaderboard.php'
 };
-
-// Gets and returns response to callback() using AJAX
-sr.ajaxGet = function(url, callback) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            callback(xhttp.responseText);
-        }
-    };
-    xhttp.open("GET", url);
-    xhttp.send();
-}
 
 // ----------------------------------------------------------
 //        D O M   O B J E C T S   R E F E R E N C E S
 // ----------------------------------------------------------
 
 // Board and mechanics
+var GAMEWON;
 var BLACKOUT;
 var BOARD;
 var NUM_MOVES;
@@ -126,12 +140,14 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
+// Level selector modal
 var LEVEL_SELECTOR_MODAL;
 var LEVEL_SELECTOR_CONTAINER;
 var LEVEL_SELECTOR_BUTTON;
 
 // Initialize variables on document ready
 $(document).ready(function() {
+    GAMEWON     = $('#gameWon');
     BLACKOUT    = $('#blackout');
     BOARD       = $('#gameBoard');
     NUM_MOVES   = $('#numMoves');
@@ -158,6 +174,7 @@ $(document).ready(function() {
 var LEVELS_STRING = ['',
 
     // Level 1 - 5
+    // '1,6,5,2,1221j', // Only Jeep piece showing, used for testing
     '1,6,5,2,0021,5013,0113,3113,1221j,0412,4421,2531',
     '2,6,5,2,0012,3031,3112,5113,0221j,4212,0331,2412,4421,0521,3521',
     '3,6,5,2,1221j,3213,1321,5313,1412,2521',

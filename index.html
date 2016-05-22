@@ -27,8 +27,8 @@
     <script src="js/loadLevelSelector.js"></script>
     <script src="js/loadMechanics.js"></script>
     <script src="js/loadPieceAssets.js"></script>
-    <script src="js/tracker.js"></script>
-    <script src="js/mute.js"></script>
+    <script src="js/loadTracker.js"></script>
+    <script src="js/loadMute.js"></script>
     <script src="js/autoload.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/levelselector.css">
@@ -82,6 +82,7 @@
         <div class="row">
             <div class="col-xs-12" id="gameArea">
                 <div id="gameBorder">
+                    <div id="gameWon">Congratulations, you have beaten all levels!</div>
                     <div id="gameBoard"></div>
                 </div>
             </div>
@@ -103,16 +104,19 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Level Selector</h4>
+                            <h4 class="modal-title" id="myModalLabel">LEVEL SELECTOR</h4>
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(1);">Easy</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(11);">Intermediate</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(21);">Advanced</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(31);">Expert</a></span>
                         </div>
 
                         <div id="levelSelectorContainer" class="modal-body"></div>
 
                         <div class="modal-footer">
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(1);">EASY</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(11);">INTERMEDIATE</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(21);">ADVANCED</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(31);">EXPERT</a></span>
+                            <button id="randomLevelBtn" type="button" class="btn btn-success btn-block">Random Level</button>
+                            <input id="playerNameInput" class="form-control" type="text" placeholder="Your name">
+                            <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Submit Score</button>
                         </div>
                     </div>
                 </div>

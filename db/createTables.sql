@@ -79,4 +79,66 @@ VALUES
     ('Alexander', 9000),
     ('Megan', 1000),
     ('Benjamin', 9999);
-    
+
+
+
+
+
+CREATE TABLE levelTracker (
+    level int(2) UNSIGNED NOT NULL,
+    score INT(8) UNSIGNED NOT NULL
+);
+
+
+CREATE TABLE levelStatistics (
+    level int(2) UNSIGNED PRIMARY KEY NOT NULL,
+    avgNumMoves, int(7) UNSIGNED NOT NULL,
+    avgSecondsUsed int(15) UNSIGNED NOT NULL,
+    totalNumMoves int(255) UNSIGNED NOT NULL,
+    totalSecondsUsed int(255) UNSIGNED NOT NULL,
+    numScores int(7) UNSIGNED NOT NULL
+);
+
+INSERT INTO levelStatistics
+    (level, avgNumMoves, avgSecondsUsed, totalNumMoves, totalSecondsUsed, numScores)
+VALUES
+    (1, 99, 999, 0, 0, 0),
+    (2, 99, 999, 0, 0, 0),
+    (3, 99, 999, 0, 0, 0),
+    (4, 99, 999, 0, 0, 0),
+    (5, 99, 999, 0, 0, 0),
+    (6, 99, 999, 0, 0, 0),
+    (7, 99, 999, 0, 0, 0),
+    (8, 99, 999, 0, 0, 0),
+    (9, 99, 999, 0, 0, 0),
+    (10, 99, 999, 0, 0, 0),
+    (11, 99, 999, 0, 0, 0),
+    (12, 99, 999, 0, 0, 0),
+    (13, 99, 999, 0, 0, 0),
+    (14, 99, 999, 0, 0, 0),
+    (15, 99, 999, 0, 0, 0),
+    (16, 99, 999, 0, 0, 0),
+    (17, 99, 999, 0, 0, 0),
+    (18, 99, 999, 0, 0, 0),
+    (19, 99, 999, 0, 0, 0),
+    (20, 99, 999, 0, 0, 0),
+    (21, 99, 999, 0, 0, 0),
+    (22, 99, 999, 0, 0, 0),
+    (23, 99, 999, 0, 0, 0),
+    (24, 99, 999, 0, 0, 0),
+    (25, 99, 999, 0, 0, 0),
+    (26, 99, 999, 0, 0, 0),
+    (27, 99, 999, 0, 0, 0),
+    (28, 99, 999, 0, 0, 0),
+    (29, 99, 999, 0, 0, 0),
+    (30, 99, 999, 0, 0, 0),
+    (31, 99, 999, 0, 0, 0),
+    (32, 99, 999, 0, 0, 0),
+    (33, 99, 999, 0, 0, 0),
+    (34, 99, 999, 0, 0, 0),
+    (35, 99, 999, 0, 0, 0),
+    (36, 99, 999, 0, 0, 0),
+    (37, 99, 999, 0, 0, 0),
+    (38, 99, 999, 0, 0, 0),
+    (39, 99, 999, 0, 0, 0),
+    (40, 99, 999, 0, 0, 0);

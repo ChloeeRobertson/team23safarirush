@@ -18,7 +18,7 @@ var
 /**
  * Activates mute toggle.
  */
-function initializeMuteFunction() {
+function loadMute() {
     MUTE_BUTTON.on('click', muteToggle);
 }
 
@@ -37,9 +37,9 @@ function isMuted() {
 }
 
 // Attach public functions to global sr object
-window.sr.initializeMuteFunction = initializeMuteFunction;
-window.sr.isMuted                = isMuted;
-window.sr.setPlayingAudio        = setPlayingAudio;
+window.sr.loadMute        = loadMute;
+window.sr.isMuted         = isMuted;
+window.sr.setPlayingAudio = setPlayingAudio;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Get board configurations for different levels.
+ * Submit scores to leaderboard and update levels' statistics
  */
 
 require_once('config.php');
@@ -14,16 +14,21 @@ if ($conn->connect_error) {
 }
 
 // Clean $_GET variables
-$name  = clean($_GET['name']);
-$score = intval(clean($_GET['score']));
+$name        = clean($_GET['name']);
+$totalScore  = clean($_GET['totalScore']);
 
-// Submit score and print results
-if ($score && $name) {
-    
-    echo $conn->query(
-        "INSERT INTO leaderboard (name, score)
-        VALUES ('" . $name . "'," . $score . ")"
-    );
+// Split scores for individual levels
+$levelsScore = explode(',', clean($_GET['levelsScore']));
+
+// Non-empty total score and name
+if ($totalScore && $name) {
+
+	// Total score into leaderboard
+	$sql = "INSERT INTO leaderboard (name, score)
+            VALUES ('" . $name . "'," . $totalScore . ");";
+
+    // Execute query
+    $conn->query($sql);
 }
 
 ?>

@@ -1,3 +1,7 @@
+body {
+    overflow-y: hidden; /* Disables pull-down-to-refresh on chrome */
+}
+
 /*
 Gameboard settings for devices with screens larger than the standard phones
 */
@@ -103,6 +107,19 @@ and (max-device-width: 719px) {
     z-index: -1;
     opacity: 0;
 }
+
+/* User beaten all levels. */
+#gameWon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    color: #f4decb;
+    text-align: center;
+    font-size: 2em;
+    padding-top: 50%;
+}
+
 
 /* Animals and Jeep
  ********************/

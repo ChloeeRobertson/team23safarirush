@@ -40,9 +40,10 @@ function setupBoard() {
     // Make board a square
     BOARD.height(BOARD.width());
 
+    sr.loadTracker();
     sr.loadLevelSelector();
-    sr.initializeMuteFunction();
-    initializeLevelCompleteModal();
+    sr.loadMute();
+    // initializeLevelCompleteModal();
 }
 
 /**
@@ -60,8 +61,10 @@ function loadLevel(levelNum) {
 
         // Loads from backend. Don't work locally.
         if (LOAD_LEVEL_FROM_BACKEND) {
-            var getLevelStringURL = AJAX_URL.GET_LEVEL + '?level=' + levelNum;
-            sr.ajaxGet(getLevelStringURL, loadLevelFromString);
+            $.ajax({
+                url:     AJAX_URL.GET_LEVEL + '?level=' + levelNum,
+                success: loadLevelFromString
+            });
         }
 
         // Loads from globals.js LEVEL_STRING
@@ -74,19 +77,19 @@ function loadLevel(levelNum) {
 /**
  * Show level complete modal.
  */
-function showLevelCompleteModal() {
-    if (!sr.hasNextUnplayedLevel()) {
-        NEXT_LEVEL_BUTTON.hide();
-        RANDOM_LEVEL_BUTTON.hide();
-    }
+// function showLevelCompleteModal() {
+//     if (!sr.hasNextUnplayedLevel()) {
+//         NEXT_LEVEL_BUTTON.hide();
+//         RANDOM_LEVEL_BUTTON.hide();
+//     }
 
-    LEVEL_COMPLETE_MODAL.modal('show');
-}
+//     LEVEL_COMPLETE_MODAL.modal('show');
+// }
 
 // Attach public functions to global sr object
 window.sr.setupBoard             = setupBoard;
 window.sr.loadLevel              = loadLevel;
-window.sr.showLevelCompleteModal = showLevelCompleteModal;
+// window.sr.showLevelCompleteModal = showLevelCompleteModal;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -152,31 +155,31 @@ function loadPiece(piece) {
 /**
  * Link level complete modal buttons to actual functions.
  */
-function initializeLevelCompleteModal() {
-    NEXT_LEVEL_BUTTON.on('click touchend', function() {
-        var level = sr.getNextUnplayedLevel();
-        loadLevel(level);
-        hideLevelCompleteModal();
-    });
+// function initializeLevelCompleteModal() {
+//     NEXT_LEVEL_BUTTON.on('click touchend', function() {
+//         var level = sr.getNextUnplayedLevel();
+//         loadLevel(level);
+//         hideLevelCompleteModal();
+//     });
 
-    RANDOM_LEVEL_BUTTON.on('click touchend', function() {
-        var level = sr.getRandomUnplayedLevel();
-        loadLevel(level);
-        hideLevelCompleteModal();
-    });
+//     RANDOM_LEVEL_BUTTON.on('click touchend', function() {
+//         var level = sr.getRandomUnplayedLevel();
+//         loadLevel(level);
+//         hideLevelCompleteModal();
+//     });
 
-    SUBMIT_SCORE_BUTTON.on('click touchend', function() {
-        sr.submitScore();
-        hideLevelCompleteModal();
-    });
-}
+//     SUBMIT_SCORE_BUTTON.on('click touchend', function() {
+//         sr.submitScore();
+//         hideLevelCompleteModal();
+//     });
+// }
 
 /**
  * Hide level complete modal.
  */
-function hideLevelCompleteModal() {
-    LEVEL_COMPLETE_MODAL.modal('hide');
-}
+// function hideLevelCompleteModal() {
+//     LEVEL_COMPLETE_MODAL.modal('hide');
+// }
 
 /**
  * Create and returns a level (data object).
@@ -211,53 +214,6 @@ function createPiece(pieceString) {
         h: parseInt(pieceString[3]),
         isJeep: pieceString[4] ? true : false
     };
-}
-
-/**
- * Updates the level selection button and modal to show correct difficulty and level.
- */
-function updateLevelSelector() {
-    var level      = levelObj.level;
-    var difficulty = sr.getLevelDifficulty(levelObj.level);
-
-    sr.setCurrentLevelInSelector(level);
-
-    var diff;
-    var lvl;
-    var lvlIndex;
-
-    // Evaluate the level number to determine difficuly and level
-    // Also updates the difficulty selection in the level selection modal
-    if (levelObj.level <= 10) {
-        diff = "Easy";
-        lvl = levelObj.level;
-        lvlIndex = lvl - 1;
-        $('#difficulty').prop("selectedIndex", "0");
-    } else if (levelObj.level <= 20) {
-        diff = "Intermediate";
-        lvl = levelObj.level - 10;
-        lvlIndex = lvl - 1;
-        $('#difficulty').prop("selectedIndex", "1");
-    } else if (levelObj.level <= 30) {
-        diff = "Advanced";
-        lvl = levelObj.level - 20;
-        lvlIndex = lvl - 1;
-        $('#difficulty').prop("selectedIndex", "2");
-    } else {
-        diff = "Expert";
-        lvl = levelObj.level - 30;
-        lvlIndex = lvl - 1;
-        $('#difficulty').prop("selectedIndex", "3");
-    }
-
-    // Update the level selection in the level selection modal
-    $('#level').prop("selectedIndex", lvlIndex);
-
-    // Update the level selection button
-    $('#levelSelectionButton').html(
-        diff + " - " + lvl
-        + " <span class=\"glyphicon glyphicon-triangle-top\"></span>"
-    );
 }
 
 })();

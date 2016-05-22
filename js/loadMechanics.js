@@ -160,11 +160,11 @@ function setMovementConstraintFor(pieceObj) {
     if (movesHorizontally(pieceObj)) {
         range   = getMovableRangeX(pieceObj);
         left    = range.min;
-        right   = range.max - pieceObj.el.offsetWidth;
+        right   = range.max - pieceObj.el.offsetWidth; // Minus width due to jQuery.pep bug
     } else {
         range   = getMovableRangeY(pieceObj);
         top     = range.min;
-        bottom  = range.max - pieceObj.el.offsetHeight;
+        bottom  = range.max - pieceObj.el.offsetHeight; // Minus height due to jQuery.pep bug
     }
 
     pieceObj.options.constrainTo = [top, right, bottom, left];
@@ -175,18 +175,40 @@ function setMovementConstraintFor(pieceObj) {
  */
 function checkWin(pieceObj) {
     if (jeepCanExit()) {
-        
+        disableMovements();
+
+        var currentLevel = level;
         var secondsTaken = secondTimer + (minuteTimer * 60);
+
+        // Add current level score & statistics to database
+        // and compare with other players in database
+        sr.addToScore(level, numMoves, secondsTaken);
+
+        pauseTimer();
+
         var callback = function() {
-            sr.showLevelCompleteModal();
+
+            // Load next level, if there is one
+            if (sr.hasNextUnplayedLevel()) {
+                var nextLevel = sr.getNextUnplayedLevel();
+                sr.loadLevel(nextLevel);
+                sr.showLevelSelector(currentLevel);
+            }
+
+            // All levels beaten, game over
+            else {
+                GAMEWON.css({'zIndex': 1});
+                BOARD.empty();
+                setTimeout(function() {
+                    sr.showLevelSelector();
+                }, LEVEL_SELECTOR_DELAY.SHOW_GAME_WON_MESSAGE_FOR);
+            }
+
+            resetNumMoves();
+            resetTimer();
             enableMovements();
         };
 
-        sr.addToScore(level, numMoves, secondsTaken);
-        resetNumMoves();
-        resetTimer();
-
-        disableMovements();
         animateJeepExit(callback);
     }
 }
@@ -220,9 +242,9 @@ function initializeVariables(levelObj) {
 function incrementNumMoves() {
     numMoves++;
 
-    // Start timer on first move of level
     if (numMoves == 1) {
         timer();
+        sr.lockLevelSelector();
     }
 
     updateNumMovesDisplay();
@@ -244,16 +266,23 @@ function updateNumMovesDisplay() {
 }
 
 /**
- * Adds time into totalTimeSeconds and resets 
+ * Reset timer.
  */
 function resetTimer() {
-    clearTimeout(timerInstance);
+    pauseTimer();
 
     tenthsTimer = 0;
     secondTimer = 0;
     minuteTimer = 0;
 
     updateTimerDisplay();
+}
+
+/**
+ * Pauses timer.
+ */
+function pauseTimer() {
+    clearTimeout(timerInstance);
 }
 
 /**
@@ -305,7 +334,8 @@ function jeepCanExit() {
 function animateJeepExit(callback) {
 
     // Play level complete audio
-    sr.playAudio('win');
+    var overrideOtherSounds = true;
+    sr.playAudio('win', overrideOtherSounds);
 
     var moveRightPx  = movesHorizontally(jeepPiece) ? boardLengthPx - jeepPiece.el.offsetLeft : 0;
     var moveBottomPx = movesHorizontally(jeepPiece) ? 0 : boardLengthPx - jeepPiece.el.offsetTop;
@@ -316,6 +346,9 @@ function animateJeepExit(callback) {
         top:  "+=" + moveBottomPx
     }, JEEP_EXIT_ANIMATION_DURATION, callback);
 }
+
+// ----------------------------------------------------------
+//          M O V E M E N T   &   D E T E C T I O N
 
 /**
  * Disables all movements.
@@ -330,9 +363,6 @@ function disableMovements() {
 function enableMovements() {
     BLACKOUT.css({'zIndex': -1});
 }
-
-// ----------------------------------------------------------
-//          M O V E M E N T   &   D E T E C T I O N
 
 /**
  * Sets the current active piece's original position.

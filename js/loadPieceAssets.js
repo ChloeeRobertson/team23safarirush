@@ -10,7 +10,7 @@
 (function() {
 
 var
-    timeoutInstance, // Used to pause audio once playDuration is played through
+    timeoutInstance, // Used to stop audioSprite once playDuration is played through
     audioSprite;     // Audio sprite (1 file) storing all pieces' sounds
 
 var
@@ -45,10 +45,10 @@ function loadPieceAssets(piece, pieceElement) {
 /**
  * Plays piece's sound.
  */
-function playAudio(pieceName) {
+function playAudio(pieceName, overrideOtherSounds) {
 
-    // Audio locked or muted, do nothing
-    if (audioLocked || sr.isMuted()) {
+    // Audio locked or muted, do nothing, unless overriding
+    if (sr.isMuted() || (!overrideOtherSounds && audioLocked)) {
         return;
     }
     audioLocked = true;
@@ -100,12 +100,7 @@ function loadAssets(pieceElement, pieceName) {
  * Easter Egg: click Jeep 10 times to activate.
  */
 function easterEgg() {
-
-    // Audio locked, do nothing
-    if (audioLocked) {
-        return;
-    }
-
+    var overrideOtherSounds = true;
     var clickSpeed = event.timeStamp - easterEggLastClick;
     var clicksReached;
 
@@ -120,7 +115,7 @@ function easterEgg() {
     }
 
     if (clicksReached) {
-        playAudio('easter');
+        playAudio('easter', overrideOtherSounds);
         easterEggClickCounter = 0;
     }
 
