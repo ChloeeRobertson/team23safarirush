@@ -1,5 +1,5 @@
 /*
- * Loads level onto a board.
+ * Sets up board and loads level.
  *
  * Must be loaded after global.js
  *
@@ -33,10 +33,15 @@ var
 // ----------------------------------------------------------
 
 /**
- * Sets board height to its width (makes it a square).
+ * Setsup board and related features.
  */
 function setupBoard() {
+
+    // Make board a square
     BOARD.height(BOARD.width());
+
+    sr.loadLevelSelector();
+    sr.initializeMuteFunction();
     initializeLevelCompleteModal();
 }
 
@@ -67,29 +72,6 @@ function loadLevel(levelNum) {
 }
 
 /**
- * Changes the level based on the difficulty and level selected on the level selection modal.
- */
-function changeLevel() {
-    var diff = $('#difficulty').val();
-    var lvl  = parseInt($('#level').val());
-
-    // Modify the level value depending on difficulty to get correct configuration
-    if (diff == "intermediate") {
-        lvl += 10;
-    } else if (diff == "advanced") {
-        lvl += 20;
-    } else if (diff == "expert") {
-        lvl += 30;
-    }
-
-    loadLevel(lvl);
-
-    // Hide the modal after level selection
-    $('#levelModal').modal('hide');
-    return false;
-}
-
-/**
  * Show level complete modal.
  */
 function showLevelCompleteModal() {
@@ -104,7 +86,6 @@ function showLevelCompleteModal() {
 // Attach public functions to global sr object
 window.sr.setupBoard             = setupBoard;
 window.sr.loadLevel              = loadLevel;
-window.sr.changeLevel            = changeLevel;
 window.sr.showLevelCompleteModal = showLevelCompleteModal;
 
 // ----------------------------------------------------------
@@ -125,8 +106,8 @@ function loadLevelFromString(levelString) {
         levelObj = createLevel(levelString.trim());
         tileLengthPx = BOARD.width() / levelObj.boardLength;
 
-        // Updates the level selection button
-        updateLevelNumDisplay();
+        // Updates the level selector
+        sr.updateLevelSelector(levelObj.level);
     }
 
     // Deletes all pieces from board
@@ -161,7 +142,7 @@ function loadPiece(piece) {
 
     sr.loadPieceAssets(piece, pieceElement);
 
-    BOARD.append(pieceElement);
+    pieceElement.appendTo(BOARD);
 }
 
 // ----------------------------------------------------------
@@ -235,7 +216,12 @@ function createPiece(pieceString) {
 /**
  * Updates the level selection button and modal to show correct difficulty and level.
  */
-function updateLevelNumDisplay() {
+function updateLevelSelector() {
+    var level      = levelObj.level;
+    var difficulty = sr.getLevelDifficulty(levelObj.level);
+
+    sr.setCurrentLevelInSelector(level);
+
     var diff;
     var lvl;
     var lvlIndex;

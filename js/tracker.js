@@ -14,7 +14,8 @@
 var
     unplayedLevels,
     currentLevel    = 0,
-    totalScore      = 0;
+    totalScore      = 0,
+    scoreSubmitted  = false; // Prevents double score submissions
 
 // ----------------------------------------------------------
 //               P U B L I C   F U N C T I O N S
@@ -38,6 +39,13 @@ function addToScore(level, numMoves, secondsTaken) {
  * Submit score to leaderboard.
  */
 function submitScore() {
+
+    // Prevents double submission of score
+    if (scoreSubmitted) {
+        return;
+    }
+    scoreSubmitted = true;
+
     var score = Math.round(totalScore);
     var submitScoreURL = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&score=' + score;
     sr.ajaxGet(submitScoreURL, redirectToLeaderboard);
@@ -113,11 +121,16 @@ function initializeUnplayedLevels() {
  * Remove level from the list of unplayedLevels.
  */
 function markLevelComplete(level) {
+
+    // Remove level from unplayedLevels
     for (var i = 0; i < unplayedLevels.length; i++) {
         if (unplayedLevels[i] == level) {
             unplayedLevels.splice(i, 1);
         }
     }
+
+    // Update level selector
+    sr.markLevelCompleteInSelector(level);
 }
 
 /**

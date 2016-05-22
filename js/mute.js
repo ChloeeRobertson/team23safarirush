@@ -16,6 +16,13 @@ var
 // ----------------------------------------------------------
 
 /**
+ * Activates mute toggle.
+ */
+function initializeMuteFunction() {
+    MUTE_BUTTON.on('click', muteToggle);
+}
+
+/**
  * Set currently playing audio.
  */
 function setPlayingAudio(audio) {
@@ -30,8 +37,9 @@ function isMuted() {
 }
 
 // Attach public functions to global sr object
-window.sr.isMuted         = isMuted;
-window.sr.setPlayingAudio = setPlayingAudio;
+window.sr.initializeMuteFunction = initializeMuteFunction;
+window.sr.isMuted                = isMuted;
+window.sr.setPlayingAudio        = setPlayingAudio;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -68,12 +76,5 @@ function pauseAudio() {
         audioPlaying.pause();
     }
 }
-
-
-
-// Automatically bind click event to mute button on document ready
-$(document).ready(function() {
-    MUTE_BUTTON.on('click', muteToggle);
-});
 
 })();

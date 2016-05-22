@@ -6,9 +6,6 @@ var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
 // False = Loads from LEVELS_STRING (at the end of global.js -- this file)
 var LOAD_LEVEL_FROM_BACKEND = false;
 
-// Jeep will animate to the exit goal if no obstacles in path
-var AUTO_JEEP_EXIT_ON_LAST_MOVE = true;
-
 // For scripts to attach public functions to
 // See bottom of "Public Functions" in the load scripts
 var sr = {};
@@ -44,9 +41,10 @@ AUDIO['zebra']    = {start: 0.01, duration: 1.02};
 AUDIO['lion']     = {start: 0.01, duration: 1.02};
 AUDIO['elephant'] = {start: 0.01, duration: 1.02};
 AUDIO['giraffe']  = {start: 0.01, duration: 1.02};
-AUDIO['jeep']     = {start: 0.01, duration: 1.02};
-AUDIO['easter']   = {start: 1.05, duration: 2.9};
-AUDIO['win']      = {start: 1.05, duration: 2.9};
+
+AUDIO['jeep']     = {start: 0.01, duration: 1.02}; // index same as JEEP_ID
+AUDIO['easter']   = {start: 1.05, duration: 2.9};  // hardcoded 'easter' in loadPieceAssets.js
+AUDIO['win']      = {start: 1.05, duration: 2.9};  // hardcoded 'win' in loadMechanics.js
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
@@ -54,28 +52,10 @@ var EASTER_EGG = {
 };
 
 // ----------------------------------------------------------
-//    D I V   I D s   &   P I E C E   C L A S S N A M E S
+//        P I E C E   I D s   &   C L A S S N A M E S
 // ----------------------------------------------------------
 
-// ID's assigned for different DOM elements
-var DIV_ID = {
-
-    // Board and mechanics
-    BLACKOUT:               'blackout',
-    BOARD:                  'gameBoard',
-    NUM_MOVES:              'numMoves',
-    TIMER:                  'timerDisplay',
-    MUTE_BUTTON:            'volume',
-
-    // Level Complete Modal
-    LEVEL_COMPLETE_MODAL:   'levelCompleteModal',
-    NEXT_LEVEL_BUTTON:      'nextLevelBtn',
-    RANDOM_LEVEL_BUTTON:    'randomLevelBtn',
-    SUBMIT_SCORE_BUTTON:    'submitScoreBtn',
-    PLAYER_NAME_INPUT:      'playerNameInput',
-
-    JEEP:                   'jeep'
-};
+var JEEP_ID = 'jeep';
 
 // Classnames for different pieces
 // e.g. horizontal size 2 piece will have classes: "piece dragX size2"
@@ -98,6 +78,13 @@ var SCORING = {
 };
 
 var TOTAL_LEVELS          = 40;
+
+var LEVEL_DIFFICULTY = [
+    'Easy',         // 1 - 10
+    'Intermediate', // 11 - 20
+    'Advanced',     // 21 - 30
+    'Expert'        // 31 - 40
+];
 
 // ----------------------------------------------------------
 //                          A J A X
@@ -139,19 +126,27 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
+var LEVEL_SELECTOR_MODAL;
+var LEVEL_SELECTOR_CONTAINER;
+var LEVEL_SELECTOR_BUTTON;
+
 // Initialize variables on document ready
 $(document).ready(function() {
-    BLACKOUT    = $('#' + DIV_ID.BLACKOUT);
-    BOARD       = $('#' + DIV_ID.BOARD);
-    NUM_MOVES   = $('#' + DIV_ID.NUM_MOVES);
-    TIMER       = $('#' + DIV_ID.TIMER);
-    MUTE_BUTTON = $('#' + DIV_ID.MUTE_BUTTON);
+    BLACKOUT    = $('#blackout');
+    BOARD       = $('#gameBoard');
+    NUM_MOVES   = $('#numMoves');
+    TIMER       = $('#timerDisplay');
+    MUTE_BUTTON = $('#volume');
 
-    LEVEL_COMPLETE_MODAL    = $('#' + DIV_ID.LEVEL_COMPLETE_MODAL);
-    NEXT_LEVEL_BUTTON       = $('#' + DIV_ID.NEXT_LEVEL_BUTTON);
-    RANDOM_LEVEL_BUTTON     = $('#' + DIV_ID.RANDOM_LEVEL_BUTTON);
-    SUBMIT_SCORE_BUTTON     = $('#' + DIV_ID.SUBMIT_SCORE_BUTTON);
-    PLAYER_NAME_INPUT       = $('#' + DIV_ID.PLAYER_NAME_INPUT);
+    LEVEL_COMPLETE_MODAL     = $('#levelCompleteModal');
+    NEXT_LEVEL_BUTTON        = $('#nextLevelBtn');
+    RANDOM_LEVEL_BUTTON      = $('#randomLevelBtn');
+    SUBMIT_SCORE_BUTTON      = $('#submitScoreBtn');
+    PLAYER_NAME_INPUT        = $('#playerNameInput');
+
+    LEVEL_SELECTOR_MODAL     = $('#levelSelectorModal');
+    LEVEL_SELECTOR_CONTAINER = $('#levelSelectorContainer');
+    LEVEL_SELECTOR_BUTTON    = $('#levelSelectionButton');
 });
 
 // ----------------------------------------------------------
@@ -180,7 +175,7 @@ var LEVELS_STRING = ['',
     '11,6,5,2,1221j,0013,1021,3013,2312,3331,5412,2531',
     '12,6,5,2,0221j,0012,1021,5013,2113,3331,4412,0531',
     '13,6,5,2,3221j,0021,2021,4012,2112,5113,1212,0313,3321,3412,4421,1521,4521',
-    '14,6,5,2,2221j,0021,2012,4121,0212,1212,2221,2321,4212,5212,2412,4421,0521',
+    '14,6,5,2,2221j,0021,2012,4121,0212,1212,2321,4212,5212,2412,4421,0521',
     '15,6,5,2,2221j,1021,3021,0121,2121,4113,5113,0213,1213,2312,3312,4421,1521,3521',
 
     // Level 16-20

@@ -1,0 +1,107 @@
+
+
+/***************************************************
+ * Level Selector Modal
+ */
+
+#levelSelectorContainer {
+    overflow: hidden;
+    width: 100%;
+    background: rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 0;
+}
+
+#levelSelectorContainer ul {
+    height: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#levelSelectorContainer li {
+    position: relative;
+    text-align: center;
+    float: left;
+    width: 200px;
+    height: 100%;
+    /*border: 1px solid gray;*/
+}
+
+#levelSelectorContainer .itemslide-active {
+    background-color: #d27a2d;
+}
+
+#levelSelectorContainer .itemslide-active.levelCompleted {
+    background-color: #f4decb;
+}
+
+/**********************
+ * Level Difficulty
+ */
+#levelSelectorContainer .levelDifficulty {
+    top: 6%;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
+/* Level complete */
+#levelSelectorContainer .levelCompleted .levelDifficulty,
+#levelSelectorContainer .itemslide-active.levelCompleted .levelDifficulty {
+    opacity: 0.1;
+}
+
+/* Active slide */
+#levelSelectorContainer .itemslide-active .levelDifficulty {
+    opacity: 1;
+}
+
+/**********************
+ * Play Button
+ */
+#levelSelectorContainer .playButton {
+    left: 0;
+    right: 0;
+    bottom: 10%;
+    font-size: 2em;
+    /*margin-top: 120%;*/
+    position: absolute;
+    display: none;
+    color: #f4decb;
+    /*background-color: #f4decb;*/
+}
+
+/* Level completed */
+#levelSelectorContainer .levelCompleted .playButton,
+#levelSelectorContainer .itemslide-active.levelCompleted .playButton {
+    display: none;
+}
+
+/* Active slide */
+#levelSelectorContainer .itemslide-active .playButton {
+    display: block;
+}
+
+/**********************
+ * Level Number
+ */
+#levelSelectorContainer .levelNum {
+    left: 0;
+    right: 0;
+    top: 20%;
+    font-size: 5em;
+    position: absolute;
+}
+
+/* Level completed */
+#levelSelectorContainer .levelCompleted .levelNum,
+#levelSelectorContainer .itemslide-active.levelCompleted .levelNum {
+    opacity: 0.1;
+}
+
+/* Active slide */
+#levelSelectorContainer .itemslide-active .levelNum {
+    opacity: 1;
+    
+}

@@ -175,15 +175,17 @@ function setMovementConstraintFor(pieceObj) {
  */
 function checkWin(pieceObj) {
     if (jeepCanExit()) {
+        
         var secondsTaken = secondTimer + (minuteTimer * 60);
         var callback = function() {
             sr.showLevelCompleteModal();
-            resetNumMoves();
-            resetTimer();
             enableMovements();
         };
 
         sr.addToScore(level, numMoves, secondsTaken);
+        resetNumMoves();
+        resetTimer();
+
         disableMovements();
         animateJeepExit(callback);
     }
@@ -277,7 +279,7 @@ function updateTimerDisplay() {
  */
 function getJeepPiece() {
     for (var i in pieces) {
-        if (pieces[i].el.id == DIV_ID.JEEP) {
+        if (pieces[i].el.id == JEEP_ID) {
             return pieces[i];
         }
     }

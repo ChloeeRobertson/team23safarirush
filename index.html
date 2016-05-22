@@ -15,21 +15,27 @@
     <!-- jQuery.pep -->
     <script src="http://rawgithub.com/briangonzalez/jquery.pep.js/master/src/jquery.pep.js"></script>
 
+    <!-- jQuery ItemSlide.js -->
+    <script src="http://itemslide.github.io/dist/itemslide.min.js"></script>
+
     <!-- Eric Meyer's Reset 2.0 -->
     <link rel="stylesheet" href="css/meyerreset.css">
 
     <!-- Safari Rush -->
     <script src="js/global.js"></script>
     <script src="js/loadLevel.js"></script>
+    <script src="js/loadLevelSelector.js"></script>
     <script src="js/loadMechanics.js"></script>
     <script src="js/loadPieceAssets.js"></script>
     <script src="js/tracker.js"></script>
     <script src="js/mute.js"></script>
     <script src="js/autoload.js"></script>
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/levelselector.css">
     <link rel="stylesheet" href="css/gameboard.css">
 </head>
 <body>
+    <div id="blackout"></div>
     <!-- Site navigation bar -->
     <nav class="navbar navbar-default">
         <div class="container">
@@ -76,7 +82,6 @@
         <div class="row">
             <div class="col-xs-12" id="gameArea">
                 <div id="gameBorder">
-                    <div id="blackout">x</div>
                     <div id="gameBoard"></div>
                 </div>
             </div>
@@ -89,50 +94,26 @@
         <div class="container">
 
             <!-- Level selection button trigger modal -->
-            <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left" data-toggle="modal" data-target="#levelModal">
+            <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left" onclick="sr.showLevelSelector();">
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="levelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="levelSelectorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Change Level</h4>
+                            <h4 class="modal-title" id="myModalLabel">Level Selector</h4>
                         </div>
 
-                        <form id="levelSelectForm" role="form" method="post" action="javascript:alert('Script failed!');" onsubmit="return sr.changeLevel();">
-                            <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="difficulty">Difficulty:</label>
-                                        <select class="form-control" id="difficulty" name="difficulty">
-                                            <option value="easy" selected>Easy</option>
-                                            <option value="intermediate">Intermediate</option>
-                                            <option value="advanced">Advanced</option>
-                                            <option value="expert">Expert</option>
-                                        </select>
-                                        <br>
-                                        <label for="level">Level:</label>
-                                        <select class="form-control" id="level" name="level">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                            </div>
+                        <div id="levelSelectorContainer" class="modal-body"></div>
 
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">OK</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
+                        <div class="modal-footer">
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(1);">EASY</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(11);">INTERMEDIATE</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(21);">ADVANCED</a></span> - 
+                            <span><a href="#" onclick="sr.levelSelectorGoTo(31);">EXPERT</a></span>
+                        </div>
                     </div>
                 </div>
             </div>

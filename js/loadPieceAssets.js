@@ -14,7 +14,7 @@ var
     audioSprite;     // Audio sprite (1 file) storing all pieces' sounds
 
 var
-    audioLocked           = false; // Locks audio while easter egg playing
+    audioLocked           = false; // Locks audio while a sound is playing
 
     // Used for Desktop clicks only
     easterEggClickCounter = 0,    // Counts # of clicks in succession
@@ -33,7 +33,7 @@ function loadPieceAssets(piece, pieceElement) {
     }
 
     if (piece.isJeep) {
-        var animal = DIV_ID.JEEP;
+        var animal = JEEP_ID;
         loadJeepAssets(pieceElement);
     } else {
         var animal = getRandomAnimalName(piece);
@@ -51,6 +51,7 @@ function playAudio(pieceName) {
     if (audioLocked || sr.isMuted()) {
         return;
     }
+    audioLocked = true;
 
     var startPosition = AUDIO[pieceName].start;
     var playDuration  = AUDIO[pieceName].duration;
@@ -63,6 +64,7 @@ function playAudio(pieceName) {
     // Stop audio once playDuration passed
     timeoutInstance = setTimeout(function() {
         audioSprite.pause();
+        audioLocked = false;
     }, playDuration * 1000);
 }
 
@@ -80,7 +82,7 @@ window.sr.playAudio       = playAudio;
 function loadJeepAssets(pieceElement) {
     pieceElement
         .on('mousedown touchstart', easterEgg)
-        .attr('id', DIV_ID.JEEP); // Used for checkWin() in loadMechanics.js
+        .attr('id', JEEP_ID); // Used for checkWin() in loadMechanics.js
 }
 
 /**
@@ -119,13 +121,7 @@ function easterEgg() {
 
     if (clicksReached) {
         playAudio('easter');
-
-        audioLocked             = true;
         easterEggClickCounter = 0;
-
-        setTimeout(function() {
-            audioLocked = false;
-        }, AUDIO['easter'].duration * 1000);
     }
 
     easterEggLastClick = event.timeStamp;
