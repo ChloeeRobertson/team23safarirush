@@ -33,14 +33,33 @@
     margin-bottom: 0.5em;
 }
 
-/* Random Level, Submit Score Button & Name Input */
-#levelSelectorModal button,
-#levelSelectorModal input {
-    margin-top: .5em;
+/* Random Level Button,
+   Submit Score Button,
+   Name Input & Score Display */
+#randomLevelBtn {
+    float: right;
+    width: 40%;
+}
+#scoreDisplay {
+    margin-top: .8em;
+    margin-left: .2em;
+    color: #d27a2d;
+    float: left;
+    width: 58%;
+    text-align: left;
+}
+#scoreDisplay span {
+    font-weight: bold;
+}
+
+#playerNameInput,
+#submitScoreBtn {
+    margin-top: 1.4em;
 }
 #playerNameInput {
     float: left;
     width: 58%;
+    clear: both;
 }
 #submitScoreBtn {
     float: right;

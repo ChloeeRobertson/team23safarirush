@@ -42,8 +42,9 @@ function setupBoard() {
 
     sr.loadTracker();
     sr.loadLevelSelector();
+    sr.updateLevelSelectorScore(0);
+    sr.initializeSharedPieceAssets();
     sr.loadMute();
-    // initializeLevelCompleteModal();
 }
 
 /**
@@ -74,22 +75,9 @@ function loadLevel(levelNum) {
     }
 }
 
-/**
- * Show level complete modal.
- */
-// function showLevelCompleteModal() {
-//     if (!sr.hasNextUnplayedLevel()) {
-//         NEXT_LEVEL_BUTTON.hide();
-//         RANDOM_LEVEL_BUTTON.hide();
-//     }
-
-//     LEVEL_COMPLETE_MODAL.modal('show');
-// }
-
 // Attach public functions to global sr object
 window.sr.setupBoard             = setupBoard;
 window.sr.loadLevel              = loadLevel;
-// window.sr.showLevelCompleteModal = showLevelCompleteModal;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -109,7 +97,7 @@ function loadLevelFromString(levelString) {
         levelObj = createLevel(levelString.trim());
         tileLengthPx = BOARD.width() / levelObj.boardLength;
 
-        // Updates the level selector
+        // Updates the level selector & button
         sr.updateLevelSelector(levelObj.level);
     }
 
@@ -151,35 +139,6 @@ function loadPiece(piece) {
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
 // ----------------------------------------------------------
-
-/**
- * Link level complete modal buttons to actual functions.
- */
-// function initializeLevelCompleteModal() {
-//     NEXT_LEVEL_BUTTON.on('click touchend', function() {
-//         var level = sr.getNextUnplayedLevel();
-//         loadLevel(level);
-//         hideLevelCompleteModal();
-//     });
-
-//     RANDOM_LEVEL_BUTTON.on('click touchend', function() {
-//         var level = sr.getRandomUnplayedLevel();
-//         loadLevel(level);
-//         hideLevelCompleteModal();
-//     });
-
-//     SUBMIT_SCORE_BUTTON.on('click touchend', function() {
-//         sr.submitScore();
-//         hideLevelCompleteModal();
-//     });
-// }
-
-/**
- * Hide level complete modal.
- */
-// function hideLevelCompleteModal() {
-//     LEVEL_COMPLETE_MODAL.modal('hide');
-// }
 
 /**
  * Create and returns a level (data object).

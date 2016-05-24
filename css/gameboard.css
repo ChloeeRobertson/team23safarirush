@@ -1,5 +1,10 @@
-body {
-    overflow-y: hidden; /* Disables pull-down-to-refresh on chrome */
+/* Ensure desktops still shows scroll bars if necessary */
+@media only screen
+and (max-device-width: 719px) {
+    body {
+        /* Disables pull-down-to-refresh on chrome mobile */
+        overflow-y: hidden;
+    }
 }
 
 /*
@@ -113,7 +118,7 @@ and (max-device-width: 719px) {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -1; /* hidden by default */
     color: #f4decb;
     text-align: center;
     font-size: 2em;
@@ -121,17 +126,20 @@ and (max-device-width: 719px) {
 }
 
 
-/* Animals and Jeep
+/* Pieces (Animals and Jeep)
  ********************/
 
-#JEEP {
-    background-color: green;
+#jeep {
 }
 
 /* All pieces */
 .piece {
     position: absolute;
     box-sizing: border-box;
+}
+
+.piece img {
+    position: absolute;
 }
 
 /* Horizontal pieces */

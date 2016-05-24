@@ -27,6 +27,8 @@ if ($totalScore && $name) {
 	$sql = "INSERT INTO leaderboard (name, score)
             VALUES ('" . $name . "'," . $totalScore . ");";
 
+            echo $sql;
+
     // Execute query
     $conn->query($sql);
 }

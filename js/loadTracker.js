@@ -37,16 +37,15 @@ function loadTracker() {
     numMoves       = [];
     secondsUsed    = [];
 
-    for (var level = 1; level <= TOTAL_LEVELS; level++) {
-        unplayedLevels[level] = level;
+    for (var i = 0; i < TOTAL_LEVELS; i++) {
+        var level             = i + 1;
+        unplayedLevels[i]     = level;
         numMoves[level]       = 0;
         secondsUsed[level]    = 0;
     }
 
-    $.ajax({
-        url:     AJAX_URL.GET_SCORE_AVERAGES,
-        success: loadAveragesFromDB
-    });
+    $.ajax(AJAX_URL.GET_SCORE_AVERAGES)
+        .always(loadAveragesFromDB); // loads function whether success or failure
 }
 
 /**
@@ -60,7 +59,8 @@ function addToScore(level, movesTaken, secondsTaken) {
     removeFromUnplayedLevels(level);
 
     // Updates level selector with completed level statistics compared to other players
-    sr.markLevelCompleteInSelector(level, movesTaken, secondsTaken, getAverageComparisonNum(level));
+    sr.markLevelCompleteInSelector(level, movesTaken, secondsTaken, compareToAverages(level));
+    sr.updateLevelSelectorScore(totalScore);
 
     // Record player's level stats to database
     submitLevelStats(level, movesTaken, secondsTaken);
@@ -75,11 +75,18 @@ function submitScore() {
     if (scoreSubmitted) {
         return;
     }
+
+    // Must have non-empty name
+    if (!getPlayerName() || totalScore <= 0) {
+        alert('You must enter your name and have a score above zero to submit your score.');
+        return;
+    }
+
     scoreSubmitted = true;
 
     // Use Ajax to send score
     $.ajax({
-        url:     AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&totalScore=totalScore',
+        url:     AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&totalScore=' + totalScore,
         success: redirectToLeaderboard
     });
 }
@@ -88,14 +95,14 @@ function submitScore() {
  * Checks if there is an unplayed level.
  */
 function hasNextUnplayedLevel() {
-    return unplayedLevels.length > 1; // Index zero is always empty
+    return unplayedLevels.length > 0; // Index zero is always empty
 }
 
 /**
  * Gets next unplayed level.
  */
 function getNextUnplayedLevel() {
-    return (hasNextUnplayedLevel()) ? unplayedLevels[1] : -1; // Index zero is always empty
+    return (hasNextUnplayedLevel()) ? unplayedLevels[0] : -1;
 }
 
 /**
@@ -160,7 +167,7 @@ function removeFromUnplayedLevels(level) {
  * Calculates whether user's score is:
  * above average (1), average (0), or below average (-1).
  */
-function getAverageComparisonNum(level) {
+function compareToAverages(level) {
     var avgNumMovesMin = Math.round(averageNumMoves[level] * (1 - SCORING_COMPARISON_FACTOR.NUM_MOVES));
     var avgNumMovesMax = Math.round(averageNumMoves[level] * (1 + SCORING_COMPARISON_FACTOR.NUM_MOVES));
 
@@ -169,14 +176,16 @@ function getAverageComparisonNum(level) {
 
     var averageComparison;
 
-    // Below average score
-    if (numMoves[level] > avgNumMovesMax && secondsUsed[level] > avgSecondsUsedMax) {
-        return -1;
+    // Above average score
+    if ((numMoves[level] <= avgNumMovesMin && secondsUsed[level] <= avgSecondsUsedMax) ||
+        (numMoves[level] <= avgNumMovesMax && secondsUsed[level] <= avgSecondsUsedMin)) {
+
+        return 1;
     }
 
-    // Above average score
-    else if (numMoves[level] < avgNumMovesMin && secondsUsed[level] < avgSecondsUsedMin) {
-        return 1;
+    // Below average score
+    else if (numMoves[level] > avgNumMovesMax && secondsUsed[level] > avgSecondsUsedMax) {
+        return -1;
     }
 
     // Average score
@@ -188,17 +197,34 @@ function getAverageComparisonNum(level) {
  */
 function loadAveragesFromDB(results) {
 
-    // Trim, slice trailing comma, and split into parts
-    var levelsAverages = results.trim().slice(0, -1).split("\n");
+    // Use high # defaults, so it shows players are above-average for most levels
+    // Used only when no valid results from database
+    var defaultNumMoves    = 99;
+    var defaultSecondsUsed = 999;
 
-    for (var i in levelsAverages) {
-        var parts          = levelsAverages[i].trim().split(",");
-        var level          = parts[0];
-        var avgNumMoves    = parts[1];
-        var avgSecondsUsed = parts[2];
+    // Has results
+    if (typeof results === 'string') {
 
-        averageNumMoves[level]    = avgNumMoves;
-        averageSecondsUsed[level] = avgSecondsUsed;
+        // Trim whitespace, slice trailing comma, then split into parts
+        var levelsAverages = results.trim().slice(0, -1).split("\n");
+
+        for (var i in levelsAverages) {
+            var parts          = levelsAverages[i].trim().split(",");
+            var level          = parts[0];
+            var avgNumMoves    = parts[1];
+            var avgSecondsUsed = parts[2];
+
+            averageNumMoves[level]    = avgNumMoves;
+            averageSecondsUsed[level] = avgSecondsUsed;
+        }
+    }
+
+    // No results, use defaults
+    else {
+        for (var level = 1; level <= TOTAL_LEVELS; level++) {
+            averageNumMoves[level]    = defaultNumMoves;
+            averageSecondsUsed[level] = defaultSecondsUsed;
+        }
     }
 }
 
@@ -213,7 +239,7 @@ function redirectToLeaderboard() {
  * Get player name from input element.
  */
 function getPlayerName() {
-    return encodeURIComponent(PLAYER_NAME_INPUT.val());
+    return encodeURIComponent(PLAYER_NAME_INPUT.val().trim());
 }
 
 })();

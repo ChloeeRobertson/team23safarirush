@@ -9,13 +9,21 @@
 
 (function() {
 
+// Audio
 var
-    timeoutInstance, // Used to stop audioSprite once playDuration is played through
-    audioSprite;     // Audio sprite (1 file) storing all pieces' sounds
+    timeoutInstance,      // Used to stop audioSprite once playDuration is played through
+    audioSprite,          // Audio sprite (1 file) storing all pieces' sounds
+    audioLocked = false;  // Locks audio while a sound is playing
 
+// Cheap animation
 var
-    audioLocked           = false; // Locks audio while a sound is playing
+    shrinkWidthSizePx,    // Amount of px to shrink image when tapping animals
+    shrinkPositionSizePx, 
+    shrunkenImage,        // Reference to the current shrunken image
+    shrunkenImageMovesHorizontally;
 
+// Easter Egg
+var
     // Used for Desktop clicks only
     easterEggClickCounter = 0,    // Counts # of clicks in succession
     easterEggLastClick    = 0;    // Last click timestamp
@@ -25,13 +33,24 @@ var
 // ----------------------------------------------------------
 
 /**
+ * Initiate audio sprite object.
+ */
+function initializeSharedPieceAssets() {
+    var shrinkSizePx     = Math.floor(BOARD.width() * 0.02);
+    shrinkWidthSizePx    = shrinkSizePx * 2;
+    shrinkPositionSizePx = shrinkSizePx / 2;
+
+    audioSprite          = new Audio();
+    audioSprite.src      = PIECE.AUDIO_SPRITE_URL;
+
+    // Tell mute.js what audio sprite file will be played
+    sr.setPlayingAudio(audioSprite);
+}
+
+/**
  * Loads piece assets.
  */
 function loadPieceAssets(piece, pieceElement) {
-    if (!audioSprite) {
-        initiateAudioSprite();
-    }
-
     if (piece.isJeep) {
         var animal = JEEP_ID;
         loadJeepAssets(pieceElement);
@@ -39,7 +58,8 @@ function loadPieceAssets(piece, pieceElement) {
         var animal = getRandomAnimalName(piece);
     }
 
-    loadAssets(pieceElement, animal);
+    var movesHorizontally = piece.w > piece.h;
+    loadAssets(pieceElement, animal, movesHorizontally);
 }
 
 /**
@@ -53,8 +73,9 @@ function playAudio(pieceName, overrideOtherSounds) {
     }
     audioLocked = true;
 
-    var startPosition = AUDIO[pieceName].start;
-    var playDuration  = AUDIO[pieceName].duration;
+    var randomIndex   = Math.floor(AUDIO[pieceName].length * Math.random());
+    var startPosition = AUDIO[pieceName][randomIndex].start;
+    var playDuration  = AUDIO[pieceName][randomIndex].duration;
 
     clearTimeout(timeoutInstance);
 
@@ -69,8 +90,9 @@ function playAudio(pieceName, overrideOtherSounds) {
 }
 
 // Attach public functions to global sr object
-window.sr.loadPieceAssets = loadPieceAssets;
-window.sr.playAudio       = playAudio;
+window.sr.initializeSharedPieceAssets = initializeSharedPieceAssets;
+window.sr.loadPieceAssets             = loadPieceAssets;
+window.sr.playAudio                   = playAudio;
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
@@ -86,13 +108,18 @@ function loadJeepAssets(pieceElement) {
 }
 
 /**
- * Load image and add sound on click/tap for piece.
+ * Load piece image and sounds effects. 
  */
-function loadAssets(pieceElement, pieceName) {
+function loadAssets(pieceElement, pieceName, movesHorizontally) {
     pieceElement
         .append('<img src="' + getImgUrl(pieceName) + '">')
         .on('mousedown touchstart', function() {
+            autoUnshrinkImage(); // In case previous shrunken image hasn't unshrunk yet
             playAudio(pieceName);
+            shrinkImage(pieceElement.children(), movesHorizontally);
+        });
+    BOARD.on('mouseup touchend', function() {
+            autoUnshrinkImage();
         });
 }
 
@@ -127,14 +154,39 @@ function easterEgg() {
 // ----------------------------------------------------------
 
 /**
- * Initiate audio sprite object.
+ * Unshrinks image if there is an active shrunken image.
+ *
+ * Used to counter mouse exiting browser while dragging leaving a permanently
+ * shrunken image behind.
  */
-function initiateAudioSprite() {
-    audioSprite     = new Audio();
-    audioSprite.src = PIECE.AUDIO_SPRITE_URL;
+function autoUnshrinkImage() {
+    if (shrunkenImage) {
+        var leftOperator  = shrunkenImageMovesHorizontally ? '-=' : '+=';
+        shrunkenImage.css({
+            width: '+=' + shrinkWidthSizePx,
+            top:   '-=' + shrinkPositionSizePx,
+            left:  leftOperator + shrinkPositionSizePx
+        });
 
-    // Tell mute.js what audio sprite file will be played
-    sr.setPlayingAudio(audioSprite);
+        shrunkenImage = null;
+    }
+}
+
+/**
+ * Shrinks image.
+ */
+function shrinkImage(image, movesHorizontally) {
+
+    // Store references for auto unshrink
+    shrunkenImage = image;
+    shrunkenImageMovesHorizontally = movesHorizontally;
+
+    var leftOperator  = movesHorizontally ? '+=' : '-=';
+    image.css({
+        width: '-=' + shrinkWidthSizePx,
+        top:   '+=' + shrinkPositionSizePx,
+        left:  leftOperator + shrinkPositionSizePx
+    });
 }
 
 /**

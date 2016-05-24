@@ -84,10 +84,6 @@ VALUES
 
 
 
-CREATE TABLE levelTracker (
-    level int(2) UNSIGNED NOT NULL,
-    score INT(8) UNSIGNED NOT NULL
-);
 
 
 CREATE TABLE levelStatistics (

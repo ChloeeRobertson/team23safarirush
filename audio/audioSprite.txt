@@ -1,0 +1,15 @@
+Starting position and duration of sound in audioSprite.mp3
+
+  START
+POSITION    DURATION    FILENAME
+--------    --------    --------
+0.2         2.9         crocHunter_WOOHOO.wav
+3.2         1.2         giraffe_handnoise.mp3
+4.5         1.2         giraffe_name.mp3
+5.8         0.7         lion_bored.mp3
+6.6         0.35        lion_clueless.mp3
+7.1         1.1         lion_loud.mp3
+8.3         1.9         WyattElephant1.mp3
+10.4        2.2         WyattElephant2.mp3
+12.8        0.7         zebra1.mp3
+13.7        0.9         zebra2.mp3

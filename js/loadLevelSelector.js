@@ -66,6 +66,13 @@ function updateLevelSelector(level, isLocked) {
 }
 
 /**
+ * Updates level selector's score display.
+ */
+function updateLevelSelectorScore(score) {
+    SCORE_DISPLAY.text(score);
+}
+
+/**
  * Go to a level in level selector screen.
  */
 function levelSelectorGoTo(level) {
@@ -109,6 +116,7 @@ function markLevelCompleteInSelector(level, numMoves, secondsTaken, averageCompa
 global.sr.loadLevelSelector           = loadLevelSelector;
 global.sr.showLevelSelector           = showLevelSelector;
 global.sr.updateLevelSelector         = updateLevelSelector;
+global.sr.updateLevelSelectorScore    = updateLevelSelectorScore;
 global.sr.levelSelectorGoTo           = levelSelectorGoTo;
 global.sr.lockLevelSelector           = lockLevelSelector;
 global.sr.markLevelCompleteInSelector = markLevelCompleteInSelector;
@@ -162,14 +170,13 @@ function setResponsiveDimensions() {
  * Add event listeners to random level and score submit buttons.
  */
 function initiateButtons() {
-    RANDOM_LEVEL_BUTTON.on('click touchend', function() {
+    RANDOM_LEVEL_BUTTON.on('click', function() {
         var level = sr.getRandomUnplayedLevel();
         levelSelectorGoTo(level);
     });
 
-    SUBMIT_SCORE_BUTTON.on('click touchend', function() {
+    SUBMIT_SCORE_BUTTON.on('click', function() {
         sr.submitScore();
-        // hideSelectorModal();
     });
 }
 

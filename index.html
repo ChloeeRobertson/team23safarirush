@@ -13,10 +13,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     <!-- jQuery.pep -->
-    <script src="http://rawgithub.com/briangonzalez/jquery.pep.js/master/src/jquery.pep.js"></script>
+    <script src="js/jquery.pep.js"></script>
 
     <!-- jQuery ItemSlide.js -->
-    <script src="http://itemslide.github.io/dist/itemslide.min.js"></script>
+    <script src="js/itemslide.min.js"></script>
 
     <!-- Eric Meyer's Reset 2.0 -->
     <link rel="stylesheet" href="css/meyerreset.css">
@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="css/gameboard.css">
 </head>
 <body>
+    <!-- Used to disable gameboard interaction while level completion
+         animation runs. -->
     <div id="blackout"></div>
     <!-- Site navigation bar -->
     <nav class="navbar navbar-default">
@@ -114,6 +116,7 @@
                         <div id="levelSelectorContainer" class="modal-body"></div>
 
                         <div class="modal-footer">
+                            <div id="scoreDisplay">Your Score: <span></span></div>
                             <button id="randomLevelBtn" type="button" class="btn btn-success btn-block">Random Level</button>
                             <input id="playerNameInput" class="form-control" type="text" placeholder="Your name">
                             <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Submit Score</button>
