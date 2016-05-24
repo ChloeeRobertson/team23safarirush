@@ -114,3 +114,14 @@ footer {
     padding: 0;
     overflow: hidden;
 }
+
+#playTheGame {
+    margin: auto;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#playTheGameButton {
+    width: 100%;
+}
