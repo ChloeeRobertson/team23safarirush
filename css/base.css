@@ -78,8 +78,7 @@ button.navbar-toggle:focus span {
 #gameArea {
     background-color: #d27a2d;
     background: url("../images/backgroundSiloette.png");
-    /*background-repeat: no-repeat;*/
-    background-attachment: fixed;
+    background-repeat: no-repeat;
     background-position: center;
     height: 100%;
 }
