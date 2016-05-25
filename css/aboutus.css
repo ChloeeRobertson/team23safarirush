@@ -1,22 +1,107 @@
-.wrapper {
-	text-align: center;
-	padding: 3em 0;
+/* Padding to offset bootstrap fixed navbar */
+body {
+    padding-top: 70px;
 }
 
-h2 {
-	border-bottom: 2px solid #d27a2d;
-	color: #d27a2d;
-	font-size: 2em;
+/***************************************************
+ * Main Content Area
+ */
+
+/*
+ * Jumbotron
+ */
+.jumbotron {
+    background-color: #d27a2d;
 }
 
-.row {
-	padding: 2em 0;
+.jumbotron h1 {
+    margin-bottom: 5%;
+	border-bottom: 2px solid #f4decb;
+	color: #f4decb;
+    font-size: 3em;
+    text-align: center;
 }
 
-.teamMember {
-	color: #d27a2d;
+.jumbotron #summary {
+    margin-top: 5%;
+    padding: 2.5%;
+    background-color: #f4decb;
+    border-radius: 10px;
 }
 
-.teamMember > img {
-	border: 2px solid #d27a2d;
+.jumbotron h2 {
+    color: #d27a2d;
+    text-align: center;
+    font-size: 2em;
+}
+
+.jumbotron p {
+    color: #d27a2d;
+    font-size: 1em;
+}
+
+/*
+ * Team members
+ */
+.panel {
+    padding: 0;
+    border-radius: 10px;
+    background-color: #d27a2d;
+
+}
+
+.panel-heading {
+    background-color: #f4decb;
+    border-radius: 10px;
+}
+
+.panel-title {
+    text-align: center;
+    color: #d27a2d;
+}
+
+.slideanim {visibility:hidden;}
+.slide {
+    /* The name of the animation */
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    /* The duration of the animation */
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    /* Make the element visible */
+    visibility: visible;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .panel {
+        width: 46%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+
+/*
+ * Slide animation - Taken from http://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
+ * Go from 0% to 100% opacity (see-through) and specify the percentage from when to slide in the element along the Y-axis
+ */
+@keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(50%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(50%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
 }
