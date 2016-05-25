@@ -23,12 +23,12 @@
 
     <!-- Safari Rush -->
     <script src="js/global.js"></script>
-    <script src="js/loadLevel.js"></script>
-    <script src="js/loadLevelSelector.js"></script>
-    <script src="js/loadMechanics.js"></script>
-    <script src="js/loadPieceAssets.js"></script>
-    <script src="js/loadTracker.js"></script>
-    <script src="js/loadMute.js"></script>
+    <script src="js/Board.js"></script>
+    <script src="js/LevelSelector.js"></script>
+    <script src="js/Mechanics.js"></script>
+    <script src="js/PieceAssets.js"></script>
+    <script src="js/Tracker.js"></script>
+    <script src="js/Sound.js"></script>
     <script src="js/autoload.js"></script>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/levelselector.css">
@@ -58,7 +58,7 @@
                     <li><a href="index.html"><span class="glyphicon glyphicon-grain"></span> Play</a></li>
                     <li><a href="leaderboard.php"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Leaderboard</a></li>
                     <li><a href="howtoplay.html"><span class="glyphicon glyphicon-question-sign"></span> How to Play</a></li>
-                    <li><a href="achievements.php"><span class="glyphicon glyphicon-king"></span> Achievements</a></li>
+                    <li><a href="achievements.php"><span class="glyphicon glyphicon-king"></span> Achievements</a></li> 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="aboutus.html"><span class="glyphicon glyphicon-user"></span> About Us</a></li>
@@ -98,7 +98,7 @@
         <div class="container">
 
             <!-- Level selection button trigger modal -->
-            <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left" onclick="sr.showLevelSelector();">
+            <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left">
             </button>
 
             <!-- Modal -->
@@ -108,16 +108,16 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">LEVEL SELECTOR</h4>
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(1);">Easy</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(11);">Intermediate</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(21);">Advanced</a></span> - 
-                            <span><a href="#" onclick="sr.levelSelectorGoTo(31);">Expert</a></span>
+                            <span><a href="#" onclick="LevelSelector.slideTo(1);">Easy</a></span> -
+                            <span><a href="#" onclick="LevelSelector.slideTo(11);">Intermediate</a></span> -
+                            <span><a href="#" onclick="LevelSelector.slideTo(21);">Advanced</a></span> -
+                            <span><a href="#" onclick="LevelSelector.slideTo(31);">Expert</a></span>
                         </div>
 
                         <div id="levelSelectorContainer" class="modal-body"></div>
 
                         <div class="modal-footer">
-                            <div id="scoreDisplay">Your Score: <span></span></div>
+                            <div id="scoreDisplay">Your Score: <span id="scorePoints">0</span> <span id="achievements"></span></div>
                             <button id="randomLevelBtn" type="button" class="btn btn-success btn-block">Random Level</button>
                             <input id="playerNameInput" class="form-control" type="text" placeholder="Your name">
                             <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Submit Score</button>
@@ -127,11 +127,11 @@
             </div>
 
             <!-- Level reset button -->
-            <button id="levelResetButton" type="button" onclick="sr.loadLevel()" class="btn btn-success btn-lg pull-right">
+            <button id="levelResetButton" type="button" class="btn btn-success btn-lg pull-right">
                 Reset <span class="glyphicon glyphicon-refresh"></span>
             </button>
-            <button id="helpButton" type="button" onclick="window.location.href='howtoplay.html'" class="btn btn-lg btn-success glyphicon glyphicon-question-sign center-block"></button>
 
+            <button id="helpButton" type="button" onclick="window.location.href='howtoplay.html'" class="btn btn-lg btn-success glyphicon glyphicon-question-sign center-block"></button>
 
         </div><!-- /.container -->
     </footer>

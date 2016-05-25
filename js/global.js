@@ -6,10 +6,6 @@ var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
 // False = Loads from LEVELS_STRING (at the end of global.js -- this file)
 var LOAD_LEVEL_FROM_BACKEND = false;
 
-// For scripts to attach public functions to
-// See bottom section of "Public Functions" in the javascript files
-var sr = {};
-
 // ----------------------------------------------------------
 //    P I E C E S ,   E A S T E R   E G G ,   A U D I O
 // ----------------------------------------------------------
@@ -24,62 +20,42 @@ var PIECE = {
     ],
 
     IMG_DIR:          'images/animals/',
-    IMG_EXT:          '.png',
-
-    AUDIO_SPRITE_URL: 'audio/audioSprite_60kb.mp3',
+    IMG_EXT:          '.png'
 };
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
-    CLICK_SPEED:    400,   // Consecutive click speed in ms
+    CLICK_SPEED:    400   // Consecutive click speed in ms
 };
+
+var AUDIO_SPRITE_URL = 'audio/audioSprite_60kb.mp3';
 
 var VOLUME_ICON = {
     ON:  'images/volume_on.gif',
     OFF: 'images/volume_off.gif'
-};
+}
 
 // Position and duration info for audio sprite
-// Join audio files: http://audio-joiner.com/
-// Cut audio files:  http://mp3cut.net/
-// Reduce MP3 files: http://www.mp3smaller.com/
 var AUDIO = [];
-
 AUDIO['zebra'] = [
-    {start: 12.8, duration: 0.7}, // zebra1.mp3
-    {start: 13.7, duration: 0.9}  // zebra2.mp3
-];
-
+    {start: 12.8, duration: 0.7},   // zebra1.mp3
+    {start: 13.7, duration: 0.9}];  // zebra2.mp3
 AUDIO['lion'] = [
-    {start: 5.8, duration: 0.7},  // lion_bored.mp3
-    {start: 6.6, duration: 0.35}, // lion_clueless.mp3
-    {start: 7.1, duration: 1.1}   // lion_loud.mp3
-];
-
+    {start: 5.8, duration: 0.7},    // lion_bored.mp3
+    {start: 6.6, duration: 0.5},    // lion_clueless.mp3
+    {start: 7.1, duration: 1.1}];   // lion_loud.mp3
 AUDIO['elephant'] = [
-    {start: 8.3, duration: 1.9},  // WyattElephant1.mp3
-    {start: 10.4, duration: 2.2}  // WyattElephant2.mp3
-];
-
+    {start: 8.3, duration: 1.9},    // WyattElephant1.mp3
+    {start: 10.4, duration: 2.2}];  // WyattElephant2.mp3
 AUDIO['giraffe'] = [
-    {start: 3.2, duration: 1.2}, // giraffe_handnoise.mp3
-    {start: 4.5, duration: 1.2}  // giraffe_name.mp3
-];
-
-// index same as JEEP_ID
+    {start: 3.2, duration: 1.2},    // giraffe_handnoise.mp3
+    {start: 4.5, duration: 1.2}];   // giraffe_name.mp3
 AUDIO['jeep'] = [
-    {start: 0.2, duration: 2.9} // crocHunter_WOOHOO.wav
-];
-
-// hardcoded 'easter' in loadPieceAssets.js
+    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
 AUDIO['easter'] = [
-    {start: 0.2, duration: 2.9} // crocHunter_WOOHOO.wav
-];
-
-// hardcoded 'win' in loadMechanics.js
+    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
 AUDIO['win'] = [
-    {start: 0.2, duration: 2.9} // crocHunter_WOOHOO.wav
-];
+    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
 
 // ----------------------------------------------------------
 //        P I E C E   I D s   &   C L A S S N A M E S
@@ -100,6 +76,13 @@ var PIECE_CLASSNAME = {
 //             S C O R I N G   A N D   L E V E L S
 // ----------------------------------------------------------
 
+var ACHIEVEMENT_ICONS = [
+    'images/achievements/easy.png',
+    'images/achievements/intermediate.png',
+    'images/achievements/advanced.png',
+    'images/achievements/expert.png'
+];
+
 // Used to calculate total score for leaderboard
 var SCORING = {
     LEVEL_MULTIPLIER:       .8,    // Multiplied by level #
@@ -113,6 +96,7 @@ var SCORING_COMPARISON_FACTOR = {
     NUM_MOVES:    .15,  // +/- 15% of average is still average
     SECONDS_USED: .15   // +/- 15% of average is still average
 };
+
 
 // Variable to store total number of board arrangements
 var TOTAL_LEVELS = 40;
@@ -146,11 +130,11 @@ var LEVEL_SELECTOR_DELAY = {
 // ----------------------------------------------------------
 
 var AJAX_URL = {
-    GET_LEVEL:           'http://team23.site88.net/db/getLevel.php',
-    GET_SCORE_AVERAGES:  'http://team23.site88.net/db/getScoreAverages.php',
-    SUBMIT_SCORE:        'http://team23.site88.net/db/submitScore.php',
-    SUBMIT_LEVEL_STATS:  'http://team23.site88.net/db/submitLevelStats.php',
-    LEADERBOARD:         'http://team23.site88.net/leaderboard.php'
+    GET_LEVEL:           'http://team23.site88.net/working/db/getLevel.php',
+    GET_SCORE_AVERAGES:  'http://team23.site88.net/working/db/getScoreAverages.php',
+    SUBMIT_SCORE:        'http://team23.site88.net/working/db/submitScore.php',
+    SUBMIT_LEVEL_STATS:  'http://team23.site88.net/working/db/submitLevelStats.php',
+    LEADERBOARD:         'http://team23.site88.net/working/leaderboard.php'
 };
 
 // ----------------------------------------------------------
@@ -158,54 +142,54 @@ var AJAX_URL = {
 // ----------------------------------------------------------
 
 // Board and mechanics
+var BOARD;
 var GAMEWON;
 var BLACKOUT;
-var BOARD;
 var NUM_MOVES;
 var TIMER;
-var MUTE_BUTTON;
 var SCORE_DISPLAY;
-
-// Level Complete Modal
-var LEVEL_COMPLETE_MODAL;
-var NEXT_LEVEL_BUTTON;
-var RANDOM_LEVEL_BUTTON;
-var SUBMIT_SCORE_BUTTON;
-var PLAYER_NAME_INPUT;
+var ACHIEVEMENTS;
 
 // Level selector modal
 var LEVEL_SELECTOR_MODAL;
 var LEVEL_SELECTOR_CONTAINER;
 var LEVEL_SELECTOR_BUTTON;
+var RANDOM_LEVEL_BUTTON;
+var SUBMIT_SCORE_BUTTON;
+var PLAYER_NAME_INPUT;
+
+var MUTE_BUTTON;
+var RESET_BUTTON;
 
 // Initialize variables on document ready
 $(document).ready(function() {
+    BOARD         = $('#gameBoard');
     GAMEWON       = $('#gameWon');
     BLACKOUT      = $('#blackout');
-    BOARD         = $('#gameBoard');
     NUM_MOVES     = $('#numMoves');
     TIMER         = $('#timerDisplay');
-    MUTE_BUTTON   = $('#volume');
-    SCORE_DISPLAY = $('#scoreDisplay span');
-
-    LEVEL_COMPLETE_MODAL     = $('#levelCompleteModal');
-    NEXT_LEVEL_BUTTON        = $('#nextLevelBtn');
-    RANDOM_LEVEL_BUTTON      = $('#randomLevelBtn');
-    SUBMIT_SCORE_BUTTON      = $('#submitScoreBtn');
-    PLAYER_NAME_INPUT        = $('#playerNameInput');
+    SCORE_DISPLAY = $('#scorePoints');
+    ACHIEVEMENTS  = $('#achievements');
 
     LEVEL_SELECTOR_MODAL     = $('#levelSelectorModal');
     LEVEL_SELECTOR_CONTAINER = $('#levelSelectorContainer');
     LEVEL_SELECTOR_BUTTON    = $('#levelSelectionButton');
+    RANDOM_LEVEL_BUTTON      = $('#randomLevelBtn');
+    SUBMIT_SCORE_BUTTON      = $('#submitScoreBtn');
+    PLAYER_NAME_INPUT        = $('#playerNameInput');
+
+    MUTE_BUTTON  = $('#volume');
+    RESET_BUTTON = $('#levelResetButton');
 });
 
 // ----------------------------------------------------------
-//                L E V E L S   S T R I N G
+//                 L E V E L   S T R I N G
 // ----------------------------------------------------------
 
-// For detailed explanation, see loadLevel.js header
+// For detailed explanation, see Board.js header
 // Used only when LOAD_LEVEL_FROM_BACKEND = false
-var LEVELS_STRING = ['',
+
+var LEVEL_STRING = ['',
 
     // Level 1 - 5
     // '1,6,5,2,1221j', // Only Jeep piece showing, used for testing

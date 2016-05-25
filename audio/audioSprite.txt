@@ -1,3 +1,8 @@
+
+// Join audio files: http://audio-joiner.com/
+// Cut audio files:  http://mp3cut.net/
+// Reduce MP3 files: http://www.mp3smaller.com/
+
 Starting position and duration of sound in audioSprite.mp3
 
   START
@@ -7,7 +12,7 @@ POSITION    DURATION    FILENAME
 3.2         1.2         giraffe_handnoise.mp3
 4.5         1.2         giraffe_name.mp3
 5.8         0.7         lion_bored.mp3
-6.6         0.35        lion_clueless.mp3
+6.6         0.5         lion_clueless.mp3
 7.1         1.1         lion_loud.mp3
 8.3         1.9         WyattElephant1.mp3
 10.4        2.2         WyattElephant2.mp3

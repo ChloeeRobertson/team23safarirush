@@ -14,8 +14,8 @@ if (AUTO_LOAD_LEVEL_ON_DOCUMENT_READY) {
 
         // Set delay due to media queries takes time to load
         setTimeout(function() {
-            sr.setupBoard();
-            sr.loadLevel(1);
+            Board.initialize();
+            Board.loadLevel(1);
         }, 1000);
     });
 }

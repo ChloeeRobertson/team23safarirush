@@ -69,16 +69,164 @@ CREATE TABLE leaderboard (
 INSERT INTO leaderboard
     (name, score)
 VALUES
-    ('Christopher', 2000),
-    ('Liam', 3000),
-    ('Mason', 4000),
-    ('Jacob', 5000),
-    ('William', 6000),
-    ('Ethan', 7000),
-    ('James', 8000),
-    ('Alexander', 9000),
-    ('Megan', 1000),
-    ('Benjamin', 9999);
+    ('Christopher', 1),
+    ('Liam', 1),
+    ('Mason', 1),
+    ('Jacob', 1),
+    ('William', 1),
+    ('Ethan', 1),
+    ('James', 1),
+    ('Alexander', 1),
+    ('Megan', 1),
+    ('Benjamin', 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE achievedEasy (
+    name VARCHAR(30) NOT NULL,
+    numMoves int(7) UNSIGNED NOT NULL,
+    secondsUsed int(100) UNSIGNED NOT NULL,
+    score int(8) UNSIGNED NOT NULL
+);
+
+INSERT INTO achievedEasy 
+    (name, numMoves, secondsUsed, score)
+VALUES
+    ('Christopher', 9999, 99999, 1),
+    ('Liam',        9999, 99999, 1),
+    ('Mason',       9999, 99999, 1),
+    ('Jacob',       9999, 99999, 1),
+    ('William',     9999, 99999, 1),
+    ('Ethan',       9999, 99999, 1),
+    ('James',       9999, 99999, 1),
+    ('Alexander',   9999, 99999, 1),
+    ('Megan',       9999, 99999, 1),
+    ('Benjamin',    9999, 99999, 1);
+
+
+
+
+
+
+
+
+CREATE TABLE achievedIntermediate (
+    name VARCHAR(30) NOT NULL,
+    numMoves int(7) UNSIGNED NOT NULL,
+    secondsUsed int(100) UNSIGNED NOT NULL,
+    score int(8) UNSIGNED NOT NULL
+);
+
+INSERT INTO achievedIntermediate 
+    (name, numMoves, secondsUsed, score)
+VALUES
+    ('Christopher', 9999, 99999, 1),
+    ('Liam',        9999, 99999, 1),
+    ('Mason',       9999, 99999, 1),
+    ('Jacob',       9999, 99999, 1),
+    ('William',     9999, 99999, 1),
+    ('Ethan',       9999, 99999, 1),
+    ('James',       9999, 99999, 1),
+    ('Alexander',   9999, 99999, 1),
+    ('Megan',       9999, 99999, 1),
+    ('Benjamin',    9999, 99999, 1);
+
+
+
+
+
+
+
+CREATE TABLE achievedAdvanced (
+    name VARCHAR(30) NOT NULL,
+    numMoves int(7) UNSIGNED NOT NULL,
+    secondsUsed int(100) UNSIGNED NOT NULL,
+    score int(8) UNSIGNED NOT NULL
+);
+
+INSERT INTO achievedAdvanced 
+    (name, numMoves, secondsUsed, score)
+VALUES
+    ('Christopher', 9999, 99999, 1),
+    ('Liam',        9999, 99999, 1),
+    ('Mason',       9999, 99999, 1),
+    ('Jacob',       9999, 99999, 1),
+    ('William',     9999, 99999, 1),
+    ('Ethan',       9999, 99999, 1),
+    ('James',       9999, 99999, 1),
+    ('Alexander',   9999, 99999, 1),
+    ('Megan',       9999, 99999, 1),
+    ('Benjamin',    9999, 99999, 1);
+
+
+
+
+
+CREATE TABLE achievedExpert (
+    name VARCHAR(30) NOT NULL,
+    numMoves int(7) UNSIGNED NOT NULL,
+    secondsUsed int(100) UNSIGNED NOT NULL,
+    score int(8) UNSIGNED NOT NULL
+);
+
+INSERT INTO achievedExpert
+    (name, numMoves, secondsUsed, score)
+VALUES
+    ('Christopher', 9999, 99999, 1),
+    ('Liam',        9999, 99999, 1),
+    ('Mason',       9999, 99999, 1),
+    ('Jacob',       9999, 99999, 1),
+    ('William',     9999, 99999, 1),
+    ('Ethan',       9999, 99999, 1),
+    ('James',       9999, 99999, 1),
+    ('Alexander',   9999, 99999, 1),
+    ('Megan',       9999, 99999, 1),
+    ('Benjamin',    9999, 99999, 1);
+
+
+
+
+CREATE TABLE achievedGodlike (
+    name VARCHAR(30) NOT NULL,
+    numMoves int(7) UNSIGNED NOT NULL,
+    secondsUsed int(100) UNSIGNED NOT NULL,
+    score int(8) UNSIGNED NOT NULL
+);
+
+INSERT INTO achievedGodlike
+    (name, numMoves, secondsUsed, score)
+VALUES
+    ('Christopher', 9999, 99999, 1),
+    ('Liam',        9999, 99999, 1),
+    ('Mason',       9999, 99999, 1),
+    ('Jacob',       9999, 99999, 1),
+    ('William',     9999, 99999, 1),
+    ('Ethan',       9999, 99999, 1),
+    ('James',       9999, 99999, 1),
+    ('Alexander',   9999, 99999, 1),
+    ('Megan',       9999, 99999, 1),
+    ('Benjamin',    9999, 99999, 1);
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -88,7 +236,7 @@ VALUES
 
 CREATE TABLE levelStatistics (
     level int(2) UNSIGNED PRIMARY KEY NOT NULL,
-    avgNumMoves, int(7) UNSIGNED NOT NULL,
+    avgNumMoves int(7) UNSIGNED NOT NULL,
     avgSecondsUsed int(15) UNSIGNED NOT NULL,
     totalNumMoves int(255) UNSIGNED NOT NULL,
     totalSecondsUsed int(255) UNSIGNED NOT NULL,

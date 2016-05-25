@@ -14,11 +14,9 @@ if ($conn->connect_error) {
 }
 
 // Clean $_GET variables
-$name        = clean($_GET['name']);
-$totalScore  = clean($_GET['totalScore']);
-
-// Split scores for individual levels
-$levelsScore = explode(',', clean($_GET['levelsScore']));
+$name        	= clean($_GET['name']);
+$totalScore  	= clean($_GET['totalScore']);
+$achievements  	= clean($_GET['achievements']);
 
 // Non-empty total score and name
 if ($totalScore && $name) {
@@ -27,10 +25,24 @@ if ($totalScore && $name) {
 	$sql = "INSERT INTO leaderboard (name, score)
             VALUES ('" . $name . "'," . $totalScore . ");";
 
-            echo $sql;
+    if ($achievements) {
+    	$parts = explode('_', $achievements);
+
+    	foreach($parts as $achievement) {
+    		$pieces = explode(',', $achievement);
+    		$difficulty = $pieces[0];
+    		$numMoves = $pieces[1];
+    		$secondsUsed = $pieces[2];
+    		$score = $pieces[3];
+
+    		$sql .= "INSERT INTO " . $achieved[$difficulty] . " (name, numMoves, secondsUsed, score) VALUES ('" . $name . "', " . $numMoves . ", " . $secondsUsed . ", " . $score . ");";
+    	}
+    }
+
+    // echo $sql;
 
     // Execute query
-    $conn->query($sql);
+    $conn->multi_query($sql);
 }
 
 ?>
