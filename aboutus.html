@@ -19,11 +19,24 @@
     <!-- Safari Rush -->
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/aboutus.css">
+
+    <script type="text/javascript">
+        $(window).scroll(function() {
+            $(".slideanim").each(function(){
+                var pos = $(this).offset().top;
+
+                var winTop = $(window).scrollTop();
+                if (pos < winTop + 600) {
+                    $(this).addClass("slide");
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
 	<!-- Site navigation bar -->
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -51,41 +64,56 @@
 	</nav>
 
 	<div id="main" class="container">
-		<div class="wrapper">
-			<h2>Our Team</h2>
+        <div class="jumbotron">
+            <h1>About Team 23</h1>
+            <img src="images/COMP2910%20Team23.jpg" alt="group picture" id="groupPic" class="img-responsive center-block">
+            <div id="summary">
+                <h2>Purpose</h2><br>
+                <p>This site was created for the COMP2910 project course at BCIT by 2016 CST students.</p><br>
+                <p>The main objective was to create a brain game that works on mobile web browsers, while learning software project management and development practices.</p><br>
+                <p>Our goal was to create a simple, intuitive, and addictive puzzle solving game for everyone!</p>
+            </div>
+        </div>
 
-			<div class="row">
-				<div class="col-xs-4">
-					<div class="teamMember">
-						<img src="" alt="Chloee Robertson" width="200" height="200">
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="teamMember">
-						<img src="" alt="Wyatt Ariss" width="200" height="200">
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="teamMember">
-						<img src="" alt="Johnny Lee" width="200" height="200">
-					</div>
-				</div>								
-			</div>
+        <div id="teamMembers">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 panel slideanim">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Chloee Robertson - "Crikey! Jeep"</h1>
+                    </div>
+                    <img src="images/team/chloee.jpg" alt="Chloee Robertson" class="img-responsive center-block img-circle">
+                </div>
 
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="teamMember">
-						<img src="" alt="Mike Zhou" width="200" height="200">
-					</div>
-				</div>				
-				<div class="col-xs-6">
-					<div class="teamMember">
-						<img src="" alt="Kenneth Li" width="200" height="200">
-					</div>
-				</div>								
-			</div>
-		</div>
-	</div>
+                <div class="col-xs-12 col-sm-6 panel slideanim">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Wyatt Ariss - "Wyattphant"</h1>
+                    </div>
+                    <img src="images/team/wyatt.jpg" alt="Wyatt Ariss" class="img-responsive center-block img-circle">
+                </div>
+
+                <div class="col-xs-12 col-sm-6 panel slideanim">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Johnny Lee - "Derp Lion"</h1>
+                    </div>
+                    <img src="images/team/johnny.jpg" alt="Johnny Lee" class="img-responsive center-block img-circle">
+                </div>
+
+                <div class="col-xs-12 col-sm-6 panel slideanim">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Mike Zhou - "Chill Giraffe"</h1>
+                    </div>
+                    <img src="images/team/mike.jpg" alt="Mike Zhou" class="img-responsive center-block img-circle">
+                </div>
+
+                <div class="col-xs-12 col-sm-6 panel slideanim">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Kenneth Li - "Possessed Zebra"</h1>
+                    </div>
+                    <img src="images/team/kenneth.jpg" alt="Kenneth Li" class="img-responsive center-block img-circle">
+                </div>
+            </div>
+	    </div>
+    </div>
 
 
 </body>
