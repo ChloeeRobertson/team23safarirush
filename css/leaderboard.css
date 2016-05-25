@@ -37,6 +37,10 @@
     width: 50%;
 }
 
+#main .table th, .table td {
+    border-top: none !important;
+}
+
 #yourScore {
     padding-top: 25px;
     text-align: center;
