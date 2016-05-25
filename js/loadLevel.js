@@ -49,6 +49,8 @@ function setupBoard() {
 
 /**
  * Load level configuration onto board.
+ *
+ * @param levelNum  the level to load
  */
 function loadLevel(levelNum) {
 
@@ -86,6 +88,8 @@ window.sr.loadLevel              = loadLevel;
 /**
  * Load level pieces onto the board and invoke
  * sr.loadMechanics() after pieces finish loading.
+ *
+ * @params levelString  string that represents the board config for the level
  */
 function loadLevelFromString(levelString) {
     var resetCounters;
@@ -113,6 +117,8 @@ function loadLevelFromString(levelString) {
 
 /**
  * Loads a piece into the HTML DOM.
+ *
+ * @params piece    takes the piece to load
  */
 function loadPiece(piece) {
 
@@ -142,6 +148,8 @@ function loadPiece(piece) {
 
 /**
  * Create and returns a level (data object).
+ *
+ * @params levelString  string that represents the board config for the level
  */
 function createLevel(levelString) {
     var parts = levelString.split(',');

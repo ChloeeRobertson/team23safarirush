@@ -114,8 +114,10 @@ var SCORING_COMPARISON_FACTOR = {
     SECONDS_USED: .15   // +/- 15% of average is still average
 };
 
+// Variable to store total number of board arrangements
 var TOTAL_LEVELS = 40;
 
+// Variable to store the ranges of difficulty
 var LEVEL_DIFFICULTY = [
     'Easy',         // 1 - 10
     'Intermediate', // 11 - 20
