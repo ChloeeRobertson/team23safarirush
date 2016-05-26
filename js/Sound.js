@@ -1,6 +1,8 @@
 /*
  * Controls whether there is audio when playing the game.
  *
+ * Must be loaded after global.js and Board.js
+ *
  * Requires:
  *     - jQuery         [http://jquery.com/]
  */

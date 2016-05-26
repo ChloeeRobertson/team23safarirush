@@ -2,7 +2,7 @@
  * Adds game mechanics to all pieces with the assistance of
  * jQuery.pep library.
  *
- * Must be loaded after global.js and loadLevel.js
+ * Must be loaded after global.js and Board.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]

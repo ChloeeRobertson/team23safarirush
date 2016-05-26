@@ -1,7 +1,7 @@
 /*
  * Loads pieces' (jeep and animal) images and sounds.
  * 
- * Must be loaded after global.js and loadLevel.js
+ * Must be loaded after global.js and Board.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]

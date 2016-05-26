@@ -47,10 +47,17 @@ function initialize() {
 
     // Initialize different functions and features
     initializeResetButton();
-    Tracker.initialize();
     LevelSelector.initialize();
     PieceAssets.initialize();
     Sound.initialize();
+    Tracker.initialize();
+
+    // Load data from saved player data or load first level
+    if (Tracker.hasPlayerData()) {
+        Tracker.loadPlayerData();
+    } else {
+        loadLevel(1);
+    }
 }
     
 /**

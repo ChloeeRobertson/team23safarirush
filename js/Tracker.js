@@ -2,13 +2,19 @@
  * Tracks player's score and levels completed.
  * Determines next unplayed level, random unplayed level if any.
  *
- * Must be loaded after global.js and loadLevel.js
+ * Must be loaded after global.js and Board.js
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]
+ *     - JS Cookie      [https://github.com/js-cookie/js-cookie]
  */
 
 (function(global) {
+
+// Cookies
+var
+    COOKIE_EXPIRY_DAYS = 30,    // Days till cookies expire
+    COOKIE_NAME        = 'playerData';
 
 // Grade assignments
 var
@@ -23,7 +29,6 @@ var
     unplayedLevels     = [],    // Stores all levels unplayed
     lastCompletedLevel = 0;     // Last completed level
 
-
 // Score tracking
 var
     numMoves           = [],    // Tracks number of moves per level
@@ -32,8 +37,7 @@ var
     averageSecondsUsed = [],    // Average seconds used per level (from DB)
     levelScore         = [],    // Tracks score per level
 
-    totalScore         = 0,     // Total score, used for leaderboard ranking
-    scoreSubmitted     = false; // Prevents double score submissions
+    totalScore         = 0;     // Total score, used for leaderboard ranking
 
 // ----------------------------------------------------------
 //               P U B L I C   F U N C T I O N S
@@ -111,18 +115,13 @@ function getScore() {
  */
 function submitScore() {
 
-    // Prevents double submission of score
-    if (scoreSubmitted) {
-        return;
-    }
-
     // Must have non-empty name and score above zero
     if (!getPlayerName() || totalScore <= 0) {
         alert('You must enter your name and have a score above zero to submit your score.');
         return;
     }
     
-    scoreSubmitted = true;
+    Cookies.remove(COOKIE_NAME);
 
     var url  = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&totalScore=' + totalScore;
         url += '&achievements=' + getAchievementString();
@@ -155,6 +154,50 @@ function updateCompletedLevel(level, movesTaken, secondsTaken) {
 
     // Check if player achieved something
     checkAchievements();
+
+    // Save data
+    savePlayerData();
+}
+
+/**
+ * Determines if there are any saved player data.
+ */
+function hasPlayerData() {
+    var data = Cookies.get(COOKIE_NAME);
+    return data ? true : false;
+}
+
+/**
+ * Load player data from cookies.
+ */
+function loadPlayerData() {
+
+    if (!hasPlayerData()) {
+        return;
+    }
+
+    var playerData      = JSON.parse(Cookies.get(COOKIE_NAME));
+
+    achievements        = playerData.achievements;
+    unplayedLevels      = playerData.unplayedLevels;
+
+    numMoves            = playerData.numMoves;
+    secondsUsed         = playerData.secondsUsed;
+    levelScore          = playerData.levelScore;
+
+    totalScore          = playerData.totalScore;
+    lastCompletedLevel  = playerData.lastCompletedLevel;
+
+    // Set completed levels in Level Selector
+    for (var level in numMoves) {
+        if (numMoves[level]) {
+            var assessment = getLevelAssessment(level);
+            LevelSelector.setCompleted(level, assessment);
+        }
+    }
+
+    // Load player's next unplayed level
+    Board.loadLevel(getNextUnplayedLevel());
 }
 
 // Make public functions go public
@@ -165,12 +208,33 @@ global.Tracker = {
     getRandomUnplayedLevel: getRandomUnplayedLevel,
     getScore:               getScore,
     submitScore:            submitScore,
-    updateCompletedLevel:   updateCompletedLevel
+    updateCompletedLevel:   updateCompletedLevel,
+    hasPlayerData:          hasPlayerData,
+    loadPlayerData:         loadPlayerData
 };
 
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
+
+/**
+ * Save player data to cookies.
+ */
+function savePlayerData() {
+    var playerData = {
+        achievements:           achievements,
+        unplayedLevels:         unplayedLevels,
+
+        numMoves:               numMoves,
+        secondsUsed:            secondsUsed,
+        levelScore:             levelScore,
+
+        totalScore:             totalScore,
+        lastCompletedLevel:     lastCompletedLevel
+    };
+
+    Cookies.set(COOKIE_NAME, playerData, {expires: COOKIE_EXPIRY_DAYS});
+}
 
 /**
  * Calculates score for current level.

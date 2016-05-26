@@ -1,6 +1,6 @@
 
-// Automatically load first level on document ready
-var AUTO_LOAD_LEVEL_ON_DOCUMENT_READY = true;
+// Automatically load board on document ready
+var AUTO_LOAD_BOARD_ON_DOCUMENT_READY = true;
 
 // True = Loads level string from backend;
 // False = Loads from LEVELS_STRING (at the end of global.js -- this file)
