@@ -88,7 +88,7 @@ function loadAssets(pieceElement, pieceName, movesHorizontally) {
 /**
  * Easter Egg: click Jeep 10 times to activate.
  */
-function easterEgg() {
+function easterEgg(event) {
     var stopOtherSounds = true;
     var clickSpeed = event.timeStamp - easterEggLastClick;
     var clicksReached;

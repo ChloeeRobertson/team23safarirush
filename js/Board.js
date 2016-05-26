@@ -107,7 +107,7 @@ function getTileLength() {
 /**
  * Clear board pieces.
  */
-function clear() {
+function clearBoard() {
     BOARD.empty();
 }
 
@@ -118,7 +118,7 @@ global.Board = {
     getBoard:           getBoard,
     getLength:          getLength,
     getTileLength:      getTileLength,
-    clear:              clear
+    clearBoard:         clearBoard
 };
 
 // ----------------------------------------------------------

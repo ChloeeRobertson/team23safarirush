@@ -17,12 +17,17 @@
     
 // Board and Pieces
 var
-    pieces              = [],   // Stores all board pieces (from jQuery.pep)
-    jeepPiece           = null, // Reference to the jeep piece
-    activePiece         = null, // Reference to the active piece
-    activePiecePosition = {},   // Original position of active piece
+    pieces              = [],       // Stores all board pieces (from jQuery.pep)
+    jeepPiece           = null,     // Reference to the jeep piece
+    activePiece         = null,     // Reference to the active piece
+    activePiecePosition = {},       // Original position of active piece
 
-    goalCoordinates     = {};   // Game ends when Jeep gets to here
+    goalCoordinates     = {},       // Game ends when Jeep gets to here
+    
+    // Counters Firefox bug:
+    // Mouse exiting windows while dragging would mess up the activePiecePosition
+    // causing constraints to be set incorrectly.
+    pieceIsMoving       = false;
 
 // Number of Moves
 var
@@ -72,15 +77,23 @@ global.Mechanics = {
  * Invoked when first touch/click is triggered on pieceObj. (touchstart/mousedown)
  */
 function handleMovementInitiate(event, pieceObj) {
-    setActivePiece(pieceObj);
+
+    // To fix firefox bug: do not set activePiece when piece is moving
+    if (!pieceIsMoving) {
+        pieceIsMoving = true;
+        setActivePiece(pieceObj);
+    }
 }
 
 /**
  * Invoked when dragging stops on pieceObj. (touchend/mouseup)
  */
 function handleMovementStop(event, pieceObj) {
-    snapToGrid(pieceObj);
 
+    // To fix firefox bug
+    pieceIsMoving = false;
+    
+    snapToGrid(pieceObj);
     if (hasMoved(pieceObj)) {
         setMovementConstraints(pieceObj);
         incrementNumMoves();
@@ -133,14 +146,19 @@ function initializeDragging() {
  * Snap piece onto grid.
  */
 function snapToGrid(pieceObj) {
+    var currentX;
+    var currentY;
+    var newX;
+    var newY;
+
     if (movesHorizontally(pieceObj)) {
-        var currentX = pieceObj.el.offsetLeft;
-        var newX     = Math.round(currentX / Board.getTileLength()) * Board.getTileLength();
+        currentX = pieceObj.el.offsetLeft;
+        newX     = Math.round(currentX / Board.getTileLength()) * Board.getTileLength();
 
         pieceObj.el.style.left = newX + 'px';
     } else {
-        var currentY = pieceObj.el.offsetTop;
-        var newY     = Math.round(currentY / Board.getTileLength()) * Board.getTileLength();
+        currentY = pieceObj.el.offsetTop;
+        newY     = Math.round(currentY / Board.getTileLength()) * Board.getTileLength();
 
         pieceObj.el.style.top = newY + 'px';
     }
@@ -161,22 +179,29 @@ function setMovementConstraints(pieceObj) {
  * Sets piece movement constraints.
  */
 function setMovementConstraintFor(pieceObj) {
-    var top     = 0;
-    var right   = Board.getLength();
-    var bottom  = Board.getLength();
-    var left    = 0;
-    var range;
+    var movementRange;
+    var left;
+    var right;
+    var top;
+    var bottom;
 
     if (movesHorizontally(pieceObj)) {
-        range   = getMovableRangeX(pieceObj);
-        left    = range.min;
-        right   = range.max - pieceObj.el.offsetWidth; // Minus width due to jQuery.pep bug
+        movementRange   = getMovableRangeX(pieceObj);
+
+        left    = movementRange.min;
+        right   = movementRange.max - pieceObj.el.offsetWidth; // Minus width due to jQuery.pep bug
+        top     = pieceObj.el.offsetTop;
+        bottom  = top;
     } else {
-        range   = getMovableRangeY(pieceObj);
-        top     = range.min;
-        bottom  = range.max - pieceObj.el.offsetHeight; // Minus height due to jQuery.pep bug
+        movementRange   = getMovableRangeY(pieceObj);
+
+        left    = pieceObj.el.offsetLeft;
+        right   = left;
+        top     = movementRange.min;
+        bottom  = movementRange.max - pieceObj.el.offsetHeight; // Minus height due to jQuery.pep bug
     }
 
+    // Set the constraint
     pieceObj.options.constrainTo = [top, right, bottom, left];
 }
 
@@ -184,45 +209,54 @@ function setMovementConstraintFor(pieceObj) {
  * Checks if user has won the game.
  */
 function checkWin() {
-    if (jeepCanExit()) {
-        disableMovements();
+    var currentLevel = LevelSelector.getCurrentLevel();
+    var secondsTaken = secondTimer + (minuteTimer * 60);
 
-        var currentLevel = LevelSelector.getCurrentLevel();
-        var secondsTaken = secondTimer + (minuteTimer * 60);
+    if (jeepCanExit()) {
+
+        disablePieceMovements();
 
         // Add current level score & statistics to database
-        // and compare with other players in database
+        // then compare with other players in database
         Tracker.updateCompletedLevel(currentLevel, numMoves, secondsTaken);
 
         pauseTimer();
 
-        // Invoked after Jeep exit animation completes
-        var callback = function() {
-
-            // Load next level, if there is one
-            if (Tracker.hasUnplayedLevel()) {
-                var nextLevel = Tracker.getNextUnplayedLevel();
-                Board.loadLevel(nextLevel);
-                LevelSelector.show(currentLevel);
-            }
-
-            // All levels beaten, game over
-            else {
-                GAMEWON.css({'zIndex': 1});
-                Board.clear();
-                setTimeout(function() {
-                    LevelSelector.show();
-                }, LEVEL_SELECTOR_DELAY.SHOW_GAME_WON_MESSAGE_FOR);
-            }
-
-            resetNumMoves();
-            resetTimer();
-            enableMovements();
-        };
-
-        animateJeepExit(callback);
+        animateJeepExit(callbackAfterJeepAnimation);
     }
 }
+
+/**
+ * Invoked after Jeep finishes exit animation.
+ */
+function callbackAfterJeepAnimation() {
+    var currentLevel = LevelSelector.getCurrentLevel();
+
+    // Load next level, if there is one
+    if (Tracker.hasUnplayedLevel()) {
+        var nextLevel = Tracker.getNextUnplayedLevel();
+        Board.loadLevel(nextLevel);
+        LevelSelector.show(currentLevel);
+        enablePieceMovements();
+    }
+
+    // All levels beaten, game over
+    else {
+
+        // Show safari god achievement!
+        GAMEWON.css({'zIndex': 1});
+
+        Board.clearBoard();
+
+        // Show level selector after a delay
+        setTimeout(function() {
+            LevelSelector.show();
+        }, LEVEL_SELECTOR_DELAY.SHOW_GAME_WON_MESSAGE_FOR);
+    }
+
+    resetNumMoves();
+    resetTimer();
+};
 
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
@@ -340,13 +374,17 @@ function jeepCanExit() {
  * Animates Jeep exit and calls callback function once complete.
  */
 function animateJeepExit(callback) {
+    var stopOtherSounds;
+    var moveRightPx;
+    var moveBottomPx;
+
 
     // Play level complete audio
-    var stopOtherSounds = true;
+    stopOtherSounds = true;
     Sound.play('win', stopOtherSounds);
 
-    var moveRightPx  = movesHorizontally(jeepPiece) ? Board.getLength() - jeepPiece.el.offsetLeft : 0;
-    var moveBottomPx = movesHorizontally(jeepPiece) ? 0 : Board.getLength() - jeepPiece.el.offsetTop;
+    moveRightPx  = movesHorizontally(jeepPiece) ? Board.getLength() - jeepPiece.el.offsetLeft : 0;
+    moveBottomPx = movesHorizontally(jeepPiece) ? 0 : Board.getLength() - jeepPiece.el.offsetTop;
 
     $(jeepPiece.el).animate({
         opacity: 0,
@@ -361,14 +399,14 @@ function animateJeepExit(callback) {
 /**
  * Disables all movements.
  */
-function disableMovements() {
+function disablePieceMovements() {
     BLACKOUT.css({'zIndex': 9999});
 }
 
 /**
  * Enable all movements.
  */
-function enableMovements() {
+function enablePieceMovements() {
     BLACKOUT.css({'zIndex': -1});
 }
 
