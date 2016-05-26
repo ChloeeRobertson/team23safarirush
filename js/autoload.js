@@ -15,7 +15,7 @@ $(document).ready(function() {
         // Delayed due to media queries taking time to load
         setTimeout(function() {
             Board.initialize();
-        }, 1000);
+        }, 1500);
     }
 
     // Disable exiting warning modal
