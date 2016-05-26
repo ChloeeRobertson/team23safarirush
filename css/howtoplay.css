@@ -1,3 +1,11 @@
+/* Padding to offset bootstrap fixed navbar */
+body {
+    padding-top: 70px;
+}
+
+/***************************************************
+ * Main Content Area
+ */
 .wrapper {
     text-align: center;
     padding: 3em 0;

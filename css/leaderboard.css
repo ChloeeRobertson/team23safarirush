@@ -1,11 +1,17 @@
+/* Padding to offset bootstrap fixed navbar */
+body {
+    padding-top: 70px;
+}
 
-
+/***************************************************
+ * Main Content Area
+ */
 #main h2 {
     border-bottom: 2px solid #d27a2d;
     color: #d27a2d;
     font-size: 2em;
     text-align: center;
-    padding: 1.5em 0 0 0;
+    margin-bottom: 5%;
 }
 
 #main th {
