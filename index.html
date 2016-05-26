@@ -120,7 +120,7 @@
                         <div id="levelSelectorContainer" class="modal-body"></div>
 
                         <div class="modal-footer">
-                            <div id="scoreDisplay">Your Score: <span id="scorePoints">0</span> <span id="achievements"></span></div>
+                            <div id="scoreDisplay">Score: <span id="scorePoints">0</span> <span id="achievements"></span></div>
                             <button id="randomLevelBtn" type="button" class="btn btn-success btn-block">Random Level</button>
                             <input id="playerNameInput" class="form-control" type="text" placeholder="Your name">
                             <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Submit Score</button>
@@ -129,11 +129,11 @@
                 </div>
             </div>
 
-            <!-- Landscape mode warning modal -->
-            <div class="modal" id="landscapeWarningModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <!-- Messaging modal -->
+            <div class="modal" id="messagingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-body">You must use portrait mode to play this game. Landscape mode is not supported.</div>
+                        <div id="messagingModalMsg" class="modal-body"></div>
                     </div>
                 </div>
             </div>

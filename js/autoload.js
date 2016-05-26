@@ -17,23 +17,16 @@ $(document).ready(function() {
             Board.initialize();
         }, 1500);
     }
-
-    // Disable exiting warning modal
-    LANDSCAPE_WARNING_MODAL.modal({
-        backdrop: 'static',
-        keyboard: false,
-        show:     false
-    });
 });
-
 
 // Show landscape mode warning modal if orientation changes
 window.addEventListener('orientationchange', function() {
-    
     var inPortraitMode = (window.orientation && window.orientation !== 0) ? false : true;
+    var message = 'Landscape mode not supported. Flip back to portrait mode.';
+
     if (inPortraitMode) {
-        LANDSCAPE_WARNING_MODAL.modal('hide');
+        Tracker.hideMessage();
     } else {
-        LANDSCAPE_WARNING_MODAL.modal('show');
+        Tracker.showMessage(message);
     }
 });

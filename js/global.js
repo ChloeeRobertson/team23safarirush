@@ -82,11 +82,31 @@ var PIECE_CLASSNAME = {
 //  A C H I E V E M E N T S ,   S C O R I N G ,   L E V E L S
 // ----------------------------------------------------------
 
+// Seconds to show achievement notification for
+var ACHIEVEMENT_NOTIFICATION_SHOWN_FOR = 4;
+
 var ACHIEVEMENT_ICONS = [
-    'images/achievements/easy.png',
-    'images/achievements/intermediate.png',
-    'images/achievements/advanced.png',
-    'images/achievements/expert.png'
+    'images/badges/zebraBadge.png',     // Easy levels
+    'images/badges/lionBadge.png',      // Intermediate levels
+    'images/badges/giraffeBadge.png',   // Advanced levels
+    'images/badges/elephantBadge.png',  // Expert levels
+    'images/badges/godBadge.png'        // All levels
+];
+
+var ACHIEVEMENT_TITLES = [
+    'Grass Badge',
+    'Bronze Badge',
+    'Silver Badge',
+    'Gold Badge',
+    'Safari God'
+];
+
+var LEVEL_DIFFICULTY = [
+    'Easy',         // 1 - 10
+    'Intermediate', // 11 - 20
+    'Advanced',     // 21 - 30
+    'Expert',       // 31 - 40
+    '',             // 1 - 40
 ];
 
 // Used to calculate total score for leaderboard
@@ -106,14 +126,6 @@ var SCORING_COMPARISON_FACTOR = {
 
 // Variable to store total number of board arrangements
 var TOTAL_LEVELS = 40;
-
-// Variable to store the ranges of difficulty
-var LEVEL_DIFFICULTY = [
-    'Easy',         // 1 - 10
-    'Intermediate', // 11 - 20
-    'Advanced',     // 21 - 30
-    'Expert'        // 31 - 40
-];
 
 var LEVEL_SELECTOR_DELAY = {
 
@@ -164,7 +176,7 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
-var LANDSCAPE_WARNING_MODAL;
+var MESSAGING_MODAL;
 
 var MUTE_BUTTON;
 var RESET_BUTTON;
@@ -187,7 +199,7 @@ $(document).ready(function() {
     SUBMIT_SCORE_BUTTON      = $('#submitScoreBtn');
     PLAYER_NAME_INPUT        = $('#playerNameInput');
     
-    LANDSCAPE_WARNING_MODAL  = $('#landscapeWarningModal');
+    MESSAGING_MODAL          = $('#messagingModal');
 
     MUTE_BUTTON  = $('#volume');
     RESET_BUTTON = $('#levelResetButton');

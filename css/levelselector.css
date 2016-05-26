@@ -41,15 +41,22 @@
     width: 40%;
 }
 #scoreDisplay {
-    margin-top: .8em;
+    margin-top: .6em;
     margin-left: .2em;
     color: #d27a2d;
     float: left;
     width: 58%;
     text-align: left;
 }
+/* achievement badges */
+#scoreDisplay img {
+    vertical-align: middle;
+    height: 25px;
+}
+/* score */
 #scoreDisplay span {
     font-weight: bold;
+    height: 100%;
 }
 
 #playerNameInput,

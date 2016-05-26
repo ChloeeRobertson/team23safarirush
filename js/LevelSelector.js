@@ -81,8 +81,8 @@ function getCurrentLevel() {
 /**
  * Adds achievement icon.
  */
-function addAchievement(achievementNum) {
-    ACHIEVEMENTS.append('<img src="' + ACHIEVEMENT_ICONS[achievementNum] + '">');
+function addAchievement(difficulty) {
+    ACHIEVEMENTS.append('<img src="' + ACHIEVEMENT_ICONS[difficulty] + '">');
 }
 
 /**
@@ -109,7 +109,7 @@ function setCompleted(level, assessment) {
     var itemStats = $('<div class="completedStats"></div>');
     var itemStatsHtml  = '<span class="averageScore">' + assessment.grade + '</span>';
         itemStatsHtml += '<span>' + assessment.numMoves + '</span> moves in<br>';
-        itemStatsHtml += '<span>' + formatTimeFromSeconds(assessment.secondsTaken) + '</span>';
+        itemStatsHtml += '<span>' + formatTime(assessment.secondsTaken) + '</span>';
 
     // Append to HTML DOM
     item.addClass('levelCompleted');
@@ -138,7 +138,9 @@ function slideTo(level) {
  */
 function lock() {
     locked = true;
-    LEVEL_SELECTOR_BUTTON.children('.glyphicon').addClass(LOCKED_ICON).removeClass(UNLOCKED_ICON);
+    LEVEL_SELECTOR_BUTTON.children('.glyphicon')
+        .addClass(LOCKED_ICON)
+        .removeClass(UNLOCKED_ICON);
 }
 
 /**
@@ -146,7 +148,9 @@ function lock() {
  */
 function unlock() {
     locked = false;
-    LEVEL_SELECTOR_BUTTON.children('.glyphicon').addClass(UNLOCKED_ICON).removeClass(LOCKED_ICON);
+    LEVEL_SELECTOR_BUTTON.children('.glyphicon')
+        .addClass(UNLOCKED_ICON)
+        .removeClass(LOCKED_ICON);
 }
 
 // Make public functions go public
@@ -237,14 +241,14 @@ function initializeButtons() {
 /**
  * Converts seconds into time format: (00:00) minutes : seconds.
  */
-function formatTimeFromSeconds(totalSeconds) {
+function formatTime(totalSeconds) {
     var minutes = prependZeroIfOneDigit(Math.floor(totalSeconds / 60));
     var seconds = prependZeroIfOneDigit(totalSeconds % 60);
     return minutes + ':' + seconds;
 }
 
 /**
- * Adds a leading zero if digit is less than 10. (Used in formatTimeFromSeconds())
+ * Adds a leading zero if digit is less than 10. (Used in formatTime())
  */
 function prependZeroIfOneDigit(number) {
     return (number < 10) ? '0' + number : number;

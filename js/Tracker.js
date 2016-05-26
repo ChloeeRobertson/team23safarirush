@@ -24,9 +24,10 @@ var
 
 // Achievements & Levels
 var
-    achievements       = [],    // Stores any achievements user got
+    achievements       = [],    // Tracks any achievements user got
+    achievementsShown  = [],    // Tracks achievements that are shown on level selector
 
-    unplayedLevels     = [],    // Stores all levels unplayed
+    unplayedLevels     = [],    // Tracks all levels unplayed
     lastCompletedLevel = 0;     // Last completed level
 
 // Score tracking
@@ -63,6 +64,13 @@ function initialize() {
     // Loads averages from database
     $.ajax(AJAX_URL.GET_SCORE_AVERAGES)
         .always(loadAveragesFromDB);
+
+    // Disable user closing messaging modal
+    MESSAGING_MODAL.modal({
+        backdrop: 'static',
+        keyboard: false,
+        show:     false
+    });
 }
 
 /**
@@ -88,7 +96,7 @@ function getNextUnplayedLevel() {
         }
 
         // Return first unplayed level
-        unplayedLevels[0];
+        return unplayedLevels[0];
     }
 
     // Completed all levels, nothing else to play
@@ -189,15 +197,47 @@ function loadPlayerData() {
     lastCompletedLevel  = playerData.lastCompletedLevel;
 
     // Set completed levels in Level Selector
-    for (var level in numMoves) {
-        if (numMoves[level]) {
-            var assessment = getLevelAssessment(level);
-            LevelSelector.setCompleted(level, assessment);
+    var setCompletedLevels = function () {
+        if (averageNumMoves.length == 0) {
+            setTimeout(setCompletedLevels, 250);
+        } else {
+            for (var level in numMoves) {
+                if (numMoves[level]) {
+                    var assessment = getLevelAssessment(level);
+                    LevelSelector.setCompleted(level, assessment);
+                }
+            }
         }
-    }
+    };
+
+    setCompletedLevels();
+    checkAchievements();
 
     // Load player's next unplayed level
     Board.loadLevel(getNextUnplayedLevel());
+}
+
+/**
+ * Pops up a modal to show a message.
+ */
+function showMessage(htmlMessage, autoCloseAfter) {
+    var body = $('#messagingModalMsg');
+
+    body.html(htmlMessage);
+    MESSAGING_MODAL.modal('show');
+
+    if (autoCloseAfter) {
+        setTimeout(function() {
+            hideMessage();
+        }, autoCloseAfter * 1000);
+    }
+}
+
+/**
+ * Force hide message modal.
+ */
+function hideMessage() {
+    MESSAGING_MODAL.modal('hide');
 }
 
 // Make public functions go public
@@ -210,7 +250,9 @@ global.Tracker = {
     submitScore:            submitScore,
     updateCompletedLevel:   updateCompletedLevel,
     hasPlayerData:          hasPlayerData,
-    loadPlayerData:         loadPlayerData
+    loadPlayerData:         loadPlayerData,
+    showMessage:            showMessage,
+    hideMessage:            hideMessage
 };
 
 // ----------------------------------------------------------
@@ -281,16 +323,14 @@ function checkAchievements() {
         var to   = 10 + (difficulty * 10);
 
         if (completedLevels(from, to)) {
-            achievements.push(difficulty);
-            LevelSelector.addAchievement(difficulty);
+            addChievements(difficulty);
         }
     }
 
     // Checks if user finished all 40 levels
     if (completedLevels(1, 40)) {
         var difficulty = 4;
-        achievements.push(difficulty);
-        LevelSelector.addAchievement(difficulty);
+        addChievements(difficulty);
     }
 }
 
@@ -298,6 +338,29 @@ function checkAchievements() {
 //            H E L P E R   F U N C T I O N S
 // ----------------------------------------------------------
 
+/**
+ * Add achievements to tracker and shown on level selector.
+ */
+function addChievements(difficulty) {
+    if (achievements.indexOf(difficulty) < 0) {
+        achievements.push(difficulty);
+    }
+
+    if (achievementsShown.indexOf(difficulty) < 0) {
+        var icon = '<img src="' + ACHIEVEMENT_ICONS[difficulty] + '">';
+        var header = ACHIEVEMENT_TITLES[difficulty];
+        var description = 'Completed all ' + LEVEL_DIFFICULTY[difficulty] + ' levels.';
+        var message = header + '<BR>' + icon + '<BR>' + description;
+
+        achievementsShown.push(difficulty);
+        LevelSelector.addAchievement(difficulty);
+        showMessage(message, ACHIEVEMENT_NOTIFICATION_SHOWN_FOR);
+    }
+}
+
+/**
+ * Gets string representation of achievements to send over AJAX.
+ */
 function getAchievementString() {
     var string = '';
 
