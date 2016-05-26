@@ -30,4 +30,6 @@ if ($level) {
 	}
 }
 
+$conn->close();
+
 ?>

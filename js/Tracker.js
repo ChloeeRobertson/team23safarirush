@@ -62,8 +62,8 @@ function initialize() {
     }
 
     // Loads averages from database
-    $.ajax(AJAX_URL.GET_SCORE_AVERAGES)
-        .always(loadAveragesFromDB);
+    var url = AJAX_URL.GET_SCORE_AVERAGES;
+    $.ajax(url).always(loadAveragesFromDB);
 
     // Disable user closing messaging modal
     MESSAGING_MODAL.modal({
@@ -131,14 +131,10 @@ function submitScore() {
     
     Cookies.remove(COOKIE_NAME);
 
+    // Use Ajax to send score
     var url  = AJAX_URL.SUBMIT_SCORE + '?name=' + getPlayerName() + '&totalScore=' + totalScore;
         url += '&achievements=' + getAchievementString();
-
-    // Use Ajax to send score
-    $.ajax({
-        url:     url,
-        success: redirectToLeaderboard
-    });
+    $.ajax(url).always(redirectToLeaderboard);
 }
 
 /**
@@ -285,8 +281,12 @@ function calculateScore(level, movesTaken, secondsTaken) {
     var difficulty      = parseInt((level / 10) + 1);
     var difficultyScore = SCORING.DIFFICULTY_MULTIPLIER * difficulty;
     var levelScore      = SCORING.LEVEL_MULTIPLIER * level;
-    var movesMultiplier = Math.pow(SCORING.MOVES_MULTIPLIER, movesTaken);
-    var timeMultiplier  = Math.pow(SCORING.SECONDS_MULTIPLIER, secondsTaken);
+
+    var movesFactor     = Math.round(movesTaken / level * SCORING.LEVEL_EASE_FACTOR);
+    var timeFactor      = Math.round(secondsTaken / level * SCORING.LEVEL_EASE_FACTOR);
+
+    var movesMultiplier = Math.pow(SCORING.MOVES_MULTIPLIER, movesFactor);
+    var timeMultiplier  = Math.pow(SCORING.SECONDS_MULTIPLIER, timeFactor);
 
     var score = difficultyScore * levelScore * movesMultiplier * timeMultiplier;
     return Math.round(score);
@@ -307,9 +307,10 @@ function getLevelAssessment(level) {
  * Submit level statistics to database.
  */
 function submitLevelStats(level, movesTaken, secondsTaken) {
-    $.ajax({
-        url: AJAX_URL.SUBMIT_LEVEL_STATS + '?level=' + level + '&numMoves=' + movesTaken + '&secondsUsed=' + secondsTaken
-    });
+    var url = AJAX_URL.SUBMIT_LEVEL_STATS + '?level=' + level +
+        '&numMoves=' + movesTaken + '&secondsUsed=' + secondsTaken;
+
+    $.ajax(url);
 }
 
 /**

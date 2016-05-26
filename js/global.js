@@ -28,7 +28,7 @@ var EASTER_EGG = {
     CLICK_SPEED:    400   // Consecutive click speed in ms
 };
 
-var AUDIO_SPRITE_URL = 'audio/audioSprite_70kb.mp3';
+var AUDIO_SPRITE_URL = 'audio/audioSprite_130kb.mp3';
 
 var VOLUME_ICON = {
     ON:  'images/volume_on.gif',
@@ -40,28 +40,35 @@ var VOLUME_ICON = {
 // Cut audio files:  http://mp3cut.net/
 // Reduce MP3 files: http://www.mp3smaller.com/
 var AUDIO = [];
-AUDIO['zebra'] = [
-    {start: 12.8, duration: 0.7},   // zebra1.mp3
-    {start: 13.7, duration: 0.8}];  // zebra2.mp3
-AUDIO['lion'] = [
-    {start: 5.8, duration: 0.7},    // lion_bored.mp3
-    {start: 6.6, duration: 0.5},    // lion_clueless.mp3
-    {start: 7.1, duration: 1.1}];   // lion_loud.mp3
-AUDIO['elephant'] = [
-    {start: 8.3, duration: 1.9},    // WyattElephant1.mp3
-    {start: 10.4, duration: 2.2}];  // WyattElephant2.mp3
-AUDIO['giraffe'] = [
-    {start: 3.2, duration: 1.2},    // giraffe_handnoise.mp3
-    {start: 4.5, duration: 1.2}];   // giraffe_name.mp3
-AUDIO['jeep'] = [
-    {start: 14.5, duration: 0.3},   // jeepBeepBeep.mp3
-    {start: 14.8, duration: 0.4},   // jeepHereWeGo1.mp3
-    {start: 15.3, duration: 1.7},   // jeepIdle2.mp3
-    {start: 17.1, duration: 1.2}];  // jeepVroom.mp3
 AUDIO['easter'] = [
-    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
+    {start: 0.2,  duration: 3.0}    // crocHunter_WOOHOO.wav
+    ];
+AUDIO['giraffe'] = [
+    {start: 4.1,  duration: 1.4},   // giraffe_handnoise.mp3
+    {start: 6.5,  duration: 1.3}    // giraffe_name.mp3
+    ];
+AUDIO['jeep'] = [
+    {start: 8.7,  duration: 0.5},   // jeepBeepBeep.mp3
+    {start: 10.0, duration: 0.7},   // jeepHereWeGo1.mp3
+    {start: 11.5, duration: 2.0},   // jeepIdle2.mp3
+    {start: 14.3, duration: 1.4}    // jeepVroom.mp3
+    ];
 AUDIO['win'] = [
-    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
+    {start: 16.5, duration: 1.2}    // jeepWoohoo.mp3
+    ];
+AUDIO['lion'] = [
+    {start: 18.4, duration: 0.9},   // lion_bored.mp3
+    {start: 20.2, duration: 0.6},   // lion_clueless.mp3
+    {start: 21.6, duration: 1.4}    // lion_loud.mp3
+    ];
+AUDIO['elephant'] = [
+    {start: 23.9, duration: 2.0},   // WyattElephant1.mp3
+    {start: 26.9, duration: 2.5}    // WyattElephant2.mp3
+    ];
+AUDIO['zebra'] = [
+    {start: 30.2, duration: 1.0},   // zebra1.mp3
+    {start: 32.2, duration: 0.8}    // zebra2.mp3
+    ];
 
 // ----------------------------------------------------------
 //        P I E C E   I D s   &   C L A S S N A M E S
@@ -111,8 +118,15 @@ var LEVEL_DIFFICULTY = [
 
 // Used to calculate total score for leaderboard
 var SCORING = {
-    LEVEL_MULTIPLIER:       1,    // Multiplied by level #
+
+    // Lessens scoring bias against long level completion time
+    // and high # of moves for higher levels.
+    // (higher factor = time & # of moves has less impact in later levels)
+    LEVEL_EASE_FACTOR:      2,
+
+    LEVEL_MULTIPLIER:       .8,    // Multiplied by level #
     DIFFICULTY_MULTIPLIER:  100,   // Multiplied by difficulty #
+
     MOVES_MULTIPLIER:       0.98,  // Deductive multiplier, more moves = less score
     SECONDS_MULTIPLIER:     0.999  // Deductive multiplier, more time  = less score
 };

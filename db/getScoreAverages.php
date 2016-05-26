@@ -24,4 +24,6 @@ while ($row = $result->fetch_assoc()) {
     echo $row['level'] . ',' . $row['avgNumMoves'] . ',' . $row['avgSecondsUsed'] . "\n";
 }
 
+$conn->close();
+
 ?>

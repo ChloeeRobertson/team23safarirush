@@ -68,4 +68,6 @@ if ($level && $numMoves && $secondsUsed) {
     $conn->query($sql);
 }
 
+$conn->close();
+
 ?>

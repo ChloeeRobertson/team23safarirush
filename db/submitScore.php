@@ -35,14 +35,20 @@ if ($totalScore && $name) {
     		$secondsUsed = $pieces[2];
     		$score = $pieces[3];
 
-    		$sql .= "INSERT INTO " . $achieved[$difficulty] . " (name, numMoves, secondsUsed, score) VALUES ('" . $name . "', " . $numMoves . ", " . $secondsUsed . ", " . $score . ");";
+    		$sql .= "INSERT INTO " . $achievedTableName[$difficulty] . " (name, numMoves, secondsUsed, score) VALUES ('" . $name . "', " . $numMoves . ", " . $secondsUsed . ", " . $score . ");";
     	}
     }
 
-    // echo $sql;
-
     // Execute query
-    $conn->multi_query($sql);
+    $result = $conn->multi_query($sql);
+
+    if (!$result) {
+        echo 'error: ';
+    } else {
+        echo 'success';
+    }
 }
+
+$conn->close();
 
 ?>
