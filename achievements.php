@@ -74,41 +74,56 @@ function formatTime($seconds) {
     </nav>
 
     <div id="main" class="container">
-        <?php
-            // $achieved = array of table names for achievements
-            foreach ($achievedTableName as $index => $table_name) {
-                $result = $conn->query(getSQL($table_name));
-        ?>
-        <div class="row">
-            <div class="col-xs-12">
-                <table class="table">
-                    <!-- Title can be changed in db/config.php -->
-                    <h1><?php echo $achievedName[$index]; ?></h1>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th># of Moves</th>
-                        <th>Time Used</th>
-                    </tr>
-                    <?php
-                        $rank = 0;
-                        while ($row = $result->fetch_assoc()) {
-                    ?>
-                    <tr>
-                        <td><?php echo ++$rank; ?></td>
-                        <td><?php echo $row['name']; ?></td>
-                        <td><?php echo $row['numMoves']; ?></td>
-                        <td><?php echo formatTime($row['secondsUsed']); ?></td>
-                    </tr>
-                    <?php
-                        }
-                    ?>
-                </table>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <?php
+                // Declare variable for accordian panels
+                $panelNum = 1;
+                // $achieved = array of table names for achievements
+                foreach ($achievedTableName as $index => $table_name) {
+                    $result = $conn->query(getSQL($table_name));
+            ?>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading<?php echo $panelNum; ?>">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $panelNum; ?>" aria-expanded="true" aria-controls="collapse<?php echo $panelNum; ?>">
+                            <!-- Title can be changed in db/config.php -->
+                            <?php echo $achievedName[$index]; ?>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Name</th>
+                                    <th># of Moves</th>
+                                    <th>Time Used</th>
+                                </tr>
+                                <?php
+                                $rank = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                ?>
+                                <tr>
+                                    <td><?php echo ++$rank; ?></td>
+                                    <td><?php echo $row['name']; ?></td>
+                                    <td><?php echo $row['numMoves']; ?></td>
+                                    <td><?php echo formatTime($row['secondsUsed']); ?></td>
+                                </tr>
+                            </tbody>
+                            <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
+                </div>
             </div>
+            <?php
+                    $panelNum++;
+                }
+            ?>
         </div>
-        <?php
-            }
-        ?>
     </div>
 
 </body>
