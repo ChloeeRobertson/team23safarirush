@@ -10,8 +10,7 @@ if ($conn->connect_error) {
 
 function getSQL($tableName) {
     return "SELECT name, numMoves, secondsUsed, score
-            FROM " . $tableName . " ORDER BY score DESC
-            LIMIT 10";
+            FROM " . $tableName . " ORDER BY score DESC";
 }
 
 function formatTime($seconds) {
@@ -45,7 +44,7 @@ function formatTime($seconds) {
 <body>
 
     <!-- Site navigation bar -->
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -74,6 +73,8 @@ function formatTime($seconds) {
     </nav>
 
     <div id="main" class="container">
+        <h2>Achievements</h2>
+        
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <?php
                 // Declare variable for accordian panels
@@ -85,13 +86,16 @@ function formatTime($seconds) {
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading<?php echo $panelNum; ?>">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $panelNum; ?>" aria-expanded="true" aria-controls="collapse<?php echo $panelNum; ?>">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                           href="#collapse<?php echo $panelNum; ?>" aria-expanded="true"
+                           aria-controls="collapse<?php echo $panelNum; ?>">
                             <!-- Title can be changed in db/config.php -->
                             <?php echo $achievedName[$index]; ?>
                         </a>
                     </h4>
                 </div>
-                <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
+                <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse <?php if ($panelNum == 1) {echo in;} ?>"
+                     role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
                     <div class="panel-body">
                         <table class="table table-hover">
                             <tbody>
@@ -120,6 +124,7 @@ function formatTime($seconds) {
                 </div>
             </div>
             <?php
+                    // Increment $panelName to give each accordian panel a unique id
                     $panelNum++;
                 }
             ?>
