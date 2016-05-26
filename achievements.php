@@ -18,8 +18,6 @@ function formatTime($seconds) {
     return date('i:s', mktime(0, 0, $seconds));
 }
 
-$result = $conn->query(getSQL('achievedEasy'));
-
 ?>
 
 <!DOCTYPE html>
@@ -75,9 +73,16 @@ $result = $conn->query(getSQL('achievedEasy'));
     </nav>
 
     <div id="main" class="container">
+        <?php
+            // $achieved = array of table names for achievements
+            foreach ($achievedTableName as $index => $table_name) {
+                $result = $conn->query(getSQL($table_name));
+        ?>
         <div class="row">
             <div class="col-xs-12">
                 <table class="table">
+                    <!-- Title can be changed in db/config.php -->
+                    <h1><?php echo $achievedName[$index]; ?></h1>
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
@@ -100,6 +105,9 @@ $result = $conn->query(getSQL('achievedEasy'));
                 </table>
             </div>
         </div>
+        <?php
+            }
+        ?>
     </div>
 
 </body>

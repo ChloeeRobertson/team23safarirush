@@ -6,11 +6,18 @@ $user = 'a3917352_safari';
 $pass = 'safarirush23';
 
 // Table names for different achievements
-$achieved[0] = 'achievedEasy';
-$achieved[1] = 'achievedIntermediate';
-$achieved[2] = 'achievedAdvanced';
-$achieved[3] = 'achievedExpert';
-$achieved[4] = 'achievedGodlike';
+$achievedTableName[0] = 'achievedEasy';
+$achievedTableName[1] = 'achievedIntermediate';
+$achievedTableName[2] = 'achievedAdvanced';
+$achievedTableName[3] = 'achievedExpert';
+$achievedTableName[4] = 'achievedGodlike';
+
+// Names for different achievements
+$achievedName[0] = 'Completed all Easy levels';
+$achievedName[1] = 'Completed all Intermediate Levels';
+$achievedName[2] = 'Completed all Advanced Levels';
+$achievedName[3] = 'Completed all Expert Levels';
+$achievedName[4] = 'Safari God (Completed all levels)';
 
 
 ?>
