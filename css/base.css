@@ -105,12 +105,15 @@ footer {
     text-align: center;
 }
 
-/* Landscape Warning Modal */
-#landscapeWarningModal .modal-body {
-    margin: 10% 0;
+/* Messaging Modal */
+#messagingModal .modal-body {
+    margin: 5% 0;
     font-size: 2em;
     font-weight: bold;
     text-align: center;
+}
+#messagingModal .modal-body img {
+    margin: .5em 0;
 }
 
 /***************************************************
