@@ -145,8 +145,7 @@ function loadLevelFromString(levelString) {
         LevelSelector.unlock();
     }
 
-    // Deletes all pieces from board
-    BOARD.empty();
+    clearBoard();
 
     for (var i = 0; i < levelObj.pieces.length; i++) {
         loadPiece(levelObj.pieces[i]);

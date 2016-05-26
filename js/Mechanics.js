@@ -24,9 +24,8 @@ var
 
     goalCoordinates     = {},       // Game ends when Jeep gets to here
     
-    // Counters Firefox bug:
-    // Mouse exiting windows while dragging would mess up the activePiecePosition
-    // causing constraints to be set incorrectly.
+    // Extra variable to fix Firefox bug:
+    // Mouse exiting windows while dragging would not trigger setConstraint()
     pieceIsMoving       = false;
 
 // Number of Moves
@@ -92,7 +91,7 @@ function handleMovementStop(event, pieceObj) {
 
     // To fix firefox bug
     pieceIsMoving = false;
-    
+
     snapToGrid(pieceObj);
     if (hasMoved(pieceObj)) {
         setMovementConstraints(pieceObj);
