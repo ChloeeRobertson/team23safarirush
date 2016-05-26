@@ -119,7 +119,7 @@ var LEVEL_SELECTOR_DELAY = {
 
     // Delayed animation to current level due to bootstraps slow modal pop-up
     // Animation won't work unless the level selector modal is fully loaded
-    ANIMATE_TO_LEVEL:          500,
+    ANIMATE_TO_LEVEL:          850,
 
     // Once level completes, shows the completed level statistics for x amount of time
     // Then animates to the next level after
@@ -164,11 +164,14 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
+var LANDSCAPE_WARNING_MODAL;
+
 var MUTE_BUTTON;
 var RESET_BUTTON;
 
 // Initialize variables on document ready
 $(document).ready(function() {
+
     BOARD         = $('#gameBoard');
     GAMEWON       = $('#gameWon');
     BLACKOUT      = $('#blackout');
@@ -183,6 +186,8 @@ $(document).ready(function() {
     RANDOM_LEVEL_BUTTON      = $('#randomLevelBtn');
     SUBMIT_SCORE_BUTTON      = $('#submitScoreBtn');
     PLAYER_NAME_INPUT        = $('#playerNameInput');
+    
+    LANDSCAPE_WARNING_MODAL  = $('#landscapeWarningModal');
 
     MUTE_BUTTON  = $('#volume');
     RESET_BUTTON = $('#levelResetButton');

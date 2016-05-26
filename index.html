@@ -97,12 +97,12 @@
     <footer class="footer">
         <div class="container">
 
-            <!-- Level selection button trigger modal -->
+            <!-- Level selector button trigger modal -->
             <button id="levelSelectionButton" type="button" class="btn btn-success btn-lg pull-left">
             </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="levelSelectorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <!-- Level Selector Modal -->
+            <div class="modal" id="levelSelectorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -122,6 +122,19 @@
                             <input id="playerNameInput" class="form-control" type="text" placeholder="Your name">
                             <button id="submitScoreBtn" type="button" class="btn btn-success btn-block">Submit Score</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Landscape mode warning modal -->
+            <div class="modal" id="landscapeWarningModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Landscape Mode</h4>
+                        </div>
+
+                        <div class="modal-body">You must use portrait mode to play this game. Landscape mode is not supported.</div>
                     </div>
                 </div>
             </div>

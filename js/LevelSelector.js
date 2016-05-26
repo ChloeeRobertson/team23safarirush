@@ -10,6 +10,7 @@
 
 (function(global) {
 
+// Bootstrap classes for lock/unlock icons
 var
     LOCKED_ICON     = 'glyphicon-lock',
     UNLOCKED_ICON   = 'glyphicon-triangle-top';
@@ -17,7 +18,11 @@ var
 var
     locked          = false,    // Disables/locks level selection (once first move is made in level)
     currentLevel    = 0,        // Current level player is on
-    list            = [];       // List of all levels (DOM elements) in level selector
+    list            = [],       // List of all levels (DOM elements) in level selector
+
+    // Has the Level Selector been shown at least once?
+    // Used due to a bug: not centering level on first load.
+    shownOnce       = false;
 
 // ----------------------------------------------------------
 //               P U B L I C   F U N C T I O N S
@@ -113,10 +118,19 @@ function setCompleted(level, assessment) {
 }
 
 /**
- * Go to a level in level selector screen.
+ * Go to a level in level selector screen if not already selected.
  */
 function slideTo(level) {
-    list.gotoSlide(level - 1);
+    var levelIndex  = level - 1;
+    var activeIndex = list.getActiveIndex();
+
+    if (levelIndex != activeIndex || !shownOnce) {
+        list.gotoSlide(levelIndex);
+    }
+
+    if (!shownOnce) {
+        shownOnce = true;
+    }
 }
 
 /**
