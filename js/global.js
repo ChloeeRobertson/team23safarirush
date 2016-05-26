@@ -79,7 +79,7 @@ var PIECE_CLASSNAME = {
 };
 
 // ----------------------------------------------------------
-//             S C O R I N G   A N D   L E V E L S
+//  A C H I E V E M E N T S ,   S C O R I N G ,   L E V E L S
 // ----------------------------------------------------------
 
 var ACHIEVEMENT_ICONS = [
@@ -91,7 +91,7 @@ var ACHIEVEMENT_ICONS = [
 
 // Used to calculate total score for leaderboard
 var SCORING = {
-    LEVEL_MULTIPLIER:       .8,    // Multiplied by level #
+    LEVEL_MULTIPLIER:       1,    // Multiplied by level #
     DIFFICULTY_MULTIPLIER:  100,   // Multiplied by difficulty #
     MOVES_MULTIPLIER:       0.98,  // Deductive multiplier, more moves = less score
     SECONDS_MULTIPLIER:     0.999  // Deductive multiplier, more time  = less score
@@ -123,7 +123,7 @@ var LEVEL_SELECTOR_DELAY = {
 
     // Once level completes, shows the completed level statistics for x amount of time
     // Then animates to the next level after
-    SHOW_COMPLETED_LEVEL_FOR:  3500,
+    SHOW_COMPLETED_LEVEL_FOR:  2000,
 
     // Once player beats all level, a game won message will be shown for x amount of time
     // Then the level selector will pop-up displaying all level statistics

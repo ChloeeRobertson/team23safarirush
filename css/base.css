@@ -105,6 +105,14 @@ footer {
     text-align: center;
 }
 
+/* Landscape Warning Modal */
+#landscapeWarningModal .modal-body {
+    margin: 10% 0;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
 /***************************************************
  * Miscellaneous
  */
