@@ -28,7 +28,7 @@ var EASTER_EGG = {
     CLICK_SPEED:    400   // Consecutive click speed in ms
 };
 
-var AUDIO_SPRITE_URL = 'audio/audioSprite_60kb.mp3';
+var AUDIO_SPRITE_URL = 'audio/audioSprite_70kb.mp3';
 
 var VOLUME_ICON = {
     ON:  'images/volume_on.gif',
@@ -36,10 +36,13 @@ var VOLUME_ICON = {
 }
 
 // Position and duration info for audio sprite
+// Join audio files: http://audio-joiner.com/
+// Cut audio files:  http://mp3cut.net/
+// Reduce MP3 files: http://www.mp3smaller.com/
 var AUDIO = [];
 AUDIO['zebra'] = [
     {start: 12.8, duration: 0.7},   // zebra1.mp3
-    {start: 13.7, duration: 0.9}];  // zebra2.mp3
+    {start: 13.7, duration: 0.8}];  // zebra2.mp3
 AUDIO['lion'] = [
     {start: 5.8, duration: 0.7},    // lion_bored.mp3
     {start: 6.6, duration: 0.5},    // lion_clueless.mp3
@@ -51,7 +54,10 @@ AUDIO['giraffe'] = [
     {start: 3.2, duration: 1.2},    // giraffe_handnoise.mp3
     {start: 4.5, duration: 1.2}];   // giraffe_name.mp3
 AUDIO['jeep'] = [
-    {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
+    {start: 14.5, duration: 0.3},   // jeepBeepBeep.mp3
+    {start: 14.8, duration: 0.4},   // jeepHereWeGo1.mp3
+    {start: 15.3, duration: 1.7},   // jeepIdle2.mp3
+    {start: 17.1, duration: 1.2}];  // jeepVroom.mp3
 AUDIO['easter'] = [
     {start: 0.2, duration: 2.9}];   // crocHunter_WOOHOO.wav
 AUDIO['win'] = [

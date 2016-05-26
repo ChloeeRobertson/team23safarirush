@@ -93,14 +93,14 @@ function easterEgg(event) {
     var clickSpeed = event.timeStamp - easterEggLastClick;
     var clicksReached;
 
-    // Mobile tap
-    if (event.detail) {
-        clicksReached = event.detail >= EASTER_EGG.CLICKS_NEEDED;
+    // Desktop click
+    if (event.timeStamp && clickSpeed <= EASTER_EGG.CLICK_SPEED) {
+        clicksReached = (++easterEggClickCounter >= EASTER_EGG.CLICKS_NEEDED - 1);
     }
 
-    // Desktop click
-    else if (event.timeStamp && clickSpeed <= EASTER_EGG.CLICK_SPEED) {
-        clicksReached = (++easterEggClickCounter >= EASTER_EGG.CLICKS_NEEDED - 1);
+    // Mobile tap
+    else if (event.detail) {
+        clicksReached = event.detail >= EASTER_EGG.CLICKS_NEEDED;
     }
 
     if (clicksReached) {
