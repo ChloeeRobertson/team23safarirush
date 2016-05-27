@@ -110,7 +110,7 @@ function formatTime($seconds) {
                 </a>
                 <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse <?php if ($panelNum == 1) {echo in;} ?>"
                      role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
-                    <div class="panel-body">
+                    <div class="panel-body table-responsive">
                         <table id="table<?php echo $panelNum; ?>" class="table table-hover">
                             <thead>
                                 <tr>
