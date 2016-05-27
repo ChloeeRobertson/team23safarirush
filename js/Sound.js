@@ -1,7 +1,5 @@
 /*
- * Controls whether there is audio when playing the game.
- *
- * Must be loaded after global.js and Board.js
+ * Adds audio play functionality and controls mute/unmute.
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]

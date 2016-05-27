@@ -10,25 +10,31 @@ var LOAD_LEVEL_FROM_BACKEND = false;
 //    P I E C E S ,   E A S T E R   E G G ,   A U D I O
 // ----------------------------------------------------------
 
-var JEEP_EXIT_ANIMATION_DURATION = 3000; // in milliseconds
+// Duration (in ms) of Jeep exit animation played after a level is completed
+var JEEP_EXIT_ANIMATION_DURATION = 3000;
 
 var PIECE = {
+
+    // Safari animals sorted by size
+    // Index [0] = size 0; [1] = size 1; [2] = size 2 ...
     ANIMALS: [
         [], [], // Index (size) 0, 1 empty. No animals of that size.
         ['zebra', 'lion'],
         ['elephant', 'giraffe']
     ],
 
-    IMG_DIR:          'images/animals/',
-    IMG_EXT:          '.png'
+    // Image directory and extention of piece images
+    IMG_DIR: 'images/animals/',
+    IMG_EXT: '.png'
 };
+
+// Audio sprite file (contains every single sound used in game)
+var AUDIO_SPRITE_URL = 'audio/audioSprite_130kb.mp3';
 
 var EASTER_EGG = {
     CLICKS_NEEDED:  10,    // # of consecutive clicks to activate
     CLICK_SPEED:    400   // Consecutive click speed in ms
 };
-
-var AUDIO_SPRITE_URL = 'audio/audioSprite_130kb.mp3';
 
 var VOLUME_ICON = {
     ON:  'images/volume_on.gif',
@@ -74,10 +80,11 @@ AUDIO['zebra'] = [
 //        P I E C E   I D s   &   C L A S S N A M E S
 // ----------------------------------------------------------
 
+// Used for Easter Egg
 var JEEP_ID = 'jeep';
 
 // Classnames for different pieces
-// e.g. horizontal size 2 piece will have classes: "piece dragX size2"
+// e.g. horizontal size-2 piece will have classes: "piece dragX size2"
 var PIECE_CLASSNAME = {
     ALL:                    'piece',
     HORIZONTAL:             'dragX',
@@ -89,9 +96,11 @@ var PIECE_CLASSNAME = {
 //  A C H I E V E M E N T S ,   S C O R I N G ,   L E V E L S
 // ----------------------------------------------------------
 
-// Seconds to show achievement notification for
+// Duration (seconds) to show achievement notification for
 var ACHIEVEMENT_NOTIFICATION_SHOWN_FOR = 4;
 
+// Sorted by index (difficulty)
+// Index [0] = difficulty 0; [1] = difficulty 1 ...
 var ACHIEVEMENT_ICONS = [
     'images/badges/zebraBadge.png',     // Easy levels
     'images/badges/lionBadge.png',      // Intermediate levels
@@ -100,6 +109,8 @@ var ACHIEVEMENT_ICONS = [
     'images/badges/godBadge.png'        // All levels
 ];
 
+// Sorted by index (difficulty)
+// Index [0] = difficulty 0; [1] = difficulty 1 ...
 var ACHIEVEMENT_TITLES = [
     'Grass Badge',
     'Bronze Badge',
@@ -108,6 +119,8 @@ var ACHIEVEMENT_TITLES = [
     'Safari God'
 ];
 
+// Sorted by index (difficulty)
+// Index [0] = difficulty 0; [1] = difficulty 1 ...
 var LEVEL_DIFFICULTY = [
     'Easy',         // 1 - 10
     'Intermediate', // 11 - 20
@@ -116,7 +129,7 @@ var LEVEL_DIFFICULTY = [
     '',             // 1 - 40
 ];
 
-// Used to calculate total score for leaderboard
+// Used to calculate scoring algorithm
 var SCORING = {
 
     // Lessens scoring bias against long level completion time
@@ -136,7 +149,6 @@ var SCORING_COMPARISON_FACTOR = {
     NUM_MOVES:    .15,  // +/- 15% of average is still average
     SECONDS_USED: .15   // +/- 15% of average is still average
 };
-
 
 // Variable to store total number of board arrangements
 var TOTAL_LEVELS = 40;
@@ -162,11 +174,11 @@ var LEVEL_SELECTOR_DELAY = {
 // ----------------------------------------------------------
 
 var AJAX_URL = {
-    GET_LEVEL:           'http://team23.site88.net/working/db/getLevel.php',
-    GET_SCORE_AVERAGES:  'http://team23.site88.net/working/db/getScoreAverages.php',
-    SUBMIT_SCORE:        'http://team23.site88.net/working/db/submitScore.php',
-    SUBMIT_LEVEL_STATS:  'http://team23.site88.net/working/db/submitLevelStats.php',
-    LEADERBOARD:         'http://team23.site88.net/working/leaderboard.php'
+    GET_LEVEL:           'http://team23.site88.net/db/getLevel.php',
+    GET_SCORE_AVERAGES:  'http://team23.site88.net/db/getScoreAverages.php',
+    SUBMIT_SCORE:        'http://team23.site88.net/db/submitScore.php',
+    SUBMIT_LEVEL_STATS:  'http://team23.site88.net/db/submitLevelStats.php',
+    LEADERBOARD:         'http://team23.site88.net/leaderboard.php'
 };
 
 // ----------------------------------------------------------
@@ -174,6 +186,7 @@ var AJAX_URL = {
 // ----------------------------------------------------------
 
 // Board and mechanics
+var BORDER;
 var BOARD;
 var GAMEWON;
 var BLACKOUT;
@@ -190,6 +203,7 @@ var RANDOM_LEVEL_BUTTON;
 var SUBMIT_SCORE_BUTTON;
 var PLAYER_NAME_INPUT;
 
+// Used to show notifications and messages
 var MESSAGING_MODAL;
 
 var MUTE_BUTTON;
@@ -198,6 +212,7 @@ var RESET_BUTTON;
 // Initialize variables on document ready
 $(document).ready(function() {
 
+    BORDER        = $('#gameBorder');
     BOARD         = $('#gameBoard');
     GAMEWON       = $('#gameWon');
     BLACKOUT      = $('#blackout');

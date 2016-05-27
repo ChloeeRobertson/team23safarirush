@@ -97,52 +97,13 @@ CREATE TABLE achievedEasy (
     name VARCHAR(30) NOT NULL,
     numMoves int(7) UNSIGNED NOT NULL,
     secondsUsed int(100) UNSIGNED NOT NULL,
-    score int(8) UNSIGNED NOT NULL
+    score int(8) UNSIGNED NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO achievedEasy 
     (name, numMoves, secondsUsed, score)
 VALUES
-    ('Christopher', 9999, 99999, 1),
-    ('Liam',        9999, 99999, 1),
-    ('Mason',       9999, 99999, 1),
-    ('Jacob',       9999, 99999, 1),
-    ('William',     9999, 99999, 1),
-    ('Ethan',       9999, 99999, 1),
-    ('James',       9999, 99999, 1),
-    ('Alexander',   9999, 99999, 1),
-    ('Megan',       9999, 99999, 1),
-    ('Benjamin',    9999, 99999, 1),
-    ('Christopher', 9999, 99999, 1),
-    ('Liam',        9999, 99999, 1),
-    ('Mason',       9999, 99999, 1),
-    ('Jacob',       9999, 99999, 1),
-    ('William',     9999, 99999, 1),
-    ('Ethan',       9999, 99999, 1),
-    ('James',       9999, 99999, 1),
-    ('Alexander',   9999, 99999, 1),
-    ('Megan',       9999, 99999, 1),
-    ('Benjamin',    9999, 99999, 1),
-    ('Christopher', 9999, 99999, 1),
-    ('Liam',        9999, 99999, 1),
-    ('Mason',       9999, 99999, 1),
-    ('Jacob',       9999, 99999, 1),
-    ('William',     9999, 99999, 1),
-    ('Ethan',       9999, 99999, 1),
-    ('James',       9999, 99999, 1),
-    ('Alexander',   9999, 99999, 1),
-    ('Megan',       9999, 99999, 1),
-    ('Benjamin',    9999, 99999, 1),
-    ('Christopher', 9999, 99999, 1),
-    ('Liam',        9999, 99999, 1),
-    ('Mason',       9999, 99999, 1),
-    ('Jacob',       9999, 99999, 1),
-    ('William',     9999, 99999, 1),
-    ('Ethan',       9999, 99999, 1),
-    ('James',       9999, 99999, 1),
-    ('Alexander',   9999, 99999, 1),
-    ('Megan',       9999, 99999, 1),
-    ('Benjamin',    9999, 99999, 1),
     ('Christopher', 9999, 99999, 1),
     ('Liam',        9999, 99999, 1),
     ('Mason',       9999, 99999, 1),
@@ -158,7 +119,8 @@ CREATE TABLE achievedIntermediate (
     name VARCHAR(30) NOT NULL,
     numMoves int(7) UNSIGNED NOT NULL,
     secondsUsed int(100) UNSIGNED NOT NULL,
-    score int(8) UNSIGNED NOT NULL
+    score int(8) UNSIGNED NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO achievedIntermediate 
@@ -185,7 +147,8 @@ CREATE TABLE achievedAdvanced (
     name VARCHAR(30) NOT NULL,
     numMoves int(7) UNSIGNED NOT NULL,
     secondsUsed int(100) UNSIGNED NOT NULL,
-    score int(8) UNSIGNED NOT NULL
+    score int(8) UNSIGNED NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO achievedAdvanced 
@@ -210,7 +173,8 @@ CREATE TABLE achievedExpert (
     name VARCHAR(30) NOT NULL,
     numMoves int(7) UNSIGNED NOT NULL,
     secondsUsed int(100) UNSIGNED NOT NULL,
-    score int(8) UNSIGNED NOT NULL
+    score int(8) UNSIGNED NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO achievedExpert
@@ -234,7 +198,8 @@ CREATE TABLE achievedGodlike (
     name VARCHAR(30) NOT NULL,
     numMoves int(7) UNSIGNED NOT NULL,
     secondsUsed int(100) UNSIGNED NOT NULL,
-    score int(8) UNSIGNED NOT NULL
+    score int(8) UNSIGNED NOT NULL,
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO achievedGodlike

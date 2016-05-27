@@ -1,8 +1,6 @@
 /*
  * Level selector.
  *
- * Must be loaded after global.js and Board.js
- *
  * Requires:
  *     - jQuery         [http://jquery.com/]
  *     - ItemSlide      [https://itemslide.github.io/]

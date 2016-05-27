@@ -1,8 +1,8 @@
 /* Ensure desktops still shows scroll bars if necessary */
 @media only screen
-and (max-device-width: 719px) {
+and (max-device-width: 720px)
+and (orientation: portrait) {
     body {
-        /* Disables pull-down-to-refresh on chrome mobile */
         overflow-y: hidden;
     }
 }
@@ -10,99 +10,17 @@ and (max-device-width: 719px) {
 /*
 Gameboard settings for devices with screens larger than the standard phones
 */
-#gameBoard {
-    background: url("../images/backgroundMay19.1205.png");
-    background-size: 480px 480px;
-    position: relative;
-    margin: 0 auto;
-    width: 480px;
-    height: 480px;
-}
 #gameBorder {
     background: url("../images/border.png");
-    background-size: 500px 500px;
-    position: relative;
+    background-size: cover;
     margin: 0 auto;
-    width: 500px;
-    height: 500px;
-    padding-top: 10px;
+    padding: 10px;
 }
-
-/*
-Media query for iPhone 5 size screens
-*/
-@media only screen
-and (min-device-width: 320px)
-and (max-device-width: 320px)
-and (-webkit-min-device-pixel-ratio: 2)
-and (orientation: portrait) {
-    #gameBoard {
-        background: url("../images/backgroundMay19.1205.png");
-        background-size: 300px 300px;
-        position: relative;
-        margin: 0 auto;
-        width: 300px;
-        height: 300px;
-    }
-    #gameBorder {
-        background: url("../images/border.png");
-        background-size: 320px 320px;
-        position: relative;
-        margin: 0 auto;
-        width: 320px;
-        height: 320px;
-        padding-top: 10px;
-    }
-}
-/*
-Media query for larger phone screens
-*/
-@media only screen
-and (min-device-width: 360px)
-and (max-device-width: 420px)
-and (-webkit-min-device-pixel-ratio: 2)
-and (orientation: portrait) {
-    #gameBoard {
-        background: url("../images/backgroundMay19.1205.png");
-        background-size: 340px 340px;
-        position: relative;
-        margin: 0 auto;
-        width: 340px;
-        height: 340px;
-    }
-    #gameBorder {
-        background: url("../images/border.png");
-        background-size: 360px 360px;
-        position: relative;
-        margin: 0 auto;
-        width: 360px;
-        height: 360px;
-        padding-top: 10px;
-    }
-}
-/*
-Media query for all devices in between large phones and tablets
-*/
-@media only screen
-and (min-device-width: 420px)
-and (max-device-width: 719px) {
-    #gameBoard {
-        background: url("../images/backgroundMay19.1205.png");
-        background-size: 400px 400px;
-        position: relative;
-        margin: 0 auto;
-        width: 400px;
-        height: 400px;
-    }
-    #gameBorder {
-        background: url("../images/border.png");
-        background-size: 420px 420px;
-        position: relative;
-        margin: 0 auto;
-        width: 420px;
-        height: 420px;
-        padding-top: 10px;
-    }
+#gameBoard {
+    background: url("../images/backgroundMay19.1205.png");
+    background-size: cover;
+    position: relative;
+    width: 100%;
 }
 
 /* Used to disable game piece movements */
@@ -137,6 +55,7 @@ and (max-device-width: 719px) {
 .piece {
     position: absolute;
     box-sizing: border-box;
+    border: 2px solid transparent;
 }
 
 .piece img {

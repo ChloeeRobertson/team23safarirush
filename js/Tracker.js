@@ -1,8 +1,7 @@
 /*
  * Tracks player's score and levels completed.
  * Determines next unplayed level, random unplayed level if any.
- *
- * Must be loaded after global.js and Board.js
+ * Stores and retrieves player's data using cookies.
  *
  * Requires:
  *     - jQuery         [http://jquery.com/]

@@ -1,8 +1,6 @@
 /*
  * Sets up board and loads level.
  *
- * Must be loaded after global.js
- *
  * Requires:
  *     - jQuery         [http://jquery.com/]
  *
@@ -39,6 +37,8 @@ var
  * Initializes board.
  */
 function initialize() {
+
+    setBoardSize();
 
     LENGTH = BOARD.width();
 
@@ -131,6 +131,55 @@ global.Board = {
 // ----------------------------------------------------------
 //               C O R E   F U N C T I O N S
 // ----------------------------------------------------------
+
+/**
+ * Sets the board size based on device screen size.
+ */
+function setBoardSize() {
+    var width = global.innerWidth;
+
+    var screenSizes = [
+
+        // iPhone 5 sized screens
+        {
+            min: 0,
+            max: 360,
+            borderWidth: 320
+        },
+
+        // large phone screens
+        {
+            min: 361,
+            max: 420,
+            borderWidth: 360
+        },
+
+        // phablets and tablets
+        {
+            min: 421,
+            max: 720,
+            borderWidth: 420
+        },
+
+        // hd tablets and desktops
+        {
+            min: 721,
+            max: 9999,
+            borderWidth: 500
+        }
+    ];
+
+    for (var i in screenSizes) {
+        var min = screenSizes[i].min;
+        var max = screenSizes[i].max;
+        var borderWidth = screenSizes[i].borderWidth;
+
+        if (min <= width && width <= max) {
+            BORDER.width(borderWidth);
+            break;
+        }
+    }
+}
 
 /**
  * Load level pieces onto the board and invoke
