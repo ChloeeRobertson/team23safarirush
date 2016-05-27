@@ -45,7 +45,11 @@ function show(selectedLevel) {
 
     // Don't show, it's locked (already made first move)
     if (locked) {
-        alert('You need to complete current level before selecting another level.');
+        var message = 'You need to complete current level before selecting another level.';
+        var showMessageFor = 4;
+
+        Tracker.showMessage(message, showMessageFor);
+
         return;
     }
 

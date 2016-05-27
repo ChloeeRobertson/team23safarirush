@@ -11,7 +11,7 @@ var LOAD_LEVEL_FROM_BACKEND = false;
 // ----------------------------------------------------------
 
 // Duration (in ms) of Jeep exit animation played after a level is completed
-var JEEP_EXIT_ANIMATION_DURATION = 3000;
+var JEEP_EXIT_ANIMATION_DURATION = 1200;
 
 var PIECE = {
 
@@ -137,11 +137,16 @@ var SCORING = {
     // (higher factor = time & # of moves has less impact in later levels)
     LEVEL_EASE_FACTOR:      2,
 
-    LEVEL_MULTIPLIER:       .8,    // Multiplied by level #
-    DIFFICULTY_MULTIPLIER:  100,   // Multiplied by difficulty #
+    // Multiplied by level # (higher # = higher score on later levels)
+    LEVEL_MULTIPLIER:       .8,
 
-    MOVES_MULTIPLIER:       0.98,  // Deductive multiplier, more moves = less score
-    SECONDS_MULTIPLIER:     0.999  // Deductive multiplier, more time  = less score
+    // Multiplied by difficulty # (higher # = higher score on higher difficulty levels)
+    DIFFICULTY_MULTIPLIER:  100,
+
+    // Deductive multipliers
+    // More moves & time taken = lower score
+    MOVES_MULTIPLIER:       0.98,
+    SECONDS_MULTIPLIER:     0.999
 };
 
 // Used for comparing user scores to player averages
