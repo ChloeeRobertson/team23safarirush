@@ -62,8 +62,8 @@ $score = $_GET['score'];
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html"><span class="glyphicon glyphicon-grain"></span> Play</a></li>
-                    <li><a href="leaderboard.php"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Leaderboard</a></li>
                     <li><a href="howtoplay.html"><span class="glyphicon glyphicon-question-sign"></span> How to Play</a></li>
+                    <li><a href="leaderboard.php"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Leaderboard</a></li>
                     <li><a href="achievements.php"><span class="glyphicon glyphicon-king"></span> Achievements</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
