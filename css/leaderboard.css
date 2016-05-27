@@ -41,10 +41,12 @@ body {
     position: relative;
     margin: auto;
     width: 50%;
+    color: #d27a2d;
 }
 
-#main .table th, .table td {
-    border-top: none !important;
+#main .table th,
+#main .table td {
+    border-style: none !important;
 }
 
 #yourScore {

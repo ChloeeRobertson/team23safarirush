@@ -54,7 +54,7 @@ function formatTime($seconds) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Safari Rush</a>
+                <a href="index.html"><img src="images/SafariRushLogoLong.png" alt="Safari Rush logo" class="center-block"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -77,7 +77,7 @@ function formatTime($seconds) {
         
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <?php
-                // Declare variable for accordian panels
+                // Declare variable for accordion panels
                 $panelNum = 1;
                 // $achieved = array of table names for achievements
                 foreach ($achievedTableName as $index => $table_name) {
@@ -100,10 +100,10 @@ function formatTime($seconds) {
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
-                                    <th>Name</th>
-                                    <th># of Moves</th>
-                                    <th>Time Used</th>
+                                    <th>RANK</th>
+                                    <th>NAME</th>
+                                    <th># OF MOVES</th>
+                                    <th>TIME USED</th>
                                 </tr>
                             </thead>
                             <?php
@@ -126,7 +126,7 @@ function formatTime($seconds) {
                 </div>
             </div>
             <?php
-                    // Increment $panelName to give each accordian panel a unique id
+                    // Increment $panelName to give each accordion panel a unique id
                     $panelNum++;
                 }
             ?>

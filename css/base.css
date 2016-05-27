@@ -14,12 +14,17 @@ body {
     border-width: 0;
 }
 
-.navbar a {
+.navbar-header img {
+    height: 50px;
+    width: auto;
+}
+
+.nav a {
     color: #f4decb !important;
 }
 
-.navbar a:hover,
-.navbar a:focus {
+.nav a:hover,
+.nav a:focus {
     color: #d27a2d !important;
     background-color: #f4decb !important;
 }

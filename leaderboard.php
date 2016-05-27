@@ -55,7 +55,7 @@ $score = $_GET['score'];
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Safari Rush</a>
+                <a href="index.html"><img src="images/SafariRushLogoLong.png" alt="Safari Rush logo" class="center-block"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,42 +74,44 @@ $score = $_GET['score'];
     </nav>
 
     <div id="main" class="container">
-        <div id="wrapper">
-            <h2>Leaders</h2>
+        <h2>Leaders</h2>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <div>
-                        <table class="table table-hover">
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
                                 <th>RANK</th>
                                 <th>NAME</th>
                                 <th>SCORE</th>
                             </tr>
-                            <?php
-                                $rank = 0;
-                                while ($row = $result->fetch_assoc()) {
-                            ?>
+                        </thead>
+                        <?php
+                            $rank = 0;
+                            while ($row = $result->fetch_assoc()) {
+                        ?>
+                        <tbody>
                             <tr>
                                 <td><?php echo ++$rank; ?></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['score']; ?></td>
                             </tr>
-                            <?php
-                                }
-                            ?>
-                        </table>
-                    </div>
-
-                    <?php if ($score) { ?>
-                    <div id="yourScore">
-                        Your score: <?php echo $score; ?>
-                    </div>
-                    <?php } ?>
+                        </tbody>
+                        <?php
+                            }
+                        ?>
+                    </table>
                 </div>
+
+                <?php if ($score) { ?>
+                <div id="yourScore">
+                    Your score: <?php echo $score; ?>
+                </div>
+                <?php } ?>
             </div>
         </div>
-    </div>
+    </div><!-- /.container -->
 
 </body>
 </html>
