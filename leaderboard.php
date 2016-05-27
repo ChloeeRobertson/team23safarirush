@@ -79,7 +79,7 @@ $score = $_GET['score'];
         <div class="row">
             <div class="col-xs-12">
                 <div>
-                    <table class="table table-hover">
+                    <table id="leaderTable" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>RANK</th>

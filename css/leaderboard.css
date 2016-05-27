@@ -14,13 +14,15 @@ body {
     margin-bottom: 2%;
 }
 
-#main th {
+#leaderTable th {
     text-align: center;
     font-weight: bold;
+    border-style: none !important;
 }
 
-#main td {
+#leaderTable td {
     text-align: center;
+    border-style: none !important;
 }
 
 #main .col-xs-12 {
@@ -42,11 +44,6 @@ body {
     margin: auto;
     width: 50%;
     color: #d27a2d;
-}
-
-#main .table th,
-#main .table td {
-    border-style: none !important;
 }
 
 #yourScore {

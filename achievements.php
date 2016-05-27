@@ -89,6 +89,20 @@ function formatTime($seconds) {
                    aria-controls="collapse<?php echo $panelNum; ?>">
                     <div class="panel-heading" role="tab" id="heading<?php echo $panelNum; ?>">
                         <h4 class="panel-title">
+                            <!-- Add achievement badge images -->
+                            <?php
+                            if ($panelNum == 1) {
+                                echo "<img src=\"images/badges/zebraBadge.png\" alt=\"Zebra Badge\">";
+                            } elseif ( $panelNum == 2) {
+                                echo "<img src=\"images/badges/lionBadge.png\" alt=\"Lion Badge\">";
+                            } elseif ($panelNum == 3) {
+                                echo "<img src=\"images/badges/giraffeBadge.png\" alt=\"Giraffe Badge\">";
+                            } elseif ($panelNum == 4) {
+                                echo "<img src=\"images/badges/elephantBadge.png\" alt=\"Elephant Badge\">";
+                            } else {
+                                echo "<img src=\"images/badges/godBadge.png\" alt=\"Safari God Badge\">";
+                            }
+                            ?>
                             <!-- Title can be changed in db/config.php -->
                             <?php echo $achievedName[$index]; ?>
                         </h4>
@@ -97,7 +111,7 @@ function formatTime($seconds) {
                 <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse <?php if ($panelNum == 1) {echo in;} ?>"
                      role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
                     <div class="panel-body">
-                        <table class="table table-hover">
+                        <table id="table<?php echo $panelNum; ?>" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>RANK</th>

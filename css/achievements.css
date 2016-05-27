@@ -14,9 +14,8 @@ body {
     margin-bottom: 2%;
 }
 
-#main .table th,
-#main .table td {
-    border-style: none !important;
+.panel a:active, .panel a:focus {
+    text-decoration: none;
 }
 
 .panel-heading {
@@ -24,10 +23,30 @@ body {
     color: #f4decb;
 }
 
+.panel-title {
+    padding-left: 5%;
+}
+
+.panel-title img {
+    margin: auto;
+    height: 35px;
+    width: auto;
+}
+
 .panel-body {
     background-color: #f4decb;
     color: #d27a2d;
 }
 
+.table th {
+    font-weight: bold;
+}
 
 
+.table {
+    border: 0px !important;
+}
+
+.table th, .table td {
+    border: 0px !important;
+}
