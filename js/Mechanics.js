@@ -61,9 +61,43 @@ function initialize(levelObj, resetCounters) {
     }
 }
 
+/**
+ * Handles level completion by loading next level or show GOD BADGE!
+ */
+function handleLevelCompletion() {
+    var currentLevel = LevelSelector.getCurrentLevel();
+
+    // Load next level, if there is one
+    if (Tracker.hasUnplayedLevel()) {
+        var nextLevel = Tracker.getNextUnplayedLevel();
+        Board.loadLevel(nextLevel);
+        LevelSelector.unlock();
+        LevelSelector.show(currentLevel);
+    }
+
+    // All levels beaten, game over
+    else {
+
+        // Show safari god achievement!
+        Tracker.showGameWonMessage();
+
+        Board.clearBoard();
+
+        // Show level selector after a delay
+        setTimeout(function() {
+            LevelSelector.unlock();
+        }, LEVEL_SELECTOR_DELAY.SHOW_GAME_WON_MESSAGE_FOR);
+    }
+
+    resetNumMoves();
+    resetTimer();
+    enableMovements();
+};
+
 // Make public functions go public
 global.Mechanics = {
-    initialize: initialize
+    initialize:             initialize,
+    handleLevelCompletion:  handleLevelCompletion
 };
 
 // ----------------------------------------------------------
@@ -211,7 +245,7 @@ function checkWin() {
 
     if (jeepCanExit()) {
 
-        disablePieceMovements();
+        disableMovements();
 
         // Add current level score & statistics to database
         // then compare with other players in database
@@ -219,41 +253,9 @@ function checkWin() {
 
         pauseTimer();
 
-        animateJeepExit(callbackAfterJeepAnimation);
+        animateJeepExit(handleLevelCompletion);
     }
 }
-
-/**
- * Invoked after Jeep finishes exit animation.
- */
-function callbackAfterJeepAnimation() {
-    var currentLevel = LevelSelector.getCurrentLevel();
-
-    // Load next level, if there is one
-    if (Tracker.hasUnplayedLevel()) {
-        var nextLevel = Tracker.getNextUnplayedLevel();
-        Board.loadLevel(nextLevel);
-        LevelSelector.show(currentLevel);
-        enablePieceMovements();
-    }
-
-    // All levels beaten, game over
-    else {
-
-        // Show safari god achievement!
-        GAMEWON.css({'zIndex': 1});
-
-        Board.clearBoard();
-
-        // Show level selector after a delay
-        setTimeout(function() {
-            LevelSelector.show();
-        }, LEVEL_SELECTOR_DELAY.SHOW_GAME_WON_MESSAGE_FOR);
-    }
-
-    resetNumMoves();
-    resetTimer();
-};
 
 // ----------------------------------------------------------
 //            H E L P E R   F U N C T I O N S
@@ -396,14 +398,14 @@ function animateJeepExit(callback) {
 /**
  * Disables all movements.
  */
-function disablePieceMovements() {
+function disableMovements() {
     BLACKOUT.css({'zIndex': 9999});
 }
 
 /**
  * Enable all movements.
  */
-function enablePieceMovements() {
+function enableMovements() {
     BLACKOUT.css({'zIndex': -1});
 }
 

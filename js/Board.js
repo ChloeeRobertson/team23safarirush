@@ -198,7 +198,6 @@ function loadLevelFromString(levelString) {
         tileLength = LENGTH / levelObj.boardSize;
 
         LevelSelector.setLevel(levelObj.level);
-        LevelSelector.unlock();
     }
 
     clearBoard();
