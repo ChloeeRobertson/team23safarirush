@@ -35,6 +35,8 @@ Gameboard settings for devices with screens larger than the standard phones
 /* User beaten all levels. */
 #gameWon {
     position: absolute;
+    left: 0;
+    top: -320px;
     width: 100%;
     height: 100%;
     z-index: -1; /* hidden by default */
@@ -42,6 +44,9 @@ Gameboard settings for devices with screens larger than the standard phones
     text-align: center;
     font-size: 2em;
     padding-top: 50%;
+}
+#gameWon img {
+    width: 25%;
 }
 
 

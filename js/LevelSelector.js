@@ -120,6 +120,13 @@ function setCompleted(level, assessment) {
 }
 
 /**
+ * Labels the level selector button as "Safari God" - after completing all levels.
+ */
+function labelSafariGod() {
+    LEVEL_SELECTOR_BUTTON.children('.selectorButtonLevel').text(ACHIEVEMENT_TITLES[4]);
+}
+
+/**
  * Go to a level in level selector screen if not already selected.
  */
 function slideTo(level) {
@@ -163,6 +170,7 @@ global.LevelSelector = {
     addAchievement:     addAchievement,
     setLevel:           setLevel,
     setCompleted:       setCompleted,
+    labelSafariGod:     labelSafariGod,
     slideTo:            slideTo,
     lock:               lock,
     unlock:             unlock

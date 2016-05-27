@@ -96,6 +96,9 @@ var PIECE_CLASSNAME = {
 //  A C H I E V E M E N T S ,   S C O R I N G ,   L E V E L S
 // ----------------------------------------------------------
 
+// Message shown after player beats all levels
+var GAMEWON_MESSAGE = "Safari God! Submit your score!";
+
 // Duration (seconds) to show achievement notification for
 var ACHIEVEMENT_NOTIFICATION_SHOWN_FOR = 4;
 
@@ -135,7 +138,7 @@ var SCORING = {
     // Lessens scoring bias against long level completion time
     // and high # of moves for higher levels.
     // (higher factor = time & # of moves has less impact in later levels)
-    LEVEL_EASE_FACTOR:      2,
+    LEVEL_EASE_FACTOR:      .5,
 
     // Multiplied by level # (higher # = higher score on later levels)
     LEVEL_MULTIPLIER:       .8,
@@ -193,7 +196,6 @@ var AJAX_URL = {
 // Board and mechanics
 var BORDER;
 var BOARD;
-var GAMEWON;
 var BLACKOUT;
 var NUM_MOVES;
 var TIMER;
@@ -219,7 +221,6 @@ $(document).ready(function() {
 
     BORDER        = $('#gameBorder');
     BOARD         = $('#gameBoard');
-    GAMEWON       = $('#gameWon');
     BLACKOUT      = $('#blackout');
     NUM_MOVES     = $('#numMoves');
     TIMER         = $('#timerDisplay');

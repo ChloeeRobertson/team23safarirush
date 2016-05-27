@@ -208,8 +208,8 @@ function loadPlayerData() {
     setCompletedLevels();
     checkAchievements();
 
-    // Load player's next unplayed level
-    Board.loadLevel(getNextUnplayedLevel());
+    // Load player's next unplayed level or show game won message
+    Mechanics.handleLevelCompletion();
 }
 
 /**
@@ -235,6 +235,20 @@ function hideMessage() {
     MESSAGING_MODAL.modal('hide');
 }
 
+/**
+ * Show game won message.
+ */
+function showGameWonMessage() {
+    var message = '<div style="text-align:center;margin:20px 0;">' +
+                  '<img src="images/badges/godBadge.png" style="width: 50%"><br>' +
+                  GAMEWON_MESSAGE +
+                  "</div>";
+
+    LevelSelector.labelSafariGod();
+    BORDER.html(message);
+    BORDER.css({background: 'none'});
+}
+
 // Make public functions go public
 global.Tracker = {
     initialize:             initialize,
@@ -247,7 +261,8 @@ global.Tracker = {
     hasPlayerData:          hasPlayerData,
     loadPlayerData:         loadPlayerData,
     showMessage:            showMessage,
-    hideMessage:            hideMessage
+    hideMessage:            hideMessage,
+    showGameWonMessage:     showGameWonMessage
 };
 
 // ----------------------------------------------------------
@@ -366,8 +381,8 @@ function getAchievementString() {
 
     for (var i in achievements) {
         var difficulty      = achievements[i];
-        var from            = 1 + (difficulty * 10);
-        var to              = 10 + (difficulty * 10);
+        var from            = (i <4) ? 1 + (difficulty * 10) : 1;
+        var to              = (i < 4) ? 10 + (difficulty * 10) : TOTAL_LEVELS;
         var movesTaken      = 0;
         var secondsTaken    = 0;
         var score           = 0;
