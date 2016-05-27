@@ -281,8 +281,8 @@ function calculateScore(level, movesTaken, secondsTaken) {
     var difficultyScore = SCORING.DIFFICULTY_MULTIPLIER * difficulty;
     var levelScore      = SCORING.LEVEL_MULTIPLIER * level;
 
-    var movesFactor     = Math.round(movesTaken / level * SCORING.LEVEL_EASE_FACTOR);
-    var timeFactor      = Math.round(secondsTaken / level * SCORING.LEVEL_EASE_FACTOR);
+    var movesFactor     = Math.round(movesTaken / (level * SCORING.LEVEL_EASE_FACTOR));
+    var timeFactor      = Math.round(secondsTaken / (level * SCORING.LEVEL_EASE_FACTOR));
 
     var movesMultiplier = Math.pow(SCORING.MOVES_MULTIPLIER, movesFactor);
     var timeMultiplier  = Math.pow(SCORING.SECONDS_MULTIPLIER, timeFactor);
