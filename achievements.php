@@ -114,7 +114,6 @@ function formatTime($seconds) {
                         <table id="table<?php echo $panelNum; ?>" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>RANK</th>
                                     <th>NAME</th>
                                     <th># OF MOVES</th>
                                     <th>TIME USED</th>
@@ -126,7 +125,6 @@ function formatTime($seconds) {
                             ?>
                             <tbody
                                 <tr>
-                                    <td><?php echo ++$rank; ?></td>
                                     <td><?php echo $row['name']; ?></td>
                                     <td><?php echo $row['numMoves']; ?></td>
                                     <td><?php echo formatTime($row['secondsUsed']); ?></td>
