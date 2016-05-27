@@ -64,7 +64,7 @@ function initialize(levelObj, resetCounters) {
 /**
  * Handles level completion by loading next level or show GOD BADGE!
  */
-function handleLevelCompletion() {
+function handleLevelCompletion(disableSelectorPopup) {
     var currentLevel = LevelSelector.getCurrentLevel();
 
     // Load next level, if there is one
@@ -72,7 +72,10 @@ function handleLevelCompletion() {
         var nextLevel = Tracker.getNextUnplayedLevel();
         Board.loadLevel(nextLevel);
         LevelSelector.unlock();
-        LevelSelector.show(currentLevel);
+
+        if (!disableSelectorPopup) {
+            LevelSelector.show(currentLevel);
+        }
     }
 
     // All levels beaten, game over

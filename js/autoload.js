@@ -11,7 +11,9 @@ $(document).ready(function() {
 
     // Set-up board and load first level
     if (AUTO_LOAD_BOARD_ON_DOCUMENT_READY) {
-        Board.initialize();
+        // setTimeout(function() {
+            Board.initialize();
+        // }, 500);
     }
 
     // Show landscape mode warning modal if orientation changes

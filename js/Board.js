@@ -42,22 +42,25 @@ function initialize() {
 
     LENGTH = BOARD.width();
 
-    // Make board a square
-    BOARD.height(LENGTH);
+    // Fix board not loading properly on first load
+    setTimeout(function() {
+        // Make board a square
+        BOARD.height(LENGTH);
 
-    // Initialize different functions and features
-    initializeResetButton();
-    LevelSelector.initialize();
-    PieceAssets.initialize();
-    Sound.initialize();
-    Tracker.initialize();
+        // Initialize different functions and features
+        initializeResetButton();
+        LevelSelector.initialize();
+        PieceAssets.initialize();
+        Sound.initialize();
+        Tracker.initialize();
 
-    // Load data from saved player data or load first level
-    if (Tracker.hasPlayerData()) {
-        Tracker.loadPlayerData();
-    } else {
-        loadLevel(1);
-    }
+        // Load data from saved player data or load first level
+        if (Tracker.hasPlayerData()) {
+            Tracker.loadPlayerData();
+        } else {
+            loadLevel(1);
+        }
+    }, 1000);
 }
     
 /**

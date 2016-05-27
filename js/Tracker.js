@@ -206,10 +206,13 @@ function loadPlayerData() {
     };
 
     setCompletedLevels();
-    checkAchievements();
+
+    var disablePopups = true;
+
+    checkAchievements(disablePopups);
 
     // Load player's next unplayed level or show game won message
-    Mechanics.handleLevelCompletion();
+    Mechanics.handleLevelCompletion(disablePopups);
 }
 
 /**
@@ -330,7 +333,7 @@ function submitLevelStats(level, movesTaken, secondsTaken) {
 /**
  * Checks if user achieved anything.
  */
-function checkAchievements() {
+function checkAchievements(disablePopups) {
 
     // Checks easy, intermediate, advanced, and expert levels completion
     for (var difficulty = 0; difficulty < 4; difficulty++) {
@@ -338,14 +341,14 @@ function checkAchievements() {
         var to   = 10 + (difficulty * 10);
 
         if (completedLevels(from, to)) {
-            addChievements(difficulty);
+            addChievements(difficulty, disablePopups);
         }
     }
 
     // Checks if user finished all 40 levels
     if (completedLevels(1, 40)) {
         var difficulty = 4;
-        addChievements(difficulty);
+        addChievements(difficulty, disablePopups);
     }
 }
 
@@ -356,7 +359,7 @@ function checkAchievements() {
 /**
  * Add achievements to tracker and shown on level selector.
  */
-function addChievements(difficulty) {
+function addChievements(difficulty, disablePopups) {
     if (achievements.indexOf(difficulty) < 0) {
         achievements.push(difficulty);
     }
@@ -369,7 +372,10 @@ function addChievements(difficulty) {
 
         achievementsShown.push(difficulty);
         LevelSelector.addAchievement(difficulty);
-        showMessage(message, ACHIEVEMENT_NOTIFICATION_SHOWN_FOR);
+        
+        if (!disablePopups) {
+            showMessage(message, ACHIEVEMENT_NOTIFICATION_SHOWN_FOR);
+        }
     }
 }
 
