@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 
 function getSQL($tableName) {
     return "SELECT name, numMoves, secondsUsed, score
-            FROM " . $tableName . " ORDER BY score DESC";
+            FROM " . $tableName . " ORDER BY time DESC";
 }
 
 function formatTime($seconds) {
