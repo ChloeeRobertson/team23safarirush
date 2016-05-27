@@ -14,13 +14,13 @@ body {
     margin-bottom: 2%;
 }
 
-#leaderTable th {
+#main th {
     text-align: center;
     font-weight: bold;
     border-style: none !important;
 }
 
-#leaderTable td {
+#main td {
     text-align: center;
     border-style: none !important;
 }

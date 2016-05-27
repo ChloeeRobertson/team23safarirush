@@ -14,7 +14,7 @@ body {
     margin-bottom: 2%;
 }
 
-.panel a:active, .panel a:focus {
+.panel a:active, .panel a:focus, .panel a:hover {
     text-decoration: none;
 }
 
