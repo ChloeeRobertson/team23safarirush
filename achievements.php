@@ -84,31 +84,33 @@ function formatTime($seconds) {
                     $result = $conn->query(getSQL($table_name));
             ?>
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading<?php echo $panelNum; ?>">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion"
-                           href="#collapse<?php echo $panelNum; ?>" aria-expanded="true"
-                           aria-controls="collapse<?php echo $panelNum; ?>">
+                <a role="button" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapse<?php echo $panelNum; ?>" aria-expanded="true"
+                   aria-controls="collapse<?php echo $panelNum; ?>">
+                    <div class="panel-heading" role="tab" id="heading<?php echo $panelNum; ?>">
+                        <h4 class="panel-title">
                             <!-- Title can be changed in db/config.php -->
                             <?php echo $achievedName[$index]; ?>
-                        </a>
-                    </h4>
-                </div>
+                        </h4>
+                    </div>
+                </a>
                 <div id="collapse<?php echo $panelNum; ?>" class="panel-collapse collapse <?php if ($panelNum == 1) {echo in;} ?>"
                      role="tabpanel" aria-labelledby="heading<?php echo $panelNum; ?>">
                     <div class="panel-body">
                         <table class="table table-hover">
-                            <tbody>
+                            <thead>
                                 <tr>
                                     <th>Rank</th>
                                     <th>Name</th>
                                     <th># of Moves</th>
                                     <th>Time Used</th>
                                 </tr>
-                                <?php
+                            </thead>
+                            <?php
                                 $rank = 0;
                                 while ($row = $result->fetch_assoc()) {
-                                ?>
+                            ?>
+                            <tbody
                                 <tr>
                                     <td><?php echo ++$rank; ?></td>
                                     <td><?php echo $row['name']; ?></td>
