@@ -87,20 +87,21 @@ $score = $_GET['score'];
                                 <th>SCORE</th>
                             </tr>
                         </thead>
-                        <?php
+                        <tbody>
+                            <?php
                             $rank = 0;
                             while ($row = $result->fetch_assoc()) {
-                        ?>
-                        <tbody>
+                            ?>
                             <tr>
                                 <td><?php echo ++$rank; ?></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['score']; ?></td>
                             </tr>
-                        </tbody>
-                        <?php
+                            <?php
                             }
-                        ?>
+                            ?>
+                        </tbody>
+
                     </table>
                 </div>
 

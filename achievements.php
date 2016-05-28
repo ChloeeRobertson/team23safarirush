@@ -119,20 +119,20 @@ function formatTime($seconds) {
                                     <th>TIME USED</th>
                                 </tr>
                             </thead>
-                            <?php
+                            <tbody>
+                                <?php
                                 $rank = 0;
                                 while ($row = $result->fetch_assoc()) {
-                            ?>
-                            <tbody
+                                ?>
                                 <tr>
                                     <td><?php echo $row['name']; ?></td>
                                     <td><?php echo $row['numMoves']; ?></td>
                                     <td><?php echo formatTime($row['secondsUsed']); ?></td>
                                 </tr>
+                                <?php
+                                }
+                                ?>
                             </tbody>
-                            <?php
-                            }
-                            ?>
                         </table>
                     </div>
                 </div>
