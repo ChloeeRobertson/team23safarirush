@@ -17,12 +17,10 @@ body {
 #main th {
     text-align: center;
     font-weight: bold;
-    border-style: none !important;
 }
 
 #main td {
     text-align: center;
-    border-style: none !important;
 }
 
 #main .col-xs-12 {
@@ -50,4 +48,10 @@ body {
     padding-top: 25px;
     text-align: center;
     font-weight: bold;
+}
+
+.table tbody,
+.table th,
+.table td {
+    border-style: none !important;
 }

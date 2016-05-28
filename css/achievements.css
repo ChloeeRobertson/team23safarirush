@@ -47,9 +47,12 @@ body {
 .table {
     width: 95%;
     margin: auto;
-    border: 0px !important;
 }
 
-.table th, .table td {
-    border: 0px !important;
+.panel,
+.panel-body,
+.table tbody,
+.table th,
+.table td {
+    border-style: none !important;
 }
